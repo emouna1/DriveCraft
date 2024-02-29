@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "DriveCraft:build:production"
+              "buildTarget": "DriveCraft:build:production"
             },
             "development": {
-              "browserTarget": "DriveCraft:build:development"
+              "buildTarget": "DriveCraft:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DriveCraft:build"
+            "buildTarget": "DriveCraft:build"
           }
         },
         "test": {
