@@ -1,0 +1,14 @@
+  .background-image {
+    background-image: url('../../../assets/trafic-roue-technologie-classique-automobile-moderne.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card-container {
+    background-color: white;
+    padding: 20px;
+  }

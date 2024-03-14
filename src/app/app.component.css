@@ -1,0 +1,35 @@
+/* app.component.css */
+
+ 
+  /* Add styles for background image */
+.background-image {
+  background-image: url('../assets/trafic-roue-technologie-classique-automobile-moderne.png');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  position: relative; /* Ensure relative positioning */
+}
+
+/* Add styles for content on background */
+.content-on-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white; /* Adjust text color as needed */
+  z-index: 1; /* Ensure content is on top of the background */
+}
+
+/* Add styles for toolbar */
+.mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2; /* Ensure toolbar is on top of other content */
+}
+.logo {
+  height: 40px; /* Adjust the height as needed */
+  margin-right: 10px; /* Optional: Adjust the margin */
+}
