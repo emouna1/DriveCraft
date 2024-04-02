@@ -1,0 +1,154 @@
+<div class="container">
+<h2>Vehicles edition</h2>
+<div class="example-container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+  
+    <!-- Displaying columns -->
+    <ng-container [matColumnDef]="column" *ngFor="let column of Columns">
+      <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+      <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
+    </ng-container>
+
+   
+  
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions" >
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary" (click)="editRow(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteRow(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <!-- Header and Row definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <button class="amouna-button" (click)="printTable()">Print</button>
+</div>
+<br><br>
+
+<button  class="amouna-button" (click)="toggleForm()">Add New Vehicle</button>
+
+<!-- Form for adding a new vehicle -->
+<div *ngIf="showForm">
+  <form (submit)="submitVehicle()">
+    <label>
+      License Plate:
+      <input type="text" name="LicensePlate" [(ngModel)]="selectedRow.LicensePlate" required>
+    </label>
+    <label>
+      Brand:
+      <input type="text" name="Brand" [(ngModel)]="selectedRow.Brand" required>
+    </label>
+    <label>
+      Type:
+      <input type="text" name="Type" [(ngModel)]="selectedRow.Type" required>
+    </label>
+    <label>
+      Power:
+      <input type="text" name="Power" [(ngModel)]="selectedRow.Power" required>
+    </label>
+    <label>
+      Fuel:
+      <input type="text" name="Fuel" [(ngModel)]="selectedRow.Fuel" required>
+    </label>
+    <label>
+      Odometer:
+      <input type="number" name="Odometer" [(ngModel)]="selectedRow.Odometer" required>
+    </label>
+    <label>
+      Color:
+      <input type="text" name="Color" [(ngModel)]="selectedRow.Color" required>
+    </label>
+    <label>
+      Purchase Price:
+      <input type="number" name="PurchasePrice" [(ngModel)]="selectedRow.PurchasePrice" required>
+    </label>
+    <label>
+      Date:
+      <input type="datetime-local" name="Date" [(ngModel)]="selectedRow.Date" required>
+    </label>
+    <label>
+      Observation:
+      <input type="text" name="Observation" [(ngModel)]="selectedRow.Observation" required>
+    </label>
+  
+    <!-- Submit button -->
+    <button class="amouna-button" type="submit">Add Vehicle</button>
+    <button lass="amouna-button" type="button"  (click)="canceladdForm()">Cancel</button>
+  </form>
+</div>
+
+<!-- Form for editing -->
+
+
+<div #printContent style="display:none">
+<table>
+  <!-- Table headers and rows will be generated dynamically -->
+</table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div *ngIf="showEditForm">
+<h2>Edit Maintenance</h2>
+<form (submit)="saveChanges()">
+  <label>
+    License Plate:
+    <input type="text" name="LicensePlate" [(ngModel)]="selectedRow.LicensePlate" required>
+  </label>
+  <label>
+    Brand:
+    <input type="text" name="Brand" [(ngModel)]="selectedRow.Brand" required>
+  </label>
+  <label>
+    Type:
+    <input type="text" name="Type" [(ngModel)]="selectedRow.Type" required>
+  </label>
+  <label>
+    Power:
+    <input type="text" name="Power" [(ngModel)]="selectedRow.Power" required>
+  </label>
+  <label>
+    Fuel:
+    <input type="text" name="Fuel" [(ngModel)]="selectedRow.Fuel" required>
+  </label>
+  <label>
+    Odometer:
+    <input type="number" name="Odometer" [(ngModel)]="selectedRow.Odometer" required>
+  </label>
+  <label>
+    Color:
+    <input type="text" name="Color" [(ngModel)]="selectedRow.Color" required>
+  </label>
+  <label>
+    Purchase Price:
+    <input type="number" name="PurchasePrice" [(ngModel)]="selectedRow.PurchasePrice" required>
+  </label>
+  <label>
+    Date:
+    <input type="datetime-local" name="Date" [(ngModel)]="selectedRow.Date" required>
+  </label>
+  <label>
+    Observation:
+    <input type="text" name="Observation" [(ngModel)]="selectedRow.Observation" required>
+  </label>
+  <button type="submit">Save Changes</button>
+  <button type="button" (click)="cancelForm()">Cancel</button>
+
+</form>
+</div>
+</div>

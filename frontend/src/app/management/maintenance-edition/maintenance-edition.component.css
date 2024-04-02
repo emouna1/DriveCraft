@@ -1,0 +1,48 @@
+.example-container {
+    height: 300px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+ 
+  :host ::ng-deep {
+    @media print {
+      /* Hide all elements except the table */
+      body * {
+        display: none !important;
+      }
+      table {
+        display: block !important;
+      }
+      .action-cell {
+        display: none !important;
+      }
+    }
+  }
+  
+  .container {
+    max-width: 1200px; /* Adjust the max-width as needed */
+    margin: 0 auto; 
+    padding: 20px; 
+    height: 100%; /* Set the height to 100% of the viewport height */
+    overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+  }
+  .amouna-button {
+    margin: 5px;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
+  .amouna-button:hover {
+    background-color: #4CAF50; /* Green */
+    color: rgb(245, 235, 236);
+  }
+  
+  .amouna-button:active {
+    background-color: #45a049;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }

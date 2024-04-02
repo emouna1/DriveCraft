@@ -1,0 +1,218 @@
+<h2>Candidate Management</h2>
+<div class="container">
+
+<div class="candidat-container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+  
+    <!-- Displaying columns -->
+    <ng-container [matColumnDef]="column" *ngFor="let column of studentColumns">
+      <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.User">
+          <ng-container *ngIf =" column !== 'role'">
+        {{ element.User[column] }}
+          </ng-container>
+        </ng-container> </td>
+       
+    </ng-container>
+
+   
+  
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions" >
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button color="primary"  (click)="editRow(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteRow(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+  
+    <!-- Header and Row definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <button  class="amouna-button" (click)="printTable()">Print</button>
+</div>
+<br><br>
+
+<button class="amouna-button" (click)="toggleForm()">Add New condidat</button>
+
+
+<!-- Form for editing -->
+
+
+<div #printContent style="display:none">
+<table>
+  <!-- Table headers and rows will be generated dynamically -->
+</table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Form for adding a new driving license category entry -->
+<div *ngIf="showForm">
+  <form (submit)="submitStudent()">
+    <label>
+      Username:
+      <input type="text" name="username" [(ngModel)]="selectedRow.username" required>
+    </label>
+    <label>
+      Password:
+      <input type="password" name="password" [(ngModel)]="selectedRow.password" required>
+    </label>
+    <label>
+      Email:
+      <input type="email" name="email" [(ngModel)]="selectedRow.email" required>
+    </label>
+    <label>
+      Role:
+      <input type="text" name="role" [(ngModel)]="selectedRow.role" required>
+    </label>
+    <label>
+      Name:
+      <input type="text" name="name" [(ngModel)]="selectedRow.name" required>
+    </label>
+    <label>
+      First Name:
+      <input type="text" name="firstName" [(ngModel)]="selectedRow.firstName" required>
+    </label>
+   
+    <label>
+      CIN:
+      <input type="text" name="CIN" [(ngModel)]="selectedRow.CIN" required>
+    </label>
+    <label>
+      Date of Issue:
+      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.dateOfIssue" required>
+    </label>
+    <label>
+      License Category:
+      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.licenseCategory" required>
+    </label>
+    <label>
+      Situation:
+      <input type="text" name="situation" [(ngModel)]="selectedRow.situation" required>
+    </label>
+    <label>
+      Balance:
+      <input type="number" name="balance" [(ngModel)]="selectedRow.balance" required>
+    </label>
+    <label>
+      Date of Birth:
+      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.dateOfBirth" required>
+    </label>
+    <label>
+      Nationality:
+      <input type="text" name="nationality" [(ngModel)]="selectedRow.nationality" required>
+    </label>
+    <label>
+      Address:
+      <input type="text" name="address" [(ngModel)]="selectedRow.address" required>
+    </label>
+    <label>
+      Telephone:
+      <input type="tel" name="telephone" [(ngModel)]="selectedRow.telephone" required>
+    </label>
+    <label>
+      Image:
+      <input type="text" name="image" [(ngModel)]="selectedRow.image">
+    </label>
+    
+    <!-- Submit button -->
+    <button class="amouna-button" type="submit">Add a condidat</button>
+  </form>
+</div>
+
+<!-- Form for editing an existing driving license category entry -->
+<div *ngIf="showEditForm">
+  <h2>Edit candidat</h2>
+  <form (submit)="saveChanges()">
+    <label>
+      Username:
+      <input type="text" name="username" [(ngModel)]="selectedRow.username" required>
+    </label>
+    <label>
+      Password:
+      <input type="password" name="password" [(ngModel)]="selectedRow.password" required>
+    </label>
+    <label>
+      Email:
+      <input type="email" name="email" [(ngModel)]="selectedRow.email" required>
+    </label>
+    <label>
+      Role:
+      <input type="text" name="role" [(ngModel)]="selectedRow.role" required>
+    </label>
+    <label>
+      Name:
+      <input type="text" name="name" [(ngModel)]="selectedRow.name" required>
+    </label>
+    <label>
+      First Name:
+      <input type="text" name="firstName" [(ngModel)]="selectedRow.firstName" required>
+    </label>
+   
+    <label>
+      CIN:
+      <input type="text" name="CIN" [(ngModel)]="selectedRow.CIN" required>
+    </label>
+    <label>
+      Date of Issue:
+      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.dateOfIssue" required>
+    </label>
+    <label>
+      License Category:
+      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.licenseCategory" required>
+    </label>
+    <label>
+      Situation:
+      <input type="text" name="situation" [(ngModel)]="selectedRow.situation" required>
+    </label>
+    <label>
+      Balance:
+      <input type="number" name="balance" [(ngModel)]="selectedRow.balance" required>
+    </label>
+    <label>
+      Date of Birth:
+      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.dateOfBirth" required>
+    </label>
+    <label>
+      Nationality:
+      <input type="text" name="nationality" [(ngModel)]="selectedRow.nationality" required>
+    </label>
+    <label>
+      Address:
+      <input type="text" name="address" [(ngModel)]="selectedRow.address" required>
+    </label>
+    <label>
+      Telephone:
+      <input type="tel" name="telephone" [(ngModel)]="selectedRow.telephone" required>
+    </label>
+    <label>
+      Image:
+      <input type="text" name="image" [(ngModel)]="selectedRow.image">
+    </label>
+    
+    <!-- Submit button -->
+    <button type="submit" class="amouna-button">Save Changes</button>
+  </form>
+</div>
+
+</div>
+
+<!-- Button to add new candidate 
+<button mat-raised-button color="primary" (click)="openAddDialog()">Add Candidate</button>-->

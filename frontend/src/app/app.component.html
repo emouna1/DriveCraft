@@ -1,0 +1,55 @@
+<!-- app.component.html -->
+<div class="background-image" *ngIf="!isLoginPageOrSignupPage()">
+<mat-toolbar color="primary">
+  <img src="../assets/logo.png" alt="Logo" class="logo">
+  <span>DriveCraft</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/">Home</button>
+  <button mat-button [routerLink]="['/']" fragment="about">About Us</button>
+  <button mat-button [routerLink]="['/']" fragment="service">Our Services</button>
+  <button mat-button [routerLink]="['/']" fragment="pricing">Pricing</button>
+  <button mat-button routerLink="/auth/login">Login / Register</button>
+</mat-toolbar>
+
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav mode="over">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/">Home</a>
+      <a mat-list-item [routerLink]="['/']" fragment="about">About Us</a>
+      <a mat-list-item [routerLink]="['/']" fragment="service">Our Services</a>
+      <a mat-list-item [routerLink]="['/']" fragment="pricing">Pricing</a>
+      <a mat-list-item routerLink="/auth/login">Login / Register</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="background-image">
+      <!-- Add content directly into the background -->
+      <div class="content-on-background">
+        <br><br><br><br>
+        <section id="about">
+        <h2>About Us</h2>
+        <p>
+        </p>
+        </section>
+        <section id="pricing">
+        <h2>Pricing</h2>
+        <p>.</p>
+        </section>
+        <section id="service">
+        <h2>Our Services</h2>
+        <p></p>
+        </section>
+        <h2>Login / Register</h2>
+        <p>Login or register to access member-only features...</p>
+        <button mat-raised-button color="primary" routerLink="/auth/login">Login</button>
+        <button mat-raised-button color="accent" routerLink="/auth/signup">Register</button>
+        <button mat-raised-button color="accent" routerLink="/folders/vehicle">lets see</button>
+
+
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+</div>
+<router-outlet></router-outlet>
+

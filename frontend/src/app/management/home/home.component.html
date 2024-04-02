@@ -1,0 +1,119 @@
+<!-- home.component.html -->
+  <mat-toolbar color="primary"> <!-- Header -->
+    <img src="../../../assets/logo.png" alt="logo" class="logo-img">
+    <span>DriveCraft</span>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="container"> <!-- Container for sidebar and content -->
+    <mat-sidenav mode="side" opened> <!-- Sidebar -->
+      <mat-nav-list>
+        <div class="user-info">
+          <span class="material-icons account-icon">
+            account_circle
+          </span>
+          <span class="welcome-text">Welcome {{ userName }}</span>
+        </div>
+       <!-- <a mat-list-item routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        
+        <a mat-button [matMenuTriggerFor]="HomeMenu">Home</a>
+        <a mat-button [matMenuTriggerFor]="candidatesMenu">Folders</a>
+        <a mat-button [matMenuTriggerFor]="CondidatMenu">Condidat section</a>-->
+          <!-- Home Menu -->
+    <div class="menu-buttons">      
+    <button mat-button [matMenuTriggerFor]="HomeMenu">
+      Home
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+
+    <!-- Candidates Menu -->
+    <button mat-button [matMenuTriggerFor]="FoldersMenu">
+      Folders
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+
+    <!-- Condidat Menu -->
+    <button mat-button [matMenuTriggerFor]="CondidatMenu">
+      Condidat Section
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <!-- Condidat Menu -->
+    <button mat-button [matMenuTriggerFor]="UsersMenu">
+      Users Section
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <!-- Condidat Menu -->
+    <button mat-button [matMenuTriggerFor]="Payments">
+      Payments
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <!-- Condidat Menu -->
+    <button mat-button [matMenuTriggerFor]="VehiclesMenu">
+      Vehicles Section
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <a mat-list-item routerLink="userProfile" routerLinkActive="active">
+      <mat-icon>person_outline</mat-icon><!-- Use the desired Material icon name here -->
+      PROFILE
+  </a>
+  
+    </div>
+    <br><br>
+        <button class="logout-button" (click)="logout()">
+          <span class="material-icons">exit_to_app</span> Logout
+        </button>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-menu #HomeMenu="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Planning of code sessions & exams</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Planning of conduct sessions & exams</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Registration code</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Registration conduct</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Condidats history</a>
+       
+    </mat-menu>
+    <mat-menu #FoldersMenu="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      <a mat-menu-item routerLink="vehicles" routerLinkActive="active">vehicles edition</a>
+      <a mat-menu-item routerLink="Maintenance" routerLinkActive="active">Maintenance edition</a>
+      <a mat-menu-item routerLink="license" routerLinkActive="active">Driving License Category edition</a>
+      <a mat-menu-item routerLink="paymentMethod" routerLinkActive="active">Payment method edition</a>
+    </mat-menu>
+    <mat-menu #CondidatMenu="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Payment</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct sessions schedule</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct exams schedule</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Exams results</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
+    </mat-menu>
+    <mat-menu #UsersMenu="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      <a mat-menu-item routerLink="Candidat" routerLinkActive="active">Candidates Edition</a>
+      <a mat-menu-item routerLink="personalEdition" routerLinkActive="active">Instructors edition</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active"> Admin (s) </a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
+    </mat-menu>
+    <mat-menu #Payments="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Payment</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct sessions schedule</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct exams schedule</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Exams results</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
+    </mat-menu>
+    <mat-menu #VehiclesMenu="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Payment</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct sessions schedule</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct exams schedule</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Exams results</a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
+    </mat-menu>
+    
+
+
+    <mat-sidenav-content class="content"> <!-- Content Area -->    
+      <router-outlet></router-outlet> <!-- Placeholder for component content -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>

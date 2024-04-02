@@ -1,0 +1,43 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+html, body { height: 100%; }
+body { margin: 0; 
+    font-family: Roboto, 
+    "Helvetica Neue", sans-serif; 
+    overflow: hidden;
+    scrollbar-width: thin;          /* "auto" or "thin" */
+    scrollbar-color: rgb(112, 10, 78) rgb(221, 92, 135);   /* scroll thumb and track */ 
+}
+
+
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the track */
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* color of the handle */
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* color of the handle on hover */
+  }
+  
+  /* Optional: Adjust scrollbar size */
+  ::-webkit-scrollbar {
+    width: 12px; /* width of the scrollbar */
+  }
+  
+  /* Optional: Adjust scrollbar corner */
+  ::-webkit-scrollbar-corner {
+    background: transparent; /* color of the scrollbar corner */
+  }
+
+  
+
+
+
+

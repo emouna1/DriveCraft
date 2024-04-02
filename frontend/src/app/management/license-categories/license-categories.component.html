@@ -1,0 +1,160 @@
+<div class="container">
+
+    <h2>License categories edition</h2>
+    <div class="example-container mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+      
+        <!-- Displaying columns -->
+        <ng-container [matColumnDef]="column" *ngFor="let column of Columns">
+          <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+          <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
+        </ng-container>
+
+       
+      
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions" >
+          <th mat-header-cell *matHeaderCellDef> Action </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" (click)="editRow(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteRow(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+      
+        <!-- Header and Row definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <button (click)="printTable()">Print</button>
+    </div>
+    <br><br>
+
+  <button (click)="toggleForm()">Add New Driving license category</button>
+
+
+  <!-- Form for editing -->
+
+  
+  <div #printContent style="display:none">
+    <table>
+      <!-- Table headers and rows will be generated dynamically -->
+    </table>
+  </div>
+
+
+  
+  
+
+
+
+  <div *ngIf="showForm">
+    <!-- Form for adding a new driving license category entry -->
+    <form (submit)="submitLicenseCategory()">
+      <label>
+        Rank:
+        <input type="number" name="Rank" [(ngModel)]="selectedRow.Rank" required>
+      </label>
+      <label>
+        Category Code:
+        <input type="text" name="CategoryCode" [(ngModel)]="selectedRow.CategoryCode" required>
+      </label>
+      <label>
+        Designation:
+        <input type="text" name="Designation" [(ngModel)]="selectedRow.Designation" required>
+      </label>
+      <label>
+        Code Registration Fees:
+        <input type="number" name="CodeRegistrationFees" [(ngModel)]="selectedRow.CodeRegistrationFees" required>
+      </label>
+      <label>
+        Conduct Registration Fees:
+        <input type="number" name="ConductRegistrationFees" [(ngModel)]="selectedRow.ConductRegistrationFees" required>
+      </label>
+      <label>
+        Code Review Price:
+        <input type="number" name="CodeReviewPrice" [(ngModel)]="selectedRow.CodeReviewPrice" required>
+      </label>
+      <label>
+        Driving Test Price:
+        <input type="number" name="DrivingTestPrice" [(ngModel)]="selectedRow.DrivingTestPrice" required>
+      </label>
+      <label>
+        Price Hour Code:
+        <input type="number" name="PriceHourCode" [(ngModel)]="selectedRow.PriceHourCode" required>
+      </label>
+      <label>
+        Price Per Hour Driven:
+        <input type="number" name="PricePerHourDriven" [(ngModel)]="selectedRow.PricePerHourDriven" required>
+      </label>
+      <label>
+        Code Exam Cancellation Fee:
+        <input type="number" name="CodeExamCancellationFee" [(ngModel)]="selectedRow.CodeExamCancellationFee" required>
+      </label>
+      <label>
+        Driving Test Cancellation Fees:
+        <input type="number" name="DrivingTestCancellationFees" [(ngModel)]="selectedRow.DrivingTestCancellationFees" required>
+      </label>
+      
+      <!-- Submit button -->
+      <button type="submit">Add License Category</button>
+    </form>
+  </div>
+
+
+
+
+  <div *ngIf="showEditForm">
+    <h2>Edit Maintenance</h2>
+    <form (submit)="saveChanges()">
+      <label>
+        Rank:
+        <input type="number" name="Rank" [(ngModel)]="selectedRow.Rank" required>
+      </label>
+      <label>
+        Category Code:
+        <input type="text" name="CategoryCode" [(ngModel)]="selectedRow.CategoryCode" required>
+      </label>
+      <label>
+        Designation:
+        <input type="text" name="Designation" [(ngModel)]="selectedRow.Designation" required>
+      </label>
+      <label>
+        Code Registration Fees:
+        <input type="number" name="CodeRegistrationFees" [(ngModel)]="selectedRow.CodeRegistrationFees" required>
+      </label>
+      <label>
+        Conduct Registration Fees:
+        <input type="number" name="ConductRegistrationFees" [(ngModel)]="selectedRow.ConductRegistrationFees" required>
+      </label>
+      <label>
+        Code Review Price:
+        <input type="number" name="CodeReviewPrice" [(ngModel)]="selectedRow.CodeReviewPrice" required>
+      </label>
+      <label>
+        Driving Test Price:
+        <input type="number" name="DrivingTestPrice" [(ngModel)]="selectedRow.DrivingTestPrice" required>
+      </label>
+      <label>
+        Price Hour Code:
+        <input type="number" name="PriceHourCode" [(ngModel)]="selectedRow.PriceHourCode" required>
+      </label>
+      <label>
+        Price Per Hour Driven:
+        <input type="number" name="PricePerHourDriven" [(ngModel)]="selectedRow.PricePerHourDriven" required>
+      </label>
+      <label>
+        Code Exam Cancellation Fee:
+        <input type="number" name="CodeExamCancellationFee" [(ngModel)]="selectedRow.CodeExamCancellationFee" required>
+      </label>
+      <label>
+        Driving Test Cancellation Fees:
+        <input type="number" name="DrivingTestCancellationFees" [(ngModel)]="selectedRow.DrivingTestCancellationFees" required>
+      </label>
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+  </div>

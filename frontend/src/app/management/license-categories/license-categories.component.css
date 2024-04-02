@@ -1,0 +1,15 @@
+.example-container {
+    height: 400px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+  .container {
+    max-width: 1200px; /* Adjust the max-width as needed */
+    margin: 0 auto; 
+    padding: 20px; 
+    height: 100%; /* Set the height to 100% of the viewport height */
+    overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+  }
