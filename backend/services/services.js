@@ -1,4 +1,4 @@
-const { User } = require('../models/user');
+const {User} = require('../models/user');
 
 // Function to find a user by CIN (National Identity Card Number)
 async function findByCIN(candidatCIN) {

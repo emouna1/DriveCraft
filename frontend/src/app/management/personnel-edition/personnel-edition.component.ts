@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CoondidateService } from 'src/app/coondidate.service';
 
 @Component({
@@ -36,45 +36,81 @@ export class PersonnelEditionComponent {
   dataSource: Employee[] = [];
   showForm: boolean = false;
   showEditForm: boolean = false;
-  selectedRow:Employee = {
-    username: 'default_user',
-    password: 'default_password',
-    email: 'defaultEmployee.com',
-    role:'',
-    name: 'DefaultEmployee',
-    firstName: 'Default',
-    CIN: '1234567890',
-    dateOfIssue: new Date(2000, 0, 1),
-    licenseCategory: 'N/A',
-    situation: 'N/A',
-    balance: 0,
-    dateOfBirth: new Date(1990, 0, 1),
-    nationality: 'N/A',
-    address: '123 Main Street',
-    telephone: '123-456-7890',
-    image: '_ _ _',
-    personalCode:'',
-    personnelFunction:'',
-    recruitmentDate:new Date(2000, 0, 1),
-    netSalary:0,
-    grossSalary:0,
-    qualification:'',
-    leaveDaysPerYear:0,
-    cnssNumber:''
+  selectedRow: Employee = {
+    User: {
+      username: 'default_user',
+      password: 'default_password',
+      email: 'defaultEmployee.com',
+      role: '',
+      name: 'DefaultEmployee',
+      firstName: 'Default',
+      CIN: '1234567890',
+      dateOfIssue: new Date(2000, 0, 1),
+      licenseCategory: 'N/A',
+      situation: 'N/A',
+      balance: 0,
+      dateOfBirth: new Date(1990, 0, 1),
+      nationality: 'N/A',
+      address: '123 Main Street',
+      telephone: '123-456-7890',
+      image: '_ _ _',
+      personalCode: '',
+      personnelFunction: '',
+      recruitmentDate: new Date(2000, 0, 1),
+      netSalary: 0,
+      grossSalary: 0,
+      qualification: '',
+      leaveDaysPerYear: 0,
+      cnssNumber: '',
+      CategoryCode: ''
+    }
   };
+  
   
   constructor(private EmployeeService: CoondidateService) { }
   
   ngOnInit(): void {
-    this.loadEmployees();
+    this.fetchData();
   }
   
-  loadEmployees() {
-    this.EmployeeService.getAllُُُEmployees().subscribe((Employees: Employee[]) => {
-      this.dataSource=Employees;
-      console.log(Employees)
+  fetchData() {
+    this.EmployeeService.getAllُُُEmployees().subscribe((data: any) => {
+      // Assuming data is fetched and structured as in your example
+      this.dataSource = data.map((item: any) => {
+        return {
+          User: {
+            username: item.username,
+            password: item.password,
+            email: item.email,
+            role: item.role,
+            name: item.name,
+            firstName: item.firstName,
+            CIN: item.CIN,
+            dateOfIssue: item.dateOfIssue,
+            licenseCategory: item.licenseCategory,
+            situation: item.situation,
+            balance: item.balance,
+            dateOfBirth: item.dateOfBirth,
+            nationality: item.nationality,
+            address: item.address,
+            telephone: item.telephone,
+            image: item.image,
+            personalCode: item.personalCode,
+            personnelFunction: item.personnelFunction,
+            recruitmentDate: item.recruitmentDate,
+            netSalary: item.netSalary,
+            grossSalary: item.grossSalary,
+            qualification: item.qualification,
+            leaveDaysPerYear: item.leaveDaysPerYear,
+            cnssNumber: item.cnssNumber,
+            CategoryCode: item.CategoryCode
+          }
+        };
+      });
     });
   }
+  
+  
   
   toggleForm() {
     this.showForm = !this.showForm;
@@ -85,23 +121,31 @@ export class PersonnelEditionComponent {
     this.selectedRow = { ...element };
   }
   
+  
+  
+  resetForm() {
+    // Reset selectedRow object or any other form reset logic
+    window.location.reload();
+  }
+  
+
   saveChanges() {
-    this.EmployeeService.editEmployee(this.selectedRow).subscribe(() => {
+    this.EmployeeService.editEmployee(this.selectedRow.User).subscribe(() => {
       console.log('Saved changes:', this.selectedRow);
       this.showEditForm = false;
-      this.loadEmployees(); // Refresh data after saving changes
+      this.fetchData(); // Refresh data after saving changes
     });
   }
   
-  deleteRow(element:Employee) {
-    this.EmployeeService.deleteEmployee(element.username).subscribe(() => {
-      console.log('Deleted row:', element);
-      this.loadEmployees(); // Refresh data after deletion
+  deleteRow(element: Employee) {
+    this.EmployeeService.deleteEmployee(element.User.username).subscribe(() => {
+      console.log('Deleted row:', element.User);
+      this.fetchData(); // Refresh data after deletion
     });
   }
   
   submitEmployee() {
-    this.EmployeeService.addEmployee(this.selectedRow).subscribe(response => {
+    this.EmployeeService.addEmployee(this.selectedRow.User).subscribe(response => {
       console.log('NewEmployee added successfully', response);
       this.resetForm();
     }, error => {
@@ -109,17 +153,12 @@ export class PersonnelEditionComponent {
     });
   }
   
-  resetForm() {
-    // Reset selectedRow object or any other form reset logic
-    window.location.reload();
-  }
-  
   @ViewChild('printContent') printContent!: ElementRef;
   
   printTable() {
     console.log('Printing table...');
   
-    if (this.printContent && this.printContent.nativeElement) {
+    if (this.printContent && this.printContent.nativeElement.User) {
       const printWindow = window.open('', '_blank');
   
       if (printWindow) {
@@ -159,26 +198,26 @@ export class PersonnelEditionComponent {
   
         this.dataSource.forEach(element => {
           printContent += '<tr>';
-          printContent += '<td>' + element.username + '</td>';
-          printContent += '<td>' + element.password + '</td>';
-          printContent += '<td>' + element.email + '</td>';
-          printContent += '<td>' + element.role + '</td>';
-          printContent += '<td>' + element.name + '</td>';
-          printContent += '<td>' + element.CIN + '</td>';
-          printContent += '<td>' + element.dateOfIssue + '</td>';
-          printContent += '<td>' + element.licenseCategory + '</td>';
-          printContent += '<td>' + element.dateOfBirth + '</td>';
-          printContent += '<td>' + element.nationality + '</td>';
-          printContent += '<td>' + element.address + '</td>';
-          printContent += '<td>' + element.telephone + '</td>';
-          printContent += '<td>' + element.balance + '</td>';
-          printContent += '<td>' + element.personalCode + '</td>';
-          printContent += '<td>' + element.personnelFunction + '</td>';
-          printContent += '<td>' + element.recruitmentDate + '</td>';
-          printContent += '<td>' + element.netSalary + '</td>';
-          printContent += '<td>' + element.qualification + '</td>';
-          printContent += '<td>' + element.leaveDaysPerYear + '</td>';
-          printContent += '<td>' + element.cnssNumber + '</td>';
+          printContent += '<td>' + element.User.username + '</td>';
+          printContent += '<td>' + element.User.password + '</td>';
+          printContent += '<td>' + element.User.email + '</td>';
+          printContent += '<td>' + element.User.role + '</td>';
+          printContent += '<td>' + element.User.name + '</td>';
+          printContent += '<td>' + element.User.CIN + '</td>';
+          printContent += '<td>' + element.User.dateOfIssue + '</td>';
+          printContent += '<td>' + element.User.licenseCategory + '</td>';
+          printContent += '<td>' + element.User.dateOfBirth + '</td>';
+          printContent += '<td>' + element.User.nationality + '</td>';
+          printContent += '<td>' + element.User.address + '</td>';
+          printContent += '<td>' + element.User.telephone + '</td>';
+          printContent += '<td>' + element.User.balance + '</td>';
+          printContent += '<td>' + element.User.personalCode + '</td>';
+          printContent += '<td>' + element.User.personnelFunction + '</td>';
+          printContent += '<td>' + element.User.recruitmentDate + '</td>';
+          printContent += '<td>' + element.User.netSalary + '</td>';
+          printContent += '<td>' + element.User.qualification + '</td>';
+          printContent += '<td>' + element.User.leaveDaysPerYear + '</td>';
+          printContent += '<td>' + element.User.cnssNumber + '</td>';
           printContent += '</tr>';
         });
   
@@ -198,6 +237,7 @@ export class PersonnelEditionComponent {
   
   }
   interface Employee {
+    User :{
     username: string;
     password: string; // Consider using a secure hashing mechanism for password storage
     email: string;
@@ -214,12 +254,13 @@ export class PersonnelEditionComponent {
     address: string;
     telephone: string;
     image?: string;
-    personalCode:String,
-    personnelFunction:String,
-    recruitmentDate:Date,
-    netSalary:number,
-    grossSalary:number
-    qualification:string,
-    leaveDaysPerYear:number,
-    cnssNumber:string}
+    personalCode?:String,
+    personnelFunction?:String,
+    recruitmentDate?:Date,
+    netSalary?:number,
+    grossSalary?:number
+    qualification?:string,
+    leaveDaysPerYear?:number,
+    cnssNumber?:string,
+    CategoryCode?:string }}
 

@@ -1,0 +1,19 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.amouna-container {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.calendar-wrapper {
+  height: 100%;
+}
+
+.custom-calendar {
+  width: 100%;
+  height: 100%;
+}

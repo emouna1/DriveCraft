@@ -14,7 +14,7 @@ html, body {
   overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
 }
 
-.example-container {
+.amouna-container {
   max-height: calc(100% - 100px); /* Adjust the height of the container */
   overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
 }

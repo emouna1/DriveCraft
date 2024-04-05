@@ -14,11 +14,10 @@ import { LicenseCategoriesComponent } from './license-categories/license-categor
 import { PaymentMethodComponent } from './payment-method/payment-method.component';
 import { PersonnelEditionComponent } from './personnel-edition/personnel-edition.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-/*const routes:Routes=[
-  {path:'dash',component:HomeComponent,
-  },
-  { path: '', component: AppComponent }, // Redirect empty path to AppComponent
-]*/
+import { EnrollmentsComponent } from './enrollments/enrollments.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; // include this line
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 const routes: Routes = [
   { 
     path: 'dash', 
@@ -32,6 +31,8 @@ const routes: Routes = [
        {path: 'paymentMethod' , component: PaymentMethodComponent},
        {path: 'personalEdition' , component: PersonnelEditionComponent},
        {path: 'userProfile' , component: UserProfileComponent},
+       {path: 'Enrollments' ,component: EnrollmentsComponent},
+       {path: 'Schedule' ,component: ScheduleComponent}
     ]
   }
 ];
@@ -47,7 +48,9 @@ const routes: Routes = [
     LicenseCategoriesComponent,
     PaymentMethodComponent,
     PersonnelEditionComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    EnrollmentsComponent,
+    ScheduleComponent
   ],
   imports: [
     CommonModule,
@@ -55,6 +58,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
+    FullCalendarModule // include FullCalendar module here
+
     
     
   ],

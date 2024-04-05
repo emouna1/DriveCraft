@@ -1,19 +1,19 @@
-const { Sequelize,DataTypes } = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 const db = require('../util/database');
 const User = require('./user');
 const LicenseCategory = require('./licenseCategory');
-const Payment = require('./règlement');
+const Payment = require('./reglement');
 
 const Enrollment = db.define('Enrollment', {
-  candidatCIN:{
+  candidatCIN: {
     type: DataTypes.STRING, // Specify allowed registration types
     allowNull: false,
   },
-  candidatName:{
+  candidatName: {
     type: DataTypes.STRING, // Specify allowed registration types
     allowNull: false,
   },
-  candidatBalance:{
+  candidatBalance: {
     type: DataTypes.FLOAT, // Specify allowed registration types
     allowNull: false,
   },
@@ -25,7 +25,7 @@ const Enrollment = db.define('Enrollment', {
     type: DataTypes.ENUM('fixed', 'variable'), // Use 'fixed' and 'variable' for English
     allowNull: false,
   },
-  PricePerHour:{
+  PricePerHour: {
     type: DataTypes.FLOAT, // Specify allowed registration types
     allowNull: false,
   },
@@ -37,7 +37,7 @@ const Enrollment = db.define('Enrollment', {
       key: 'id'
     }
   },
-  
+
   specialPrice: {
     type: DataTypes.ENUM('yes', 'no'), // Special price (yes or no)
     allowNull: true,
@@ -61,13 +61,13 @@ const Enrollment = db.define('Enrollment', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
-  
-  
+
+
   examDate: {
     type: DataTypes.DATEONLY, // Date of the exam
     allowNull: true,
   },
-  
+
   desiredLicenseCategory: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -79,7 +79,7 @@ const Enrollment = db.define('Enrollment', {
 //Enrollment.belongsTo(LicenseCategory, { foreignKey: 'CategoryCode' }); // categoriePermis references LicenseCategory table
 
 
-Enrollment.belongsTo(User, { foreignKey: 'userId' }); 
-Enrollment.belongsTo(LicenseCategory, { foreignKey: 'desiredLicenseCategory' }); 
+Enrollment.belongsTo(User, {foreignKey: 'userId'});
+Enrollment.belongsTo(LicenseCategory, {foreignKey: 'desiredLicenseCategory'});
 
 module.exports = Enrollment;

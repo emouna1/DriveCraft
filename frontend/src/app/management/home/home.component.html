@@ -31,11 +31,11 @@
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
 
-    <!-- Condidat Menu -->
+    <!-- Condidat Menu
     <button mat-button [matMenuTriggerFor]="CondidatMenu">
       Condidat Section
       <mat-icon>arrow_drop_down</mat-icon>
-    </button>
+    </button>-->
     <!-- Condidat Menu -->
     <button mat-button [matMenuTriggerFor]="UsersMenu">
       Users Section
@@ -46,11 +46,11 @@
       Payments
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
-    <!-- Condidat Menu -->
+    <!-- Condidat Menu 
     <button mat-button [matMenuTriggerFor]="VehiclesMenu">
       Vehicles Section
       <mat-icon>arrow_drop_down</mat-icon>
-    </button>
+    </button>-->
     <a mat-list-item routerLink="userProfile" routerLinkActive="active">
       <mat-icon>person_outline</mat-icon><!-- Use the desired Material icon name here -->
       PROFILE
@@ -65,11 +65,10 @@
     </mat-sidenav>
     <mat-menu #HomeMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
-      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Planning of code sessions & exams</a>
+      <a mat-menu-item routerLink="Schedule" routerLinkActive="active">Planning of code sessions & exams</a>
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Planning of conduct sessions & exams</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Registration code</a>
+      <a mat-menu-item routerLink="Enrollments" routerLinkActive="active">Registration code</a>
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Registration conduct</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Condidats history</a>
        
     </mat-menu>
     <mat-menu #FoldersMenu="matMenu">
@@ -77,7 +76,6 @@
       <a mat-menu-item routerLink="vehicles" routerLinkActive="active">vehicles edition</a>
       <a mat-menu-item routerLink="Maintenance" routerLinkActive="active">Maintenance edition</a>
       <a mat-menu-item routerLink="license" routerLinkActive="active">Driving License Category edition</a>
-      <a mat-menu-item routerLink="paymentMethod" routerLinkActive="active">Payment method edition</a>
     </mat-menu>
     <mat-menu #CondidatMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
@@ -88,23 +86,21 @@
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
     </mat-menu>
     <mat-menu #UsersMenu="matMenu">
-      <!-- Add items for Candidates Menu here -->
+      <!-- Add items for users Menu here -->
       <a mat-menu-item routerLink="Candidat" routerLinkActive="active">Candidates Edition</a>
       <a mat-menu-item routerLink="personalEdition" routerLinkActive="active">Instructors edition</a>
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active"> Admin (s) </a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
     </mat-menu>
     <mat-menu #Payments="matMenu">
       <!-- Add items for Candidates Menu here -->
-      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Payment</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct sessions schedule</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct exams schedule</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Exams results</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
+      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Payment settlement </a>
+      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Payment Details</a>
+      <a mat-menu-item routerLink="paymentMethod" routerLinkActive="active">Payment method </a>
+
     </mat-menu>
     <mat-menu #VehiclesMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
-      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Payment</a>
+      <a mat-menu-item routerLink="/candidates/add" routerLinkActive="active">Vehicles Edition</a>
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct sessions schedule</a>
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">code & conduct exams schedule</a>
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Exams results</a>

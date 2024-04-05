@@ -1,0 +1,121 @@
+<div class="container">
+  <h2> The list of Enrollments </h2>
+
+<div class="enrollment-list">
+  <div *ngFor="let enrollment of enrollments" class="enrollment-card" >
+    <div class="enrollment-header" (click)="toggleDetails(enrollment)">
+      <div class="header-info">
+        <p>{{ enrollment.candidatName }} - {{ enrollment.desiredLicenseCategory }}</p>
+        <p class="additional-info">Registration Type: {{ enrollment.registrationType }}, Exam Date: {{ enrollment.examDate | date:'mediumDate' }}</p>
+      </div>
+      <div class="toggle-icon">
+        <i class="material-icons" *ngIf="!enrollment.detailsVisible">keyboard_arrow_down</i>
+        <i class="material-icons" *ngIf="enrollment.detailsVisible">keyboard_arrow_up</i>
+      </div>
+    </div>
+    <div class="enrollment-details" *ngIf="enrollment.detailsVisible">
+      <p>Candidat CIN: {{ enrollment.candidatCIN }}</p>
+      <p>Candidat Balance: {{ enrollment.candidatBalance }}</p>
+      <p>Contrat Type: {{ enrollment.contratType }}</p>
+      <p>Price Per Hour: {{ enrollment.PricePerHour }}</p>
+      <p>Payment Id: {{ enrollment.paymentId }}</p>
+      <p>Special Price: {{ enrollment.specialPrice }}</p>
+      <p>Special Price Amount: {{ enrollment.specialPriceAmount }}</p>
+      <p>Registration Costs: {{ enrollment.registrationCosts }}</p>
+      <p>Registration Fees: {{ enrollment.registrationFees }}</p>
+      <button mat-icon-button color="primary" (click)="editEnrollment(enrollment)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteEnrollment(enrollment)">
+        <mat-icon>delete</mat-icon>
+      </button>
+     
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <!-- Modal for Editing -->
+  <div class="modal" *ngIf="showEditForm">
+    <div class="modal-content">
+      <h3>Edit Enrollment</h3>
+      <form (submit)="submitEdit()">
+        <label>Candidate Name:</label>
+        <input type="text" [(ngModel)]="selectedEnrollment.candidatName" name="candidatName" required>
+        <label>Desired License Category:</label>
+        <input type="text" [(ngModel)]="selectedEnrollment.desiredLicenseCategory" name="desiredLicenseCategory" required>
+        <label>Registration Type:</label>
+        <select [(ngModel)]="selectedEnrollment.registrationType" name="registrationType" required>
+          <option value="code">Code</option>
+          <option value="conduct">Conduct</option>
+        </select>
+        <label>Contract Type:</label>
+        <select [(ngModel)]="selectedEnrollment.contratType" name="contratType" required>
+          <option value="fixed">Fixed</option>
+          <option value="variable">Variable</option>
+        </select>
+        <label>Registration Costs:</label>
+        <input type="text" [(ngModel)]="selectedEnrollment.registrationCosts" name="registrationCosts" required>
+        <label>Exam Date:</label>
+        <input type="text" [(ngModel)]="selectedEnrollment.examDate" name="examDate" required>
+        <label>Special Price:</label>
+        <select [(ngModel)]="selectedEnrollment.specialPrice" name="specialPrice">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div *ngIf="selectedEnrollment.specialPrice === 'yes'">
+          <label>Special Price Amount:</label>
+          <input type="text" [(ngModel)]="selectedEnrollment.specialPriceAmount" name="specialPriceAmount">
+        </div>
+        <button class="amouna-button" type="submit">Submit</button>
+      </form>
+      <button class="amouna-button" (click)="closeEditForm()">Cancel</button>
+    </div>
+  </div>
+
+  <br><br>
+
+  <!-- Button to add a new enrollment -->
+  <button class="amouna-button" (click)="showAddForm()">Add Enrollment</button>
+
+  <!-- Modal for Adding -->
+  <div class="modal" *ngIf="showAddFormFlag">
+    <div class="modal-content">
+      <h3>Add Enrollment</h3>
+      <form (submit)="submitAdd()">
+        <label>Candidate Name:</label>
+        <input type="text" [(ngModel)]="newEnrollment.candidatName" name="candidatName" required>
+        <label>Desired License Category:</label>
+        <input type="text" [(ngModel)]="newEnrollment.desiredLicenseCategory" name="desiredLicenseCategory" required>
+        <label>Registration Type:</label>
+        <select [(ngModel)]="newEnrollment.registrationType" name="registrationType" required>
+          <option value="code">Code</option>
+          <option value="conduct">Conduct</option>
+        </select>
+        <label>Contract Type:</label>
+        <select [(ngModel)]="newEnrollment.contratType" name="contraType" required>
+          <option value="fixed">Fixed</option>
+          <option value="variable">Variable</option>
+        </select>
+        <label>Registration Costs:</label>
+        <input type="text" [(ngModel)]="newEnrollment.registrationCosts" name="registrationCosts" required>
+        <label>Exam Date:</label>
+        <input type="text" [(ngModel)]="newEnrollment.examDate" name="examDate" required>
+        <label>Special Price:</label>
+        <select [(ngModel)]="newEnrollment.specialPrice" name="specialPrice">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+        <div *ngIf="newEnrollment.specialPrice === 'yes'">
+          <label>Special Price Amount:</label>
+          <input type="text" [(ngModel)]="newEnrollment.specialPriceAmount" name="specialPriceAmount">
+        </div>
+        <button class="amouna-button" type="submit">Submit</button>
+      </form>
+      <button class="amouna-button" (click)="closeAddForm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</div>

@@ -1,9 +1,9 @@
 // models/codeLessonExam.js
-const { DataTypes } = require('sequelize');
+const {DataTypes} = require('sequelize');
 const sequelize = require('../util/database');
-const User=require('../models/user')
+const User = require('../models/user')
 const LessonExam = sequelize.define('CodeLessonExam', {
- 
+
   date: {
     type: DataTypes.DATEONLY,
     allowNull: false,
@@ -39,14 +39,15 @@ const LessonExam = sequelize.define('CodeLessonExam', {
 
 });
 LessonExam.beforeCreate((lessonExam, options) => {
-    if (lessonExam.taskType === 'lesson') {
-      // If the task is a lesson, set the accomplished property to null
-      lessonExam.result = null;
-    } else {
-      // If the task is an exam, set the result property to null
-      lessonExam.accomplished = null;
-    } });
-LessonExam.belongsTo(User, { foreignKey: 'candidatCIN', targetKey: 'CIN' });
+  if (lessonExam.taskType === 'lesson') {
+    // If the task is a lesson, set the accomplished property to null
+    lessonExam.result = null;
+  } else {
+    // If the task is an exam, set the result property to null
+    lessonExam.accomplished = null;
+  }
+});
+LessonExam.belongsTo(User, {foreignKey: 'candidatCIN', targetKey: 'CIN'});
 
 
 module.exports = LessonExam;

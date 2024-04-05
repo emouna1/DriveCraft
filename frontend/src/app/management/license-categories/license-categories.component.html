@@ -1,7 +1,7 @@
 <div class="container">
 
     <h2>License categories edition</h2>
-    <div class="example-container mat-elevation-z8">
+    <div class="amouna-container mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
       
         <!-- Displaying columns -->
@@ -29,11 +29,11 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
-      <button (click)="printTable()">Print</button>
+      <button class="amouna-button" (click)="printTable()">Print</button>
     </div>
     <br><br>
 
-  <button (click)="toggleForm()">Add New Driving license category</button>
+  <button class="amouna-button" (click)="toggleForm()">Add New Driving license category</button>
 
 
   <!-- Form for editing -->
@@ -100,7 +100,7 @@
       </label>
       
       <!-- Submit button -->
-      <button type="submit">Add License Category</button>
+      <button class="amouna-button" type="submit">Add License Category</button>
     </form>
   </div>
 
@@ -154,7 +154,7 @@
         Driving Test Cancellation Fees:
         <input type="number" name="DrivingTestCancellationFees" [(ngModel)]="selectedRow.DrivingTestCancellationFees" required>
       </label>
-      <button type="submit">Save Changes</button>
+      <button class="amouna-button" type="submit">Save Changes</button>
     </form>
   </div>
   </div>

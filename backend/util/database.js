@@ -1,5 +1,5 @@
 // db.js
-const { Sequelize } = require('sequelize');
+const {Sequelize} = require('sequelize');
 
 // Initialize Sequelize with your MySQL credentials
 const sequelize = new Sequelize('drivecraft', 'root', '', {

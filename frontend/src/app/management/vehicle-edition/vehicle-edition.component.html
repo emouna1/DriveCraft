@@ -1,6 +1,6 @@
 <div class="container">
 <h2>Vehicles edition</h2>
-<div class="example-container mat-elevation-z8">
+<div class="amouna-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
   
     <!-- Displaying columns -->
@@ -80,7 +80,7 @@
   
     <!-- Submit button -->
     <button class="amouna-button" type="submit">Add Vehicle</button>
-    <button lass="amouna-button" type="button"  (click)="canceladdForm()">Cancel</button>
+    <button class="amouna-button" type="button"  (click)="canceladdForm()">Cancel</button>
   </form>
 </div>
 
@@ -146,8 +146,8 @@
     Observation:
     <input type="text" name="Observation" [(ngModel)]="selectedRow.Observation" required>
   </label>
-  <button type="submit">Save Changes</button>
-  <button type="button" (click)="cancelForm()">Cancel</button>
+  <button class="amouna-button" type="submit">Save Changes</button>
+  <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
 
 </form>
 </div>

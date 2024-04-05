@@ -53,158 +53,130 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-<!-- Form for adding a new driving license category entry -->
+<!-- Form for adding a new candidate entry -->
 <div *ngIf="showForm">
   <form (submit)="submitStudent()">
     <label>
       Username:
-      <input type="text" name="username" [(ngModel)]="selectedRow.username" required>
-    </label>
-    <label>
-      Password:
-      <input type="password" name="password" [(ngModel)]="selectedRow.password" required>
+      <input type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
     </label>
     <label>
       Email:
-      <input type="email" name="email" [(ngModel)]="selectedRow.email" required>
-    </label>
-    <label>
-      Role:
-      <input type="text" name="role" [(ngModel)]="selectedRow.role" required>
+      <input type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
     </label>
     <label>
       Name:
-      <input type="text" name="name" [(ngModel)]="selectedRow.name" required>
+      <input type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
     </label>
     <label>
       First Name:
-      <input type="text" name="firstName" [(ngModel)]="selectedRow.firstName" required>
+      <input type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
     </label>
-   
     <label>
       CIN:
-      <input type="text" name="CIN" [(ngModel)]="selectedRow.CIN" required>
+      <input type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
     </label>
     <label>
       Date of Issue:
-      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.dateOfIssue" required>
+      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
     </label>
     <label>
       License Category:
-      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.licenseCategory" required>
+      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.User.licenseCategory" required>
     </label>
     <label>
       Situation:
-      <input type="text" name="situation" [(ngModel)]="selectedRow.situation" required>
+      <input type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
     </label>
     <label>
       Balance:
-      <input type="number" name="balance" [(ngModel)]="selectedRow.balance" required>
+      <input type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
     </label>
     <label>
       Date of Birth:
-      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.dateOfBirth" required>
+      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
     </label>
     <label>
       Nationality:
-      <input type="text" name="nationality" [(ngModel)]="selectedRow.nationality" required>
+      <input type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
     </label>
     <label>
       Address:
-      <input type="text" name="address" [(ngModel)]="selectedRow.address" required>
+      <input type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
     </label>
     <label>
       Telephone:
-      <input type="tel" name="telephone" [(ngModel)]="selectedRow.telephone" required>
+      <input type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
     </label>
     <label>
       Image:
-      <input type="text" name="image" [(ngModel)]="selectedRow.image">
+      <input type="text" name="image" [(ngModel)]="selectedRow.User.image">
     </label>
     
     <!-- Submit button -->
-    <button class="amouna-button" type="submit">Add a condidat</button>
+    <button type="submit" class="amouna-button">Add a candidate</button>
   </form>
 </div>
 
-<!-- Form for editing an existing driving license category entry -->
+<!-- Form for editing an existing candidate -->
 <div *ngIf="showEditForm">
-  <h2>Edit candidat</h2>
+  <h2>Edit candidate</h2>
   <form (submit)="saveChanges()">
     <label>
       Username:
-      <input type="text" name="username" [(ngModel)]="selectedRow.username" required>
-    </label>
-    <label>
-      Password:
-      <input type="password" name="password" [(ngModel)]="selectedRow.password" required>
+      <input type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
     </label>
     <label>
       Email:
-      <input type="email" name="email" [(ngModel)]="selectedRow.email" required>
-    </label>
-    <label>
-      Role:
-      <input type="text" name="role" [(ngModel)]="selectedRow.role" required>
+      <input type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
     </label>
     <label>
       Name:
-      <input type="text" name="name" [(ngModel)]="selectedRow.name" required>
+      <input type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
     </label>
     <label>
       First Name:
-      <input type="text" name="firstName" [(ngModel)]="selectedRow.firstName" required>
+      <input type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
     </label>
-   
     <label>
       CIN:
-      <input type="text" name="CIN" [(ngModel)]="selectedRow.CIN" required>
+      <input type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
     </label>
     <label>
       Date of Issue:
-      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.dateOfIssue" required>
+      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
     </label>
     <label>
       License Category:
-      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.licenseCategory" required>
+      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.User.licenseCategory" required>
     </label>
     <label>
       Situation:
-      <input type="text" name="situation" [(ngModel)]="selectedRow.situation" required>
+      <input type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
     </label>
     <label>
       Balance:
-      <input type="number" name="balance" [(ngModel)]="selectedRow.balance" required>
+      <input type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
     </label>
     <label>
       Date of Birth:
-      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.dateOfBirth" required>
+      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
     </label>
     <label>
       Nationality:
-      <input type="text" name="nationality" [(ngModel)]="selectedRow.nationality" required>
+      <input type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
     </label>
     <label>
       Address:
-      <input type="text" name="address" [(ngModel)]="selectedRow.address" required>
+      <input type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
     </label>
     <label>
       Telephone:
-      <input type="tel" name="telephone" [(ngModel)]="selectedRow.telephone" required>
+      <input type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
     </label>
     <label>
       Image:
-      <input type="text" name="image" [(ngModel)]="selectedRow.image">
+      <input type="text" name="image" [(ngModel)]="selectedRow.User.image">
     </label>
     
     <!-- Submit button -->

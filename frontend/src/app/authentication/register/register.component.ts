@@ -7,10 +7,17 @@ import { Router } from '@angular/router';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+instructorFirstName: any;
+submitForm() {
+throw new Error('Method not implemented.');
+}
   username!: string;
   email!: string;
   password!: string;
   hide= true;
+selectedRole: any;
+adminFirstName: any;
+registrationForm: any;
   constructor(private router: Router,private authService: AuthService){}
 
   onSubmit() {
