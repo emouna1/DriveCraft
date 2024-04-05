@@ -1,30 +1,28 @@
 // controller.js
 
-const {User, Instructor,Admin}=require('../models/user');
+const User=require('../models/user');
 
 // Fetch all students
 exports.getAllEmployees = async(req, res, next) => {
     try{
-      const employees = await Instructor.findAll({
-        include: {
-            model: User // Include the User model
-        }
+      const employees = await User.findAll({
+        where: { role: ['admin', 'instructor'] }// Filter users by role 'student'
      } );
        res.status(200).json(employees);
     }catch (error) {
-      console.error('Error fetching instructors:', error);
-      res.status(500).json({ message: 'An error occurred while fetching instructors.' });
+      console.error('Error fetching employees:', error);
+      res.status(500).json({ message: 'An error occurred while fetching employees.' });
     }
 };
 
 // Add a new student
-exports.addEmploye = async (req, res, next) => {
+exports.addEmployee = async (req, res, next) => {
     // Extract student data from request body
     const employeeData = req.body;
 
     try {
         // Create the student
-        const newEmployee = await Instructor.create(employeeData);
+        const newEmployee = await User.create(employeeData);
         res.status(201).json(newEmployee);
     } catch (error) {
         console.error('Error adding student:', error);
@@ -39,7 +37,7 @@ exports.updateEmployee = async (req, res, next) => {
 
     try {
         // Find the student by CIN and update
-        const [updatedRows] = await Instructor.update(updatedData, {
+        const [updatedRows] = await User.update(updatedData, {
             where: { CIN: cin }
         });
 
@@ -60,7 +58,7 @@ exports.deleteEmployee = async (req, res, next) => {
 
     try {
         // Find the student by CIN and delete
-        const deletedRows = await Instructor.destroy({
+        const deletedRows = await User.destroy({
             where: { CIN: cin }
         });
 
@@ -76,12 +74,12 @@ exports.deleteEmployee = async (req, res, next) => {
 };
 
 // Search for a student by CIN
-exports.searchStudentByCIN = async (req, res, next) => {
+exports.searchEmployeeByCIN = async (req, res, next) => {
     const { cin } = req.params;
 
     try {
         // Find the student by CIN
-        const instructor = await Instructor.findOne({
+        const instructor = await User.findOne({
             where: { CIN: cin }
         });
 

@@ -2,11 +2,11 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {User} = require('../models/user'); // Import the User model
+const User = require('../models/user'); // Import the User model
 
 
     function findUserByUsername(username) {
-        return users.find(user => user.username === username);
+        return User.find(user => user.username === username);
       }
       
       // Controller method to handle user lookup by username

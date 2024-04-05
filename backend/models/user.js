@@ -4,11 +4,15 @@ const { DataTypes } = require('sequelize');
 const db = require('../util/database');
 const LicenseCategory = require('./licenseCategory');
 
-const User = db.define('User', {
-    username: {
+const users = db.define('users', {
+ username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        indexes: [{
+            unique: true,
+            fields: [ 'username']
+        }]
     },
     password: {
         type: DataTypes.STRING,
@@ -17,7 +21,11 @@ const User = db.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        indexes: [{
+            unique: true,
+            fields: ['email']
+        }]
     },
     role: {
         type: DataTypes.ENUM('admin', 'instructor', 'student'),
@@ -34,8 +42,12 @@ const User = db.define('User', {
     },
     CIN: {
         type: DataTypes.STRING,
-        allowNull: true,
-        unique: true
+        allowNull: false,
+        unique: true,
+        indexes: [{
+            unique: true,
+            fields: ['CIN']
+        }]
     },
     dateOfIssue: {
         type: DataTypes.DATE,
@@ -103,35 +115,44 @@ const User = db.define('User', {
     cnssNumber: {
         type: DataTypes.STRING, // Properties for instructor
         allowNull: true, // If instructor, this field will be populated
-        unique: true
+        unique: true,
+        indexes: [{
+            unique: true,
+            fields: ['cnssNumber']
+        }]
     }
 });
 
 
-User.belongsTo(LicenseCategory, { foreignKey: 'CategoryCode' });
+users.belongsTo(LicenseCategory, { foreignKey: 'CategoryCode' });
 
-// Define the findByEmail method in User
-User.findByEmail = async function(email) {
-    return await User.findOne({
+// Define the findByEmail method in users
+users.findByEmail = async function(email) {
+    return await users.findOne({
         where: {
             email: email
         }
     });
 };
-User.findByCIN = async function(candidatCIN) {
+users.findByCIN = async function(candidatCIN) {
     try {
-        const user = await User.findOne({
+        const user = await users.findOne({
             where: {
                 CIN: candidatCIN
             }
         });
         return user;
     } catch (error) {
-        throw new Error('Error finding user by CIN: ' + error.message);
+        throw new Error('Error finding users by CIN: ' + error.message);
     }
 };
 
 
 
 // Export all models
-module.exports = User;
+module.exports = users;
+
+
+
+
+

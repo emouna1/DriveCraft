@@ -9,10 +9,10 @@ homeRouter.get('/getAllEnrollments', enrollmentsController.getAllEnrollments);
 homeRouter.post('/addEnrollment', enrollmentsController.createEnrollment);
 
 // Route to update an enrollment
-homeRouter.put('/enrollments/:id', enrollmentsController.updateEnrollment);
+homeRouter.put('/updateEnrollment/:id', enrollmentsController.updateEnrollment);
 
 // Route to delete an enrollment
-homeRouter.delete('/enrollments/:id', enrollmentsController.deleteEnrollment);
+homeRouter.delete('/deleteEnrollment/:id', enrollmentsController.deleteEnrollment);
 
 
 

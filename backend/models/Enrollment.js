@@ -79,6 +79,7 @@ const Enrollment = db.define('Enrollment', {
 //Enrollment.belongsTo(LicenseCategory, { foreignKey: 'CategoryCode' }); // categoriePermis references LicenseCategory table
 
 
-Enrollment.belongsTo(User); 
+Enrollment.belongsTo(User, { foreignKey: 'userId' }); 
+Enrollment.belongsTo(LicenseCategory, { foreignKey: 'desiredLicenseCategory' }); 
 
 module.exports = Enrollment;

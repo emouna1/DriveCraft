@@ -1,21 +1,23 @@
 // controller.js
 
-const {User, Student}=require('../models/user');
+const User = require('../models/user');
+
+
 
 // Fetch all students
-exports.getAllStudents = async(req, res, next) => {
-    try{
-      const students = await Student.findAll({
-        include: {
-            model: User // Include the User model
-        }
-     } );
-       res.status(200).json(students);
-    }catch (error) {
-      console.error('Error fetching students:', error);
-      res.status(500).json({ message: 'An error occurred while fetching students.' });
+exports.getAllStudents = async (req, res, next) => {
+    try {
+        const students = await User.findAll({
+            where: { role: 'student' }, // Filter users by role 'student'
+            
+        });
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        res.status(500).json({ message: 'An error occurred while fetching students.' });
     }
 };
+
 
 // Add a new student
 exports.addStudent = async (req, res, next) => {
@@ -39,7 +41,7 @@ exports.updateStudent = async (req, res, next) => {
 
     try {
         // Find the student by CIN and update
-        const [updatedRows] = await Student.update(updatedData, {
+        const [updatedRows] = await User.update(updatedData, {
             where: { CIN: cin }
         });
 
@@ -60,7 +62,7 @@ exports.deleteStudent = async (req, res, next) => {
 
     try {
         // Find the student by CIN and delete
-        const deletedRows = await Student.destroy({
+        const deletedRows = await User.destroy({
             where: { CIN: cin }
         });
 
@@ -81,7 +83,7 @@ exports.searchStudentByCIN = async (req, res, next) => {
 
     try {
         // Find the student by CIN
-        const student = await Student.findOne({
+        const student = await User.findOne({
             where: { CIN: cin }
         });
 
