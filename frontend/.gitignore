@@ -40,3 +40,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+#ignore the large files
+**/.angular/cache/17.2.2/angular-webpack/*/*.pack
