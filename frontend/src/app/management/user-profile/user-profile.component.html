@@ -7,13 +7,52 @@
     <!-- Include your CSS stylesheets here -->
 </head>
 <body>
+
     <div class="container">
-        <h1>Welcome to Your Account</h1>
+        <h1 class="heading"> Welcome to Your Account </h1>
+
         <div class="info">
-            <p><strong>Username:</strong> {{ currentUser?.username }}</p>
-            <p><strong>Email:</strong> {{ currentUser?.email }}</p>
-            <!-- Add more fields as needed -->
+
+            <p><strong>Username:</strong> {{ currentUser.username }}</p>
+            <p><strong>Email:</strong> {{ currentUser.email }}</p>
+            <p><strong>First Name:</strong> {{ currentUser.firstName }}</p>
+            <p><strong>Name:</strong> {{ currentUser.name }}</p>
+            <p><strong>CIN:</strong> {{ currentUser.CIN }}</p>
+            <p><strong>Date of Issue:</strong> {{ currentUser.dateOfIssue }}</p>
+            <p><strong>Date of Birth:</strong> {{ currentUser.dateOfBirth }}</p>
+            <p><strong>Nationality:</strong> {{ currentUser.nationality }}</p>
+            <p><strong>Address:</strong> {{ currentUser.address }}</p>
+            <p><strong>Telephone:</strong> {{ currentUser.telephone }}</p>
+            <p><strong>Image:</strong> {{ currentUser.image }}</p>
+            <!--<div *ngIf="currentUser.role == 'instructor' || currentUser.role == 'admin'">
+                <p><strong>Personal Code:</strong> {{ currentUser.personalCode }}</p>
+                <p><strong>Personnel Function:</strong> {{ currentUser.personnelFunction }}</p>
+                <p><strong>Recruitment Date:</strong> {{ currentUser.recruitmentDate }}</p>
+                <p><strong>Net Salary:</strong> {{ currentUser.netSalary }}</p>
+                <p><strong>Gross Salary:</strong> {{ currentUser.grossSalary }}</p>
+                <p><strong>Qualification:</strong> {{ currentUser.qualification }}</p>
+                <p><strong>Leave Days Per Year:</strong> {{ currentUser.leaveDaysPerYear }}</p>
+                <p><strong>CNSS Number:</strong> {{ currentUser.cnssNumber }}</p>
+            </div>-->
+            <div *ngIf="currentUser.role == 'student'">
+                <p><strong>Personal Code:</strong> {{currentUser.situation}}</p>
+                <p><strong>Balance:</strong> {{ currentUser.balance }}</p>
+            </div>
+
+            <br><br>
+
+            <button mat-raised-button class="delete-button" color="accent">Delete Account</button>
+        <button mat-raised-button class="edit-button" color="primary" (click)="toggleEditMode()">Edit Profile</button>
         </div>
+        <br><br>
+
+        <div *ngIf="editMode" class="edit-mode">
+            <div *ngFor="let key of getEditedUserKeys()">
+                <input type="text" [(ngModel)]="editedUser[key]" placeholder="{{ key | titlecase }}">
+            </div>
+            <button class="btn btn-primary" (click)="saveChanges()">Save Changes</button>
+        </div>
+        
     </div>
 </body>
 </html>

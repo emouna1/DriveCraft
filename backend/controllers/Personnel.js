@@ -14,23 +14,40 @@ exports.getAllEmployees = async (req, res, next) => {
     res.status(500).json({message: 'An error occurred while fetching employees.'});
   }
 };
-
+exports.getAllInstructors = async (req, res, next) => {
+  try {
+    const employees = await User.findAll({
+      where: {role: [ 'instructor']}// Filter users by role 'student'
+    });
+    res.status(200).json(employees);
+  } catch (error) {
+    console.error('Error fetching employees:', error);
+    res.status(500).json({message: 'An error occurred while fetching employees.'});
+  }
+};
+exports.getAllAdmins = async (req, res, next) => {
+  try {
+    const employees = await User.findAll({
+      where: {role: ['admin']}// Filter users by role 'student'
+    });
+    res.status(200).json(employees);
+  } catch (error) {
+    console.error('Error fetching employees:', error);
+    res.status(500).json({message: 'An error occurred while fetching employees.'});
+  }
+};
 // Add a new student
 exports.addEmployee = async (req, res, next) => {
-  // Extract student data from request body
   const employeeData = req.body;
 
   try {
-    // Create the student
     const newEmployee = await User.create(employeeData);
     res.status(201).json(newEmployee);
   } catch (error) {
     console.error('Error adding student:', error);
     res.status(500).json({message: 'An error occurred while adding the intructor.'});
   }
-};
-
-// Update a student by CIN
+}
 exports.updateEmployee = async (req, res, next) => {
   const {cin} = req.params;
   const updatedData = req.body;

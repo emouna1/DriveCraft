@@ -30,8 +30,14 @@ export class CoondidateService {
   getAllُُُEmployees(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/getAllEmployees`);
   }
-
+  getAllُُُInstructors(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getAllInstructors`);
+  }
+  getAllُُُAdmins(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/getAllAdmins`);
+  }
   addEmployee(candidate: any): Observable<any[]> {
+    console.log(candidate)
     return this.http.post<any>(`${this.apiUrl}/addEmployee`, candidate);
   }
 

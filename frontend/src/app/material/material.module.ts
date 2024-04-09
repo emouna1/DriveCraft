@@ -31,6 +31,7 @@ import { MatToolbarModule } from '@angular/material/toolbar'; // Provides toolba
 import { MatTooltipModule } from '@angular/material/tooltip'; // Provides tooltips
 import { MatTreeModule } from '@angular/material/tree'; // Provides tree view
 import { MatStepperModule } from '@angular/material/stepper';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 
   @NgModule({
@@ -67,7 +68,8 @@ import { MatTableDataSource } from '@angular/material/table';
       MatToolbarModule,
       MatTooltipModule,
       MatTreeModule,
-      MatStepperModule
+      MatStepperModule,
+      ReactiveFormsModule
     ],
   exports: [
     MatAutocompleteModule,
@@ -100,7 +102,8 @@ import { MatTableDataSource } from '@angular/material/table';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    MatStepperModule
+    MatStepperModule,
+    ReactiveFormsModule
   ]
 })
 export class MaterialModule { }

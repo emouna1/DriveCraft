@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  
+  
   constructor(private http: HttpClient) {}
   private baseUrl = 'http://localhost:3000/auth'; // Replace with the base URL of your API
 
@@ -85,7 +87,19 @@ export class AuthService {
     return localStorage.getItem('username');
   }
    
+  deleteUser(email: string): Observable<any> {
+    const url = `${this.baseUrl}/users/${email}`; // Assuming your API endpoint follows RESTful conventions
+    return this.http.post<any>(url, {email});
 
+   
+  }
+  updateUser(email: string, userData: any): Observable<any> {
+    const url = `${this.baseUrl}/users/${email}`; // Assuming your API endpoint follows RESTful conventions
+
+    // Send PUT request to the API with updated user data
+    return this.http.put(url, userData)
+
+  }
 requestPasswordReset(email: string): Observable<any> {
   const url = `${this.baseUrl}/forgotpassword`; // Backend endpoint URL
   return this.http.post<any>(url, { email });

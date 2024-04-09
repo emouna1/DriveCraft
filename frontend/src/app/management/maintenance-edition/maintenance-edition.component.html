@@ -1,6 +1,6 @@
 <div class="container">
 <h2>maintenance-edition </h2>
-<div class="example-container mat-elevation-z8">
+<div class="amouna-container mat-elevation-z8">
     <table mat-table [dataSource]="dataSource">
   
       <!-- Position Column -->
@@ -31,7 +31,13 @@
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      
     </table>
+    <mat-paginator [pageSize]="5"
+                  [pageSizeOptions]="[3, 5, 8, 10]"
+                  [length]="dataSource.data.length"
+                  (page)="onPageChange($event)">
+    </mat-paginator>
   <br><br>
   <button class="amouna-button" (click)="printTable()">Print</button>
 
@@ -40,43 +46,50 @@
   <button class="amouna-button" (click)="toggleForm()">Add New Car Maintenance</button>
 
 <!-- Form for adding a new car maintenance entry -->
-<div *ngIf="showForm">
-<!-- Your form for adding a new car maintenance entry -->
-<form (submit)="submitCarMaintenance()">
-  <!-- Example fields, replace with your actual form fields -->
-  <label>
-    Code:
-    <input type="text" name="Mcode" [(ngModel)]="selectedRow.Mcode" required>
-  </label>
-  <label>
-    Designation:
-    <input type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
-  </label>
-  <!-- Add more form fields as needed -->
+<div *ngIf="showForm" class="form-container">
+  <h2>Add New Car Maintenance</h2>
+ <form (submit)="submitCarMaintenance()">
+  <mat-form-field appearance="fill">
+    <mat-label>Code</mat-label>
+    <input matInput type="text" name="Mcode" [(ngModel)]="selectedRow.Mcode" required>
+    <mat-error *ngIf="!selectedRow.Mcode">Code is required</mat-error>
 
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Designation</mat-label>
+    <input matInput type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
+    <mat-error *ngIf="!selectedRow.designation">Designation is required</mat-error>
+
+  </mat-form-field>
+  <!-- Add more form fields as needed -->
+    <br>
   <!-- Submit button -->
-  <button class="amouna-button" type="submit">Add Maintenance</button>
-  <button class="amouna-button" type="button"  (click)="cancelForm()">Cancel</button>
+  <button mat-raised-button color="primary" type="submit">Add Maintenance</button>
+  <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
 </form>
 </div>
-  <!-- Form for editing -->
-<div *ngIf="showEditForm">
-    <h2>Edit Maintenance</h2>
-    <form (submit)="saveChanges()">
-      <label>
-        Code:
-        <input type="text" name="Mcode" [(ngModel)]="selectedRow.Mcode" required>
-      </label>
-      <label>
-        Designation:
-        <input type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
-      </label>
-      <button class="amouna-button"type="submit">Save Changes</button>
-      <button class="amouna-button" type="button"  (click)="canceladdForm()">Cancel</button>
-    </form>
-  </div>
 
+<!-- Form for editing -->
+<div *ngIf="showEditForm" class="form-container">
+<h2>Edit Maintenance</h2>
+<form (submit)="saveChanges()">
+  <mat-form-field appearance="fill">
+    <mat-label>Code</mat-label>
+    <input matInput type="text" name="Mcode" [(ngModel)]="selectedRow.Mcode" required>
+    <mat-error *ngIf="!selectedRow.Mcode">Code is required</mat-error>
 
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Designation</mat-label>
+    <input matInput type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
+    <mat-error *ngIf="!selectedRow.designation">Designation is required</mat-error>
+
+  </mat-form-field>
+  <br>
+  <button mat-raised-button color="primary" type="submit">Save Changes</button>
+  <button mat-raised-button color="warn" type="button" (click)="canceladdForm()">Cancel</button>
+</form>
+</div>
 
 
   
@@ -85,4 +98,5 @@
       <!-- Table headers and rows will be generated dynamically -->
     </table>
   </div>
+  <br><br>
 </div>

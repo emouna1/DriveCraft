@@ -8,11 +8,11 @@
   
   .mat-sidenav {
     width: 200px; /* Adjust as needed */
-    background-color: #ca6c93; /* Adjust as needed */
+    background-color: #db4364; /* Adjust as needed */
   }
   .logout-button {
-    background-color: #860d76; /* Red background color */
-    color: rgb(235, 103, 136); /* White text color */
+    background-color: #3917b6; /* Red background color */
+    color: rgb(8, 8, 8); /* White text color */
     border: none; /* Remove border */
     padding: 10px 20px; /* Add padding */
     cursor: pointer; /* Add pointer cursor on hover */

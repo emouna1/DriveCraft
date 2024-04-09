@@ -1,14 +1,9 @@
 <h2>payment-method edition</h2>
 <div class="example-container mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table [dataSource]="dataSource.data">
   
-      <!-- Position Column -->
-      <ng-container matColumnDef="method">
-        <th mat-header-cell *matHeaderCellDef> Method </th>
-        <td mat-cell *matCellDef="let element"> {{element.method}} </td>
-      </ng-container>
+      
   
-      <!-- Code Column -->
       <ng-container matColumnDef="designation">
         <th mat-header-cell *matHeaderCellDef> Designation</th>
         <td mat-cell *matCellDef="let element"> {{element.designation}} </td>
@@ -31,45 +26,50 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSize]="5"
+                  [pageSizeOptions]="[3, 5, 8, 10]"
+                  [length]="dataSource.data.length"
+                  (page)="onPageChange($event)">
+    </mat-paginator>
   <br><br>
-  <button (click)="printTable()">Print</button>
+  <button class="amouna-button" (click)="printTable()">Print</button>
 
   </div>
   <br><br>
-  <button (click)="toggleForm()">Add New Payment Method</button>
+  <button class="amouna-button" (click)="toggleForm()">Add New Payment Method</button>
 
 <!-- Form for adding a new car maintenance entry -->
-<div *ngIf="showForm">
+<div *ngIf="showForm" class="form-container">
 <!-- Your form for adding a new car maintenance entry -->
 <form (submit)="submitNewPm()">
   <!-- Example fields, replace with your actual form fields -->
-  <label>
-    Code:
-    <input type="text" name="method" [(ngModel)]="selectedRow.method" required>
-  </label>
-  <label>
-    Designation:
-    <input type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
-  </label>
-  <!-- Add more form fields as needed -->
 
-  <!-- Submit button -->
-  <button type="submit">Add </button>
+ 
+  <!-- Add more form fields as needed -->
+  <mat-form-field appearance="fill">
+    <mat-label> Designation </mat-label>
+    <input matInput type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
+    <mat-error *ngIf="!selectedRow.designation">Designation is required</mat-error>
+    </mat-form-field>
+  <!-- Submit button --><br>
+  <button mat-raised-button color="primary" type="submit">Add method</button>
+  <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
 </form>
 </div>
   <!-- Form for editing -->
-<div *ngIf="showEditForm">
+<div *ngIf="showEditForm" class="form-container">
     <h2>Edit Maintenance</h2>
     <form (submit)="saveChanges()">
-      <label>
-        Code:
-        <input type="text" name="method" [(ngModel)]="selectedRow.method" required>
-      </label>
-      <label>
-        Designation:
-        <input type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
-      </label>
-      <button type="submit">Save Changes</button>
+   
+      <mat-form-field appearance="fill">
+        <mat-label>Designation</mat-label>
+        <input matInput type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
+        <mat-error *ngIf="!selectedRow.designation">Designation is required</mat-error>
+    
+      </mat-form-field>
+      <br>
+      <button mat-raised-button color="primary" type="submit">Save Changes</button>
+      <button mat-raised-button color="warn" type="button" (click)="canceladdForm()">Cancel</button>
     </form>
   </div>
 

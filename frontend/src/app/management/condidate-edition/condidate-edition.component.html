@@ -2,7 +2,7 @@
 <div class="container">
 
 <div class="candidat-container mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource.data">
   
     <!-- Displaying columns -->
     <ng-container [matColumnDef]="column" *ngFor="let column of studentColumns">
@@ -36,6 +36,12 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+  <mat-paginator [pageSize]="5"
+  [pageSizeOptions]="[3, 5, 8, 10]"
+  [length]="dataSource.data.length"
+  (page)="onPageChange($event)">
+</mat-paginator>
+
   <button  class="amouna-button" (click)="printTable()">Print</button>
 </div>
 <br><br>
@@ -54,7 +60,7 @@
 
 
 <!-- Form for adding a new candidate entry -->
-<div *ngIf="showForm">
+<div *ngIf="showForm" >
   <form (submit)="submitStudent()">
     <label>
       Username:

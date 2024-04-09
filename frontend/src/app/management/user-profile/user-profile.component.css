@@ -1,28 +1,52 @@
-/* style.css */
+/* Add your custom CSS styles here */
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 800px;
-    margin: 50px auto;
+.edit-mode {
+    max-width: 800px; /* Adjust max-width as needed */
+    margin: auto; /* Center the form horizontally */
     padding: 20px;
-    background-color: #fff;
+    background-color: #85b9e4;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(94, 3, 3, 0.1);
+    margin-bottom: 30px; /* Add some space between forms */
+    max-height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Display two columns */
+    grid-column-gap: 20px; /* Add gap between columns */
+}
+
+/* CSS for form fields */
+.edit-mode input {
+    width: 100%; /* Set input width to fill its grid cell */
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #7a0404;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Ensure padding and border are included in width */
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+/* Style the Save Changes button */
+
+
+.edit-mode button:hover {
+    background-color: #e70d8d;
 }
 
+/* Center the content horizontally */
+.container {
+    max-width: 1200px; /* Adjust the max-width as needed */
+    margin:  auto;
+    padding: 20px;
+    background-color: #ecf0f3;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(121, 54, 54, 0.849);
+    height: calc(100% - 100px); /* Set the height to 100% of the viewport height */
+    overflow-y: auto !important; /* Add a scrollbar if the content exceeds the container height */
+}
+/* Style the user profile information */
 .info {
-    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important; /* Display two columns */ 
+    gap: 20px; /* Add gap between columns */
 }
 
 .info p {
@@ -33,4 +57,59 @@ h1 {
 .info p strong {
     font-weight: bold;
     color: #333;
+}
+/* Style the Save Changes button */
+
+.heading {
+    text-align: center;
+}
+
+/* Style the button container */
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+/* Style the buttons */
+.delete-button {
+    background-color: #b40c0c;
+}
+
+.edit-button {
+    background-color: #007bff;
+}
+
+/* Style the edit form */
+.edit-mode {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #85b9e4;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(94, 3, 3, 0.1);
+}
+
+.edit-mode input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #7a0404;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.edit-mode .save-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-mode .save-button:hover {
+    background-color: #e70d0d;
 }

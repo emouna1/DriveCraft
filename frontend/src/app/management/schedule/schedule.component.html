@@ -1,8 +1,13 @@
-<div class="container">
-  <div class="amouna-container" mat-elevation-z8>
-    <h2>Lessons & exams schedule</h2>
-    <div class="calendar-wrapper">
-      <full-calendar [options]="calendarOptions" class="custom-calendar"></full-calendar>
-    </div>
-  </div>
+<!-- schedule.component.html -->
+
+<div id="calendar"> 
 </div>
+<app-car-dialog *ngIf="selectedEvent" [eventDetails]="selectedEvent" (close)="selectedEvent = null"></app-car-dialog>
+
+<!-- Display event details 
+<div *ngIf="selectedEvent">
+  <p>Task Category: {{ selectedEvent.taskCategory }}</p>
+  <p>Result: {{ selectedEvent.result }}</p>
+  <p>Accomplished: {{ selectedEvent.accomplished }}</p>
+  <p>Candidate CIN: {{ selectedEvent.candidatCIN }}</p>
+</div>-->

@@ -1,6 +1,8 @@
+
+
 <div class="candidat-container">
 
-<h2>Instructors and admins Management</h2>
+<h2>Admins Management</h2>
 <div class="container">
   <table mat-table [dataSource]="dataSource">
   
@@ -35,12 +37,18 @@
     <!-- Header and Row definitions -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table></div>
+  </table> 
+  <mat-paginator [pageSize]="3"
+  [pageSizeOptions]="[2, 3, 4, 5]"
+  [length]="dataSource.data.length"
+  (page)="onPageChange($event)">
+</mat-paginator>
+ </div>
 
-  <button  class="amouna-button" (click)="printTable()">Print</button>
+  <!--<button  class="amouna-button" (click)="printTable()">Print</button>-->
 <br><br>
 
-<button class="amouna-button" (click)="toggleForm()">Add New condidat</button>
+<button class="amouna-button" (click)="toggleForm()">Add New Admin</button>
 
 
 <!-- Form for editing -->
@@ -56,191 +64,19 @@
 
 
 
-
-
-
-
-
-<div *ngIf="showForm">
-    <form (submit)="submitEmployee()">
-      <!-- Basic user information -->
-      <fieldset>
-        <legend>General Information</legend>
-      <label>
-        Username:
-        <input type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
-      </label>
-      <label>
-        Password:
-        <input type="password" name="password" [(ngModel)]="selectedRow.User.password" required>
-      </label>
-      <label>
-        Email:
-        <input type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
-      </label>
-      <label>
-        Role:
-        <input type="text" name="role" [(ngModel)]="selectedRow.User.role" required>
-      </label>
-      <label>
-        Name:
-        <input type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
-      </label>
-      <label>
-        CIN:
-        <input type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
-      </label>
-      <label>
-        Date of Issue:
-        <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
-      </label>
-      <label>
-        License Category:
-        <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.User.licenseCategory" required>
-      </label>
-      <label>
-        Situation:
-        <input type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
-      </label>
-      <label>
-        Balance:
-        <input type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
-      </label>
-      <label>
-        Date of Birth:
-        <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
-      </label>
-      <label>
-        Nationality:
-        <input type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
-      </label>
-      <label>
-        Address:
-        <input type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
-      </label>
-      <label>
-        Telephone:
-        <input type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
-      </label>
-      </fieldset>
-  
-      <fieldset>
-        <legend>Instructor Information</legend>
+<div *ngIf="showForm || showEditForm">
+  <form [formGroup]="employeeForm" (submit)="submitEmployee()">
+    <fieldset>
+      <legend>{{ showEditForm ? 'Edit Admin' : 'Add New Admin' }}</legend>
+      <ng-container *ngFor="let control of employeeColumns">
         <label>
-          Personal Code:
-          <input type="text" name="personalCode" [(ngModel)]="selectedRow.User.personalCode" required>
+          {{ control }}:
+          <input type="text" formControlName="{{ control }}" [(ngModel)]="selectedRow.User[control]" required>
         </label>
-        <label>
-          Personnel Function:
-          <input type="text" name="personnelFunction" [(ngModel)]="selectedRow.User.personnelFunction" required>
-        </label>
-        <label>
-          Recruitment Date:
-          <input type="date" name="recruitmentDate" [(ngModel)]="selectedRow.User.recruitmentDate" required>
-        </label>
-        <label>
-          Net Salary:
-          <input type="number" name="netSalary" [(ngModel)]="selectedRow.User.netSalary" required>
-        </label>
-        <label>
-          Gross Salary:
-          <input type="number" name="grossSalary" [(ngModel)]="selectedRow.User.grossSalary" required>
-        </label>
-        <label>
-          Qualification:
-          <input type="text" name="qualification" [(ngModel)]="selectedRow.User.qualification" required>
-        </label>
-        <label>
-          Leave Days Per Year:
-          <input type="number" name="leaveDaysPerYear" [(ngModel)]="selectedRow.User.leaveDaysPerYear" required>
-        </label>
-        <label>
-          CNSS Number:
-          <input type="text" name="cnssNumber" [(ngModel)]="selectedRow.User.cnssNumber" required>
-        </label>
-      </fieldset>
-      
-      
-      <!-- Submit button -->
-      <button type="submit" class="amouna-button">Add a candidate</button>
-    </form>
-  </div>
-
-<!-- Form for editing an existing driving license category entry -->
-<div *ngIf="showEditForm">
-  <h2>Edit candidat</h2>
-  <form (submit)="saveChanges()">
-    <label>
-      Username:
-      <input type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
-    </label>
-    <label>
-      Password:
-      <input type="password" name="password" [(ngModel)]="selectedRow.User.password" required>
-    </label>
-    <label>
-      Email:
-      <input type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
-    </label>
-    <label>
-      Role:
-      <input type="text" name="role" [(ngModel)]="selectedRow.User.role" required>
-    </label>
-    <label>
-      Name:
-      <input type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
-    </label>
-    <label>
-      First Name:
-      <input type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
-    </label>
-   
-    <label>
-      CIN:
-      <input type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
-    </label>
-    <label>
-      Date of Issue:
-      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
-    </label>
-    <label>
-      License Category:
-      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.User.licenseCategory" required>
-    </label>
-    <label>
-      Situation:
-      <input type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
-    </label>
-    <label>
-      Balance:
-      <input type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
-    </label>
-    <label>
-      Date of Birth:
-      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
-    </label>
-    <label>
-      Nationality:
-      <input type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
-    </label>
-    <label>
-      Address:
-      <input type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
-    </label>
-    <label>
-      Telephone:
-      <input type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
-    </label>
-    <label>
-      Image:
-      <input type="text" name="image" [(ngModel)]="selectedRow.User.image">
-    </label>
-    
-    <!-- Submit button -->
-    <button type="submit" class="amouna-button">Save Changes</button>
+      </ng-container>
+      <button type="submit" class="amouna-button">{{ showEditForm ? 'Save Changes' : 'Add Admin' }}</button>
+    </fieldset>
   </form>
 </div>
-</div>
 
-<!-- Button to add new candidate 
-<button mat-raised-button color="primary" (click)="openAddDialog()">Add Candidate</button>-->
+</div>

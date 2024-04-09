@@ -12,7 +12,8 @@ userRouter.put('/updateStudent/:cin', [], studentController.updateStudent);
 userRouter.delete('/deleteStudent/:cin', [], studentController.deleteStudent);
 userRouter.get('/students/:cin', [], studentController.searchStudentByCIN);
 
-
+userRouter.get('/getAllInstructors', [], eController.getAllInstructors);
+userRouter.get('/getAllAdmins', [], eController.getAllAdmins);
 userRouter.get('/getAllEmployees', [], eController.getAllEmployees);
 userRouter.post('/addEmployee', [], eController.addEmployee);
 userRouter.put('/updateEmployee/:cin', [], eController.updateEmployee);

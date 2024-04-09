@@ -2,23 +2,29 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { VehiclesEditionService } from 'src/app/vehicles-edition.service';
-import Swal from 'sweetalert2';
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-vehicle-edition',
   templateUrl: './vehicle-edition.component.html',
   styleUrls: ['./vehicle-edition.component.css']
 })
 export class VehicleEditionComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
+  dataSource = new MatTableDataSource<Vehicle>();
+
   Columns = ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation'];
   displayedColumns = this.Columns.concat(['actions']);
 
-  dataSource: Vehicle[] = [];
+  //dataSource: Vehicle[] = [];
   showForm: boolean = false;
   showEditForm: boolean = false;
   data: any = {}; // Object to hold form data
+  addVehicleForm: FormGroup;
+  editVehicleForm: FormGroup;
 
-
-  selectedRow: Vehicle = { 
+  selectedRow: Vehicle = {
     LicensePlate: '',
     Brand: '',
     Type: '',
@@ -30,29 +36,62 @@ export class VehicleEditionComponent implements OnInit {
     Date: '', // Assuming date is represented as a string in ISO 8601 format
     Observation: ''
   };
-  
+
 
   cancelForm() {
-    this.showEditForm = false; 
+   this.showForm = false;
+    this.editVehicleForm.reset();
     this.resetForm(); // Optionally reset the form fields
+
   }
   canceladdForm() {
-    this.showForm = false; 
+    this.showForm = false;
     this.resetForm(); // Optionally reset the form fields
   }
-  
-  constructor(private VehiclesEditionService: VehiclesEditionService) {}
+
+  constructor
+  (private VehiclesEditionService: VehiclesEditionService,
+    private fb: FormBuilder,
+  ) {this.addVehicleForm = this.fb.group({
+    LicensePlate: ['', Validators.required],
+    Brand: ['', Validators.required],
+    Type: ['', Validators.required],
+    Power: ['', Validators.required],
+    Fuel: ['', Validators.required],
+    Odometer: [0, Validators.required],
+    Color: ['', Validators.required],
+    PurchasePrice: [0, Validators.required],
+    Date: ['', Validators.required],
+    Observation: ['', Validators.required]
+  });
+ 
+  this.editVehicleForm = this.fb.group({
+    LicensePlate: ['', Validators.required],
+    Brand: ['', Validators.required],
+    Type: ['', Validators.required],
+    Power: ['', Validators.required],
+    Fuel: ['', Validators.required],
+    Odometer: [0, Validators.required],
+    Color: ['', Validators.required],
+    PurchasePrice: [0, Validators.required],
+    Date: ['', Validators.required],
+    Observation: ['', Validators.required]
+  });}
 
   ngOnInit() {
     this.fetchData();
+
   }
 
   fetchData() {
     this.VehiclesEditionService.getCars().subscribe((data: any) => {
-      this.dataSource = data.vehicles;
+      this.dataSource.data = data.vehicles;
       console.log(this.dataSource)
+      this.dataSource.paginator = this.paginator;
+
     });
   }
+ 
   toggleForm() {
     this.showForm = !this.showForm;
   }
@@ -60,15 +99,32 @@ export class VehicleEditionComponent implements OnInit {
   editRow(element: Vehicle) {
     this.showEditForm = true; // Show the edit form
     this.selectedRow = { ...element }; // Copy the selected row's data
-  }
+    this.editVehicleForm.patchValue(this.selectedRow);
 
+  }
+  //pagination 
+  onPageChange(event: PageEvent) {
+    this.dataSource.paginator!.pageIndex = event.pageIndex;
+    this.dataSource.paginator!.pageSize = event.pageSize;
+  }
+  
   saveChanges() {
-    // Here you can save the changes to the backend
-    this.VehiclesEditionService.updateCar(this.selectedRow.LicensePlate, this.selectedRow).subscribe(() => {
-      console.log('Saved changes:', this.selectedRow);
-      this.showEditForm = false; // Hide the edit form after saving changes
-    });
-    this.fetchData();
+    if (this.editVehicleForm.valid) {
+      const formData = this.editVehicleForm.value;
+      this.VehiclesEditionService.updateCar(formData.LicensePlate, formData).subscribe(
+        response => {
+          // Handle success
+          console.log('Vehicle updated successfully', response);
+          this.showEditForm = false;
+          this.editVehicleForm.reset();
+          this.fetchData();
+        },
+        error => {
+          // Handle error
+          console.error('Error updating vehicle', error);
+        }
+      );
+    }
   }
   deleteRow(element: Vehicle) {
     // Call deleteM function from the service to delete the row
@@ -81,20 +137,25 @@ export class VehicleEditionComponent implements OnInit {
 
 
       submitVehicle() {
-        
-        // Call addLc from DataService passing selectedRow
-        this.VehiclesEditionService.addCar(this.selectedRow)
+        if (this.addVehicleForm.valid) {
+          //const formData = this.addVehicleForm.value;
+          console.log(this.addVehicleForm.value)
+          this.VehiclesEditionService.addCar(this.addVehicleForm.value)
           .subscribe(response => {
             // Handle response if needed
             console.log('New license category added successfully', response);
             // Optionally, you can reset the form after successful submission
-            this.resetForm();
+            console.log('Vehicle added successfully', response);
+            this.showForm = false;
+            this.addVehicleForm.reset();
+            this.fetchData();
+      //      this.resetForm();
           }, error => {
             // Handle error if needed
             console.error('Error adding license category', error);
           });
       }
-    
+    }
       resetForm() {
         // Reset selectedRow object or any other form reset logic
        // this.selectedRow = {}; // Assuming selectedRow is an object
@@ -134,7 +195,7 @@ printTable() {
       printContent += '</tr>';
 
       // Generate table rows from dataSource
-      this.dataSource.forEach(element => {
+      this.dataSource.data.forEach(element => {
         printContent += '<tr>';
         printContent += '<td>' + element.LicensePlate + '</td>';
         printContent += '<td>' + element.Brand + '</td>';
@@ -162,7 +223,12 @@ printTable() {
     console.error('Print content not found or not initialized');
   }
 }
+  
+  
 
+
+  
+  
 }
 export interface Vehicle {
   LicensePlate: string;

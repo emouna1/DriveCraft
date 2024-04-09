@@ -9,14 +9,7 @@ const PaymentDetails = db.define('paymentDetails', {
     primaryKey: true
   },
 
-  idPayementMethod: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: PaymentMethod,
-      key: 'method'
-    }
-  },
+
   montant: {
     type: DataTypes.FLOAT,
     allowNull: false,
@@ -26,5 +19,6 @@ const PaymentDetails = db.define('paymentDetails', {
     allowNull: false,
   }
 });
+PaymentDetails.belongsTo(PaymentMethod); // Add this association to link PaymentDetails with PaymentMethod
 
 module.exports = PaymentDetails;

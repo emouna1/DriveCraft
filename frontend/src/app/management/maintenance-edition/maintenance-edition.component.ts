@@ -1,5 +1,7 @@
 import { Component, ViewChild,ElementRef } from '@angular/core';
 import { FoldersService } from './../../folders.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-maintenance-edition',
   templateUrl: './maintenance-edition.component.html',
@@ -8,28 +10,36 @@ import { FoldersService } from './../../folders.service';
 export class MaintenanceEditionComponent {
 
   displayedColumns = ['Mcode', 'designation' , 'actions'];
-  dataSource: PeriodicElement[] = [];
+  dataSource = new MatTableDataSource<Entretien>();
+
   showForm: boolean = false;
   showEditForm: boolean = false;
-  selectedRow: PeriodicElement = { Mcode: 0, designation: '' };
+  selectedRow: Entretien = { Mcode: 0, designation: '' };
 
    
   constructor(private foldersService: FoldersService) {}
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  //pagination 
+   onPageChange(event: PageEvent) {
+     this.dataSource.paginator!.pageIndex = event.pageIndex;
+     this.dataSource.paginator!.pageSize = event.pageSize;
+   }
   ngOnInit() {
     this.fetchData();
   }
 
   fetchData() {
-    this.foldersService.getCarM().subscribe((data: PeriodicElement[]) => {
-      this.dataSource = data;
+    this.foldersService.getCarM().subscribe((data: Entretien[]) => {
+      this.dataSource.data = data;
+      this.dataSource.paginator = this.paginator;
+
     });
   }
   toggleForm() {
     this.showForm = !this.showForm;
   }
 
-  editRow(element: PeriodicElement) {
+  editRow(element: Entretien) {
     this.showEditForm = true; // Show the edit form
     this.selectedRow = { ...element }; // Copy the selected row's data
   }
@@ -42,7 +52,7 @@ export class MaintenanceEditionComponent {
     });
     this.fetchData();
   }
-  deleteRow(element: PeriodicElement) {
+  deleteRow(element: Entretien) {
     // Call deleteM function from the service to delete the row
     this.foldersService.deleteCarM(element.Mcode).subscribe(() => {
       console.log('Deleted row:', element);
@@ -79,7 +89,7 @@ export class MaintenanceEditionComponent {
         printContent += '</tr>';
 
         // Generate table rows from dataSource
-        this.dataSource.forEach(element => {
+        this.dataSource.data.forEach(element => {
           printContent += '<tr>';
           printContent += '<td>' + element.Mcode + '</td>';
           printContent += '<td>' + element.designation + '</td>';
@@ -129,7 +139,7 @@ export class MaintenanceEditionComponent {
 
 
 
-export interface PeriodicElement {
+export interface Entretien {
   Mcode: number;
   designation: string;
  

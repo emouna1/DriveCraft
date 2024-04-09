@@ -1,8 +1,8 @@
-import { Candidate } from './../condidat.interface';
 import { Component,  ElementRef,  ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { CoondidateService } from 'src/app/coondidate.service';
-import { EditCandidateDialogComponent } from '../edit-candidate-dialog/edit-candidate-dialog.component';
 @Component({
   selector: 'app-condidate-edition',
   templateUrl: './condidate-edition.component.html',
@@ -15,7 +15,7 @@ export class CondidateEditionComponent {
 studentColumns = [
   'username',
   'email',
-  'role',
+  //'role',
   'name',
   'firstName',
   'CIN',
@@ -30,7 +30,6 @@ studentColumns = [
 ];
 displayedColumns = this.studentColumns.concat(['actions']);
 
-dataSource: Student[] = [];
 showForm: boolean = false;
 showEditForm: boolean = false;
 //selectedRow: Student | null = null;
@@ -62,6 +61,7 @@ selectedRow:Student = { User :{
   cnssNumber:'',
   CategoryCode:''
 }};
+dataSource = new MatTableDataSource<Student>();
 
 constructor(private studentService: CoondidateService, private dialog: MatDialog) { }
 
@@ -69,12 +69,7 @@ ngOnInit(): void {
   this.fetchData();
 }
 
-loadStudents() {
-  this.studentService.getAllStudents().subscribe(students => {
-    this.dataSource= students;
-    console.log(this.dataSource)
-  });
-}
+
 
 toggleForm() {
   this.showForm = !this.showForm;
@@ -82,7 +77,7 @@ toggleForm() {
 fetchData() {
   this.studentService.getAllStudents().subscribe((data: any) => {
     // Assuming data is fetched and structured as in your example
-    this.dataSource = data.map((item: any) => {
+    this.dataSource.data= data.map((item: any) => {
       return {
         User: {
           username: item.username,
@@ -113,6 +108,7 @@ fetchData() {
         }
       };
     });
+    this.dataSource.paginator = this.paginator;
   });
 }
 
@@ -157,6 +153,12 @@ resetForm() {
   // Reset selectedRow object or any other form reset logic
   window.location.reload();
 }
+@ViewChild(MatPaginator) paginator!: MatPaginator;
+  //pagination 
+   onPageChange(event: PageEvent) {
+     this.dataSource.paginator!.pageIndex = event.pageIndex;
+     this.dataSource.paginator!.pageSize = event.pageSize;
+   }
 @ViewChild('printContent') printContent!: ElementRef;
 
 printTable() {
@@ -195,7 +197,7 @@ printTable() {
      
       printContent += '</tr>';
 
-      this.dataSource.forEach(element => {
+      this.dataSource.data.forEach(element => {
         printContent += '<tr>';
         printContent += '<td>' + element.User.username + '</td>';
        // printContent += '<td>' + element.User.password + '</td>';

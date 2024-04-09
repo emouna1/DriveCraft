@@ -30,12 +30,29 @@ table {
 }
 
 .amouna-button:hover {
-  background-color: #4CAF50; /* Green */
+  background-color: #eb848d; /* Green */
   color: rgb(245, 235, 236);
 }
 
 .amouna-button:active {
-  background-color: #45a049;
+  background-color: #eb848d;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
+  /* CSS for form container */
+  .form-container {
+    max-width: 400px; /* Adjust max-width as needed */
+    margin: auto; /* Center the form horizontally */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px; /* Add some space between forms */
+    max-height: calc(100% - 100px);
+  }
+  
+  /* CSS for form fields */
+  .mat-form-field {
+    width: 100%;
+    margin-bottom: 20px; /* Add some space between form fields */
+  }

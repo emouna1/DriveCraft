@@ -1,0 +1,29 @@
+<ng-template #modalContent let-data>
+  <div>
+    <h1>{{ data.event.title }}</h1>
+    <button mat-button (click)="closeDialog()">Close</button>
+  </div>
+</ng-template>
+
+<div [ngSwitch]="view">
+  <div *ngSwitchCase="CalendarView.Month">
+    <ng-container *ngTemplateOutlet="monthView"></ng-container>
+  </div>
+</div>
+
+<ng-template #monthView>
+  <div>
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen"
+      (dayClicked)="dayClicked($event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      (eventClicked)="handleEvent('Clicked', $event.event)"
+      [weekStartsOn]="0"
+    ></mwl-calendar-month-view>
+  </div>
+</ng-template>
+
+<button mat-raised-button color="primary" (click)="addEvent()">Add Event</button>

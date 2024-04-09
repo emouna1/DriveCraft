@@ -14,7 +14,7 @@ foldersRouter.delete('/deleteM/:code', [], carMaintenance.deleteM);
 const paymentM = require('../controllers/paymentC');
 
 // Define routes for payment methods
-foldersRouter.get('/getAllPaymentMethods', [], paymentM.getAllPaymentMethods);
+foldersRouter.get('/getAllpaymentMethods', [], paymentM.getAllPaymentMethods);
 foldersRouter.post('/addpayMethod', [], paymentM.addpayMethod);
 foldersRouter.put('/updatepayMethod/:method', [], paymentM.updatepayMethod);
 foldersRouter.delete('/deletepayMethod/:method', [], paymentM.deletepayMethod);
@@ -27,5 +27,11 @@ foldersRouter.post('/addLc', [], LicenseCategory.addLicenseCategory);
 foldersRouter.put('/updateLc/:code', [], LicenseCategory.updateLicenseCategory);
 foldersRouter.delete('/deleteLc/:code', [], LicenseCategory.deleteLicenseCategory);
 
+const paymentS = require('../controllers/reglement');
+
+foldersRouter.get('/getAllPaymentS', [], paymentS.getAllPaymentS);
+foldersRouter.post('/addPaymentS', [], paymentS.addPaymentS);
+foldersRouter.put('/editPaymentS/:id', [], paymentS.editPaymentS);
+foldersRouter.delete('/deletePaymentS/:id', [], paymentS.deletePaymentS);
 
 module.exports = foldersRouter;

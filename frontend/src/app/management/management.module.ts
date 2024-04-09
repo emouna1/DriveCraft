@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { CommonModule } from '@angular/common';
+
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from '../app.component';
 import { VehicleEditionComponent } from './vehicle-edition/vehicle-edition.component';
-import { MatDialog } from '@angular/material/dialog';
-import { EditCandidateDialogComponent } from './edit-candidate-dialog/edit-candidate-dialog.component';
 import { CondidateEditionComponent } from './condidate-edition/condidate-edition.component';
 import { MaintenanceEditionComponent } from './maintenance-edition/maintenance-edition.component';
 import { LicenseCategoriesComponent } from './license-categories/license-categories.component';
@@ -15,9 +13,14 @@ import { PaymentMethodComponent } from './payment-method/payment-method.componen
 import { PersonnelEditionComponent } from './personnel-edition/personnel-edition.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { EnrollmentsComponent } from './enrollments/enrollments.component';
-import { ScheduleComponent } from './schedule/schedule.component';
 import { FullCalendarModule } from '@fullcalendar/angular'; // include this line
-import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import { AdminsComponent } from './admins/admins.component';
+import { PaymentComponent } from './payment/payment.component';
+import { ScheduleeComponent } from './schedulee/schedulee.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { CarDialogComponent } from "./car-dialog/car-dialog.component";
 const routes: Routes = [
   { 
     path: 'dash', 
@@ -32,44 +35,49 @@ const routes: Routes = [
        {path: 'personalEdition' , component: PersonnelEditionComponent},
        {path: 'userProfile' , component: UserProfileComponent},
        {path: 'Enrollments' ,component: EnrollmentsComponent},
-       {path: 'Schedule' ,component: ScheduleComponent}
+       {path: 'Schedule' ,component: ScheduleComponent},
+       {path:'Admins', component: AdminsComponent},
+       {path:'Payment',component:PaymentComponent}
     ]
   }
 ];
 
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    VehicleEditionComponent,
-    EditCandidateDialogComponent,
-    CondidateEditionComponent,
-    MaintenanceEditionComponent,
-    LicenseCategoriesComponent,
-    PaymentMethodComponent,
-    PersonnelEditionComponent,
-    UserProfileComponent,
-    EnrollmentsComponent,
-    ScheduleComponent
-  ],
-  imports: [
-    CommonModule,
-    MaterialModule,
-    RouterModule.forChild(routes),
-    FormsModule,
-    ReactiveFormsModule,
-    FullCalendarModule // include FullCalendar module here
-
-    
-    
-  ],
-  exports: [
-    RouterModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    
-    
-  ]
+    declarations: [
+        HomeComponent,
+        VehicleEditionComponent,
+        CondidateEditionComponent,
+        MaintenanceEditionComponent,
+        LicenseCategoriesComponent,
+        PaymentMethodComponent,
+        PersonnelEditionComponent,
+        UserProfileComponent,
+        EnrollmentsComponent,
+        ScheduleeComponent,
+        AdminsComponent,
+        PaymentComponent,
+        ScheduleComponent,
+        CarDialogComponent
+    ],
+    exports: [
+        RouterModule,
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CalendarModule
+    ],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        RouterModule.forChild(routes),
+        FormsModule,
+        ReactiveFormsModule,
+        FullCalendarModule, // include FullCalendar module here
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
+    ]
 })
 export class ManagementModule { }

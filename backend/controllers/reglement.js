@@ -1,62 +1,93 @@
+const express = require('express');
+const router = express.Router();
 const Payment = require('../models/reglement');
+const PaymentDetails = require('../models/paymentDetails');
+const PaymentMethod = require('../models/paymentMethod');
 
-exports.getAllPayments = async (req, res, next) => {
+
+// Fetch all settlements
+exports.getAllPaymentS = async (req, res, next) => {
   try {
-    const payments = await Payment.findAll();
-    res.status(200).json(payments);
+    const settlements = await Payment.findAll({
+      include: PaymentDetails
+    });
+    res.status(200).json(settlements);
   } catch (error) {
-    console.error('Error fetching payments:', error);
-    res.status(500).json({message: 'An error occurred while fetching payments.'});
+    console.error('Error fetching settlements:', error);
+    res.status(500).json({message: 'An error occurred while fetching settlements.'});
   }
 };
 
-exports.addPayment = async (req, res, next) => {
-  const paymentData = req.body;
+// Add a new settlement
+exports.addPaymentS = async (req, res, next) => {
+  const { date, montant, paymentDetails } = req.body;
 
   try {
-    const newPayment = await Payment.create(paymentData);
-    res.status(201).json(newPayment);
-  } catch (error) {
-    console.error('Error adding a new payment:', error);
-    res.status(500).json({message: 'An error occurred while adding a new payment.'});
-  }
-};
-
-exports.updatePayment = async (req, res, next) => {
-  const {id} = req.params;
-  const updatedData = req.body;
-
-  try {
-    const [updatedRows] = await Payment.update(updatedData, {
-      where: {id: id}
+    const payment = await Payment.create({
+      date,
+      montant
     });
 
-    if (updatedRows === 0) {
-      return res.status(404).json({message: 'Payment not found.'});
-    }
+    await Promise.all(paymentDetails.map(async (detail) => {
+      await PaymentDetails.create({
+        montant: detail.montant,
+        dateEcheance: detail.dateEcheance,
+        paymentId: payment.id
+      });
+    }));
 
-    res.status(200).json({message: 'Payment updated successfully.'});
+    res.status(201).json({message: 'Settlement created successfully'});
   } catch (error) {
-    console.error('Error updating payment:', error);
-    res.status(500).json({message: 'An error occurred while updating payment.'});
+    console.error('Error adding settlement:', error);
+    res.status(500).json({message: 'An error occurred while adding the settlement.'});
   }
 };
 
-exports.deletePayment = async (req, res, next) => {
-  const {id} = req.params;
+// Update a settlement
+exports.editPaymentS = async (req, res, next) => {
+  const settlementId = req.params.id;
+  const { date, montant, paymentDetails } = req.body;
 
   try {
-    const deletedRows = await Payment.destroy({
-      where: {id: id}
+    await Payment.update({
+      date,
+      montant
+    }, {
+      where: { id: settlementId }
     });
 
-    if (deletedRows === 0) {
-      return res.status(404).json({message: 'Payment not found.'});
-    }
+    await PaymentDetails.destroy({
+      where: { paymentId: settlementId }
+    });
 
-    res.status(200).json({message: 'Payment deleted successfully.'});
+    await Promise.all(paymentDetails.map(async (detail) => {
+      await PaymentDetails.create({
+        montant: detail.montant,
+        dateEcheance: detail.dateEcheance,
+        paymentId: settlementId,
+        PaymentMethodId:detail.PaymentMethodId
+      });
+    }));
+
+    res.status(200).json({message: 'Settlement updated successfully'});
   } catch (error) {
-    console.error('Error deleting payment:', error);
-    res.status(500).json({message: 'An error occurred while deleting payment.'});
+    console.error('Error updating settlement:', error);
+    res.status(500).json({message: 'An error occurred while updating the settlement.'});
+  }
+};
+
+// Delete a settlement
+exports.deletePaymentS = async (req, res, next) => {
+  const settlementId = req.params.id;
+
+  try {
+    await Payment.destroy({
+      where: { id: settlementId }
+    });
+
+    res.status(200).json({message: 'Settlement deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting settlement:', error);
+    res.status(500).json({message: 'An error occurred while deleting the settlement.'});
   }
 };

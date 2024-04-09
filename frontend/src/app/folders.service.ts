@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PeriodicElement } from './management/maintenance-edition/maintenance-edition.component';
 
 @Injectable({
   providedIn: 'root'
@@ -53,11 +52,11 @@ export class FoldersService {
     return this.http.post<any[]>(`${this.apiUrl}/addpayMethod`,Data);
   }
 
-  editPaymentM(method: string ,Data: any): Observable<any> {
+  editPaymentM(method: number,Data: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/updatepayMethod/${method}`,Data);
   }
 
-  deletePaymentM(method: string): Observable<any> {
+  deletePaymentM(method: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/deletepayMethod/${method}`);
   }
 

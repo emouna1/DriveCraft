@@ -1,5 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FoldersService } from '../../folders.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-payment-method',
@@ -9,11 +11,12 @@ import { FoldersService } from '../../folders.service';
 export class PaymentMethodComponent {
  
   
-    displayedColumns = ['method', 'designation' , 'actions'];
-    dataSource: PeriodicElement[] = [];
+    displayedColumns = [ 'designation' , 'actions'];
+    dataSource = new MatTableDataSource<method>();
+
     showForm: boolean = false;
     showEditForm: boolean = false;
-    selectedRow: PeriodicElement = { method: '', designation: '' };
+    selectedRow: method = { id:0 ,designation: '' };
   
      
     constructor(private foldersService: FoldersService) {}
@@ -23,30 +26,32 @@ export class PaymentMethodComponent {
     }
   
     fetchData() {
-      this.foldersService.getAllPaymentMethods().subscribe((data: PeriodicElement[]) => {
-        this.dataSource = data;
+      this.foldersService.getAllPaymentMethods().subscribe((data: method[]) => {
+        this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator;
+
       });
     }
     toggleForm() {
       this.showForm = !this.showForm;
     }
   
-    editRow(element: PeriodicElement) {
+    editRow(element: method) {
       this.showEditForm = true; // Show the edit form
       this.selectedRow = { ...element }; // Copy the selected row's data
     }
   
     saveChanges() {
       // Here you can save the changes to the backend
-      this.foldersService.editPaymentM(this.selectedRow.method, this.selectedRow).subscribe(() => {
+      this.foldersService.editPaymentM(this.selectedRow.id, this.selectedRow).subscribe(() => {
         console.log('Saved changes:', this.selectedRow);
         this.showEditForm = false; // Hide the edit form after saving changes
       });
       this.fetchData();
     }
-    deleteRow(element: PeriodicElement) {
+    deleteRow(element: method) {
       // Call deleteM function from the service to delete the row
-      this.foldersService.deletePaymentM(element.method).subscribe(() => {
+      this.foldersService.deletePaymentM(element.id).subscribe(() => {
         console.log('Deleted row:', element);
         // After successful deletion, you might want to refresh the data
         this.fetchData();
@@ -81,9 +86,8 @@ export class PaymentMethodComponent {
           printContent += '</tr>';
   
           // Generate table rows from dataSource
-          this.dataSource.forEach(element => {
+          this.dataSource.data.forEach(element => {
             printContent += '<tr>';
-            printContent += '<td>' + element.method + '</td>';
             printContent += '<td>' + element.designation + '</td>';
             printContent += '</tr>';
           });
@@ -104,7 +108,7 @@ export class PaymentMethodComponent {
     submitNewPm() {
       this.foldersService.addPaymentM(this.selectedRow).subscribe(response => {
         console.log("adding ",this.selectedRow)
-        console.log('New Car maintenance added successfully', response);
+        console.log('New method maintenance added successfully', response);
         this.resetForm();
       }, error => {
         console.error('Error !!!', error);
@@ -114,14 +118,28 @@ export class PaymentMethodComponent {
       // Reset selectedRow object or any other form reset logic
       window.location.reload();
     }
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    //pagination 
+     onPageChange(event: PageEvent) {
+       this.dataSource.paginator!.pageIndex = event.pageIndex;
+       this.dataSource.paginator!.pageSize = event.pageSize;
+     }
+     cancelForm() {
+      this.showEditForm = false; 
+      this.resetForm();
+    }
+    canceladdForm() {
+      this.showForm = false; 
+      this.resetForm();
+    }
   }
   
   
   
   
   
-  export interface PeriodicElement {
-    method: string;
+  export interface method {
+    id: number;
     designation: string;
    
   }

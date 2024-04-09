@@ -13,14 +13,12 @@ const Payment = db.define('payment', {
     allowNull: false
   },
 
-
   montant: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
   }
 });
-
-
+Payment.belongsTo(User, {foreignKey: 'StudentId'});
 Payment.hasMany(PaymentDetails);
 
 
