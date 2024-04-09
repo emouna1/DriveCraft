@@ -6,8 +6,29 @@ const {sequelize} = require("../util/database");
 
 exports.enrollmentsController = {
   // Get all enrollments
+  async getCodeEnrollments(req, res) {
+    try {
+      const enrollments = await Enrollment.findAll({
+        where: { registrationType: ['code'] } // Filter users by role 'student'
 
+      });
+      res.json(enrollments);
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  },
+  async getConductEnrollments(req, res) {
+    try {
+      const enrollments = await Enrollment.findAll({
+        where: { registrationType: ['conduct'] } // Filter users by role 'student'
 
+      });
+
+      res.json(enrollments);
+    } catch (error) {
+      res.status(500).json({error: error.message});
+    }
+  },
   async getAllEnrollments(req, res) {
     try {
       const enrollments = await Enrollment.findAll({});
