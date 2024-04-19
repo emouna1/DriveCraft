@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
   isLoginPageOrSignupPage(): boolean {
     const currentUrl = this.router.url;
-    return currentUrl.includes('/auth/login') || currentUrl.includes('/auth/signup') || currentUrl.includes('/auth/Forgot') || currentUrl.includes('/manage/dash') || currentUrl.includes('/folders/vehicle')
+    return currentUrl.includes('/auth/login') || currentUrl.includes('/auth/signup') || currentUrl.includes('/auth/Forgot') || currentUrl.includes('/manage/dash') || currentUrl.includes('/candidate/home') ||currentUrl.includes('/instructor/home') ||currentUrl.includes('/enroll')
   }
   
 }

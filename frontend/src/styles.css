@@ -5,35 +5,14 @@ body { margin: 0;
     "Helvetica Neue", sans-serif; 
     overflow: hidden;
     scrollbar-width: thin;          /* "auto" or "thin" */
-    scrollbar-color: rgb(37, 98, 168) rgb(180, 16, 71);   /* scroll thumb and track */ 
+    scrollbar-color: #3F51B5 rgb(180, 16, 71);   /* scroll thumb and track */ 
 }
 
 
 
-/* Track */
-::-webkit-scrollbar-track {
-    background: #f1f1f1; /* color of the track */
-  }
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888; /* color of the handle */
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; /* color of the handle on hover */
-  }
-  
-  /* Optional: Adjust scrollbar size */
-  ::-webkit-scrollbar {
-    width: 12px; /* width of the scrollbar */
-  }
-  
-  /* Optional: Adjust scrollbar corner */
-  ::-webkit-scrollbar-corner {
-    background: transparent; /* color of the scrollbar corner */
-  }
+
+
+
 
   
 

@@ -1,55 +1,86 @@
 <!-- app.component.html -->
 <div class="background-image" *ngIf="!isLoginPageOrSignupPage()">
-<mat-toolbar color="primary">
-  <img src="../assets/logo.png" alt="Logo" class="logo">
-  <span>DriveCraft</span>
-  <span class="spacer"></span>
-  <button mat-button routerLink="/">Home</button>
-  <button mat-button [routerLink]="['/']" fragment="about">About Us</button>
-  <button mat-button [routerLink]="['/']" fragment="service">Our Services</button>
-  <button mat-button [routerLink]="['/']" fragment="pricing">Pricing</button>
-  <button mat-button routerLink="/auth/login">Login / Register</button>
-</mat-toolbar>
+  <mat-toolbar color="primary">
+    <img src="../assets/logo.png" alt="Logo" class="logo">
+    <span>DriveCraft</span>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/">Home</button>
+    <button mat-button [routerLink]="['/']" fragment="about">About Us</button>
+    <button mat-button [routerLink]="['/']" fragment="service">Our Services</button>
+    <button mat-button [routerLink]="['/']" fragment="pricing">Pricing</button>
+    <button mat-button routerLink="/auth/login">Login / Register</button>
+  </mat-toolbar>
+  
+    <mat-sidenav #sidenav mode="over">
+      <mat-nav-list>
+        <a mat-list-item routerLink="/">Home</a>
+        <a mat-list-item [routerLink]="['/']" fragment="about">About Us</a>
+        <a mat-list-item [routerLink]="['/']" fragment="service">Our license categories</a>
+        <a mat-list-item [routerLink]="['/']" fragment="pricing">Pricing</a>
+        <a mat-list-item routerLink="/auth/login">Login / Register</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-container>
+      <div class="background-image">
+        <!-- Add content directly into the background -->
+        <div class="content-on-background">
+          <br><br><br><br>
+          <section id="about">
+          <h2>About Us</h2>
+          <p>
+            At the time when Knowing how to drive a car is no longer a luxury,but a necessity!
 
-<mat-sidenav-container class="container">
-  <mat-sidenav #sidenav mode="over">
-    <mat-nav-list>
-      <a mat-list-item routerLink="/">Home</a>
-      <a mat-list-item [routerLink]="['/']" fragment="about">About Us</a>
-      <a mat-list-item [routerLink]="['/']" fragment="service">Our Services</a>
-      <a mat-list-item [routerLink]="['/']" fragment="pricing">Pricing</a>
-      <a mat-list-item routerLink="/auth/login">Login / Register</a>
-    </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div class="background-image">
-      <!-- Add content directly into the background -->
-      <div class="content-on-background">
-        <br><br><br><br>
-        <section id="about">
-        <h2>About Us</h2>
-        <p>
-        </p>
-        </section>
-        <section id="pricing">
-        <h2>Pricing</h2>
-        <p>.</p>
-        </section>
-        <section id="service">
-        <h2>Our Services</h2>
-        <p></p>
-        </section>
-        <h2>Login / Register</h2>
-        <p>Login or register to access member-only features...</p>
-        <button mat-raised-button color="primary" routerLink="/auth/login">Login</button>
-        <button mat-raised-button color="accent" routerLink="/auth/signup">Register</button>
-        <button mat-raised-button color="accent" routerLink="/folders/vehicle">lets see</button>
+            DriveCraft driving school strives to provide people with a high-quality driving education that will not only help them learn how to drive but also
+             help people become better drivers. 
+             We make the entire learning process easy and simple so that you can learn effectively 
+             and be able to grasp the many concepts that are involved with driving without any issues.
+              Driving can be scary at first, but we are here to guide you through every single step of the way to help you become a pro behind the wheel!
+          </p>
+          </section>
+          <br><br><br>
 
+          <section id="pricing">
+          <h2>Pricing</h2>
+          <p> DriveCraft has various courses listed on the website ranging from standard to advanced to corporate
+             driving courses. The course fee for the driving courses on offer will depend on the course you
+              choose. Whether you are totally new to driving or want to brush your driving skills,
+               there is a suitable course for everyone.
+             Register and enrol now to a course of your choice on our website</p>
+          </section>
+          <br><br><br>
+          <section id="service">
+          <h2>Our Services</h2><p> Here the principal license catgories DriveCraft offers</p> <ul>
+            <li>Category A: Motorcycle License Course</li>
+            <li>Category B: Standard Driver's License Course</li>
+            <li>Category C: Commercial Driver's License (CDL) Course</li>
+            <li>Category A + B: Combined Course for Motorcycle License and Standard Driver's License</li>
+            <li>Category A + C: Combined Course for Motorcycle License and Commercial Driver's License</li>
+            <li>Category B + C: Combined Course for Standard Driver's License and Commercial Driver's License</li>
+            <li>Category A + B + C: Comprehensive Course covering Motorcycle License, Standard Driver's License, and Commercial Driver's License</li>
+          </ul>
+          
 
+          </section>
+          <br><br><br>
+
+          <h2>Login / Register</h2>
+          <p>
+              One of the most important things that we will teach you is traffic rules and road safety. Before you even think about going out onto the street, it is crucial to know the rules and you know how to stay safe out on the road. These rules are in place to keep you safe and to keep others on the road safe. For this reason, 
+              we put a lot of emphasis on ensuring you can get these rules down and memorized.
+               If you would like to learn more about traffic rules and road safety, just Join Us !
+               <br> Login or register NOW to access member-only features!
+          </p>
+          <br><br><br>
+
+          <button mat-raised-button color="primary" routerLink="/auth/login">Login</button>
+          <button mat-raised-button color="accent" routerLink="/auth/signup">Register</button>
+          <br><br><br>
+
+  
+        </div>
       </div>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-</div>
-<router-outlet></router-outlet>
-
+  </mat-sidenav-container>
+  </div>
+  <router-outlet></router-outlet>
+  
+  

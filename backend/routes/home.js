@@ -4,6 +4,8 @@ const {enrollmentsController} = require('../controllers/Enrollment');
 
 // Route to get all enrollments
 homeRouter.get('/getAllEnrollments', enrollmentsController.getAllEnrollments);
+homeRouter.get('/getCodeEnrollments', enrollmentsController.getCodeEnrollments);
+homeRouter.get('/getConductEnrollments', enrollmentsController.getConductEnrollments);
 
 // Route to create a new enrollment
 homeRouter.post('/addEnrollment', enrollmentsController.createEnrollment);

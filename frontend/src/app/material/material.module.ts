@@ -33,6 +33,8 @@ import { MatTreeModule } from '@angular/material/tree'; // Provides tree view
 import { MatStepperModule } from '@angular/material/stepper';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
   @NgModule({
     declarations: [],
@@ -69,7 +71,9 @@ import { MatTableDataSource } from '@angular/material/table';
       MatTooltipModule,
       MatTreeModule,
       MatStepperModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      MatDatepickerModule,
+      MatNativeDateModule 
     ],
   exports: [
     MatAutocompleteModule,
@@ -103,7 +107,9 @@ import { MatTableDataSource } from '@angular/material/table';
     MatTooltipModule,
     MatTreeModule,
     MatStepperModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule 
   ]
 })
 export class MaterialModule { }

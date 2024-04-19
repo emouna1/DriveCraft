@@ -1,8 +1,8 @@
 
 
-<div class="candidat-container">
+<div class="instructor-container">
 
-<h2>Admins Management</h2>
+<h2>Instructors Management</h2>
 <div class="container">
   <table mat-table [dataSource]="dataSource">
   
@@ -43,40 +43,36 @@
   [length]="dataSource.data.length"
   (page)="onPageChange($event)">
 </mat-paginator>
- </div>
 
-  <!--<button  class="amouna-button" (click)="printTable()">Print</button>-->
-<br><br>
-
-<button class="amouna-button" (click)="toggleForm()">Add New Admin</button>
-
-
-<!-- Form for editing -->
-
-
-<div #printContent style="display:none">
-<table>
-  <!-- Table headers and rows will be generated dynamically -->
-</table>
+  <button  class="amouna-button" (click)="printTable()">Print</button>
 </div>
 
+<br><br>
+
+<button class="amouna-button" (click)="toggleForm()">Add New Instructor</button>
 
 
-
+<!-- Form for adding or editing -->
 
 <div *ngIf="showForm || showEditForm">
   <form [formGroup]="employeeForm" (submit)="submitEmployee()">
     <fieldset>
-      <legend>{{ showEditForm ? 'Edit Admin' : 'Add New Admin' }}</legend>
+      <legend>{{ showEditForm ? 'Edit Instructor' : 'Add New Instructor' }}</legend>
       <ng-container *ngFor="let control of employeeColumns">
-        <label>
-          {{ control }}:
-          <input type="text" formControlName="{{ control }}" [(ngModel)]="selectedRow.User[control]" required>
-        </label>
+        <mat-form-field appearance="fill">
+          <mat-label>{{ control }}</mat-label>
+          <input matInput formControlName="{{ control }}" required>
+        </mat-form-field>
       </ng-container>
-      <button type="submit" class="amouna-button">{{ showEditForm ? 'Save Changes' : 'Add Admin' }}</button>
+      <button mat-raised-button color="primary"type="submit" >{{ showEditForm ? 'Save Changes' : 'Add Instructor' }}</button>
+       <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
     </fieldset>
   </form>
 </div>
 
+<div #printContent style="display:none">
+  <table>
+    <!-- Table headers and rows will be generated dynamically -->
+  </table>
+  </div>
 </div>

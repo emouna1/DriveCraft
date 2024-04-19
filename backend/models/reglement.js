@@ -18,7 +18,9 @@ const Payment = db.define('payment', {
     allowNull: false
   }
 });
-Payment.belongsTo(User, {foreignKey: 'StudentId'});
+//Payment.belongsTo(User, {foreignKey: 'StudentId'});
+Payment.belongsTo(User, {foreignKey: 'candidatCIN', targetKey: 'CIN'});
+
 Payment.hasMany(PaymentDetails);
 
 

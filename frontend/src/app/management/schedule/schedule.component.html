@@ -1,13 +1,46 @@
 <!-- schedule.component.html -->
+<div class="container">
 
-<div id="calendar"> 
+<div class="amouna-container mat-elevation-z8">
+  <div id="calendar"></div>
+
+  <!-- Include navigation controls for different views -->
+  <div class="calendar-navigation">
+    <button mat-button (click)="changeView('timeGridWeek')">Week</button>
+    <button mat-button (click)="changeView('dayGridMonth')">Month</button>
+    <button mat-button (click)="changeView('dayGridYear')">Year</button>
+  </div>
+  <!-- Include your event details component -->
+  <app-car-dialog *ngIf="selectedEvent" [eventDetails]="selectedEvent" (close)="selectedEvent = null" (editEvent)="openEditEventModal($event)"></app-car-dialog>
+
+<!-- Add Event Button -->
+<button class="amouna-button" (click)="openAddEventModal()">Add Event</button>
+
+
+<div *ngIf="showAddEventModal">
+  <form [formGroup]="addEventForm" (ngSubmit)="addEvent()">
+    <mat-form-field *ngFor="let field of addEventFields">
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [type]="field.type" [formControlName]="field.name" [placeholder]="field.label" [required]="field.required">
+    </mat-form-field>
+    <button mat-button type="submit">Save</button>
+    <button mat-button type="button" (click)="closeAddEventModal()">Cancel</button>
+  </form>
 </div>
-<app-car-dialog *ngIf="selectedEvent" [eventDetails]="selectedEvent" (close)="selectedEvent = null"></app-car-dialog>
 
-<!-- Display event details 
-<div *ngIf="selectedEvent">
-  <p>Task Category: {{ selectedEvent.taskCategory }}</p>
-  <p>Result: {{ selectedEvent.result }}</p>
-  <p>Accomplished: {{ selectedEvent.accomplished }}</p>
-  <p>Candidate CIN: {{ selectedEvent.candidatCIN }}</p>
-</div>-->
+<!-- Edit Event Modal -->
+<div *ngIf="showEditEventModal">
+  <form [formGroup]="editEventForm" (ngSubmit)="editEvent()">
+    <mat-form-field *ngFor="let field of editEventFields">
+      <mat-label>{{ field.label }}</mat-label>
+      <input matInput [type]="field.type" [formControlName]="field.name" [placeholder]="field.label" [required]="field.required">
+      <mat-error *ngIf="editEventForm.get(field.name)?.hasError('required')">This field is required</mat-error>
+
+    </mat-form-field>
+    <button mat-button type="submit" [disabled]="editEventForm.invalid">Save Changes</button>
+    <button mat-button type="button" (click)="closeEditEventModal()">Cancel</button>
+  </form>
+</div>
+
+</div></div>
+

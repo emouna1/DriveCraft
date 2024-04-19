@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const PasswordResetToken = require('../models/Password');
 const nodemailer = require('nodemailer'); // Import nodemailer for sending emails
 const bcrypt = require('bcryptjs');
-const {User} = require('../models/user')
+const User = require('../models/user')
 
 exports.requestPasswordReset = async (req, res) => {
   const {email} = req.body;

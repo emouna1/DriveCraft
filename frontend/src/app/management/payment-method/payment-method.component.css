@@ -1,3 +1,11 @@
+
+.container {
+  max-width: 1200px; /* Adjust the max-width as needed */
+  margin: 0 auto; 
+  padding: 20px; 
+  height: auto; /* Set the height to 100% of the viewport height */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
 .amouna-container {
     max-height: calc(100% - 100px); /* Adjusted to cover the content */
     overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
@@ -51,8 +59,5 @@
     margin-bottom: 20px; /* Add some space between form fields */
   }
   
-  /* CSS for buttons */
-  button {
-    margin-right: 10px; /* Add some space between buttons */
-  }
+ 
   

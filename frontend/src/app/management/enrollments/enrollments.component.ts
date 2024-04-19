@@ -1,173 +1,318 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+import { CoondidateService } from 'src/app/coondidate.service';
 import { EnrollmentService } from 'src/app/enrollment.service';
+import { FoldersService } from 'src/app/folders.service';
 @Component({
   selector: 'app-enrollments',
   templateUrl: './enrollments.component.html',
   styleUrl: './enrollments.component.css'
 })
 export class EnrollmentsComponent {
-  enrollments: Enrollment[] = [];
-  displayedColumns: string[] = ['candidatCIN', 'candidatName', 'registrationType', 'desiredLicenseCategory', 'examDate', 'actions'];
-  showEditForm: boolean = false;
-   selectedEnrollment: Enrollment = {
-    id:'',
-    candidatCIN: '',
-    candidatName: '',
-    candidatBalance: 0,
-    registrationType: 'code',
-    contratType: 'fixed',
-    PricePerHour: 0,
-    paymentId: null,
-    specialPrice: null,
-    specialPriceAmount: null,
-    registrationCosts: 0,
-    registrationFees: 0,
-    examDate: null,
-    desiredLicenseCategory: '',
-    detailsVisible: false
-  };
-  
-  constructor(private enrollmentService: EnrollmentService) {}
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  data: any = {}; // Object to hold form data
+  dataSource = new MatTableDataSource<Enrollment>();
+  enrollments: any[] = []; // Assuming enrollments is an array of objects
+  showForm: boolean = false; // Flag to determine whether to show add or edit form
+  formMode: string = 'add'; // Initial form mode is 'add'
+  enrollmentForm: FormGroup;
+  //desiredLicenseCategories: string[] = [];
+  desiredLicenseCategories!: { CategoryCode: string; }[];
+  Students!: { CIN: string; }[];
 
-  
+ 
+  enrollmentColumns: string[] = ['candidatCIN', 'candidatName', 'candidatBalance', 'registrationType', 'contratType', 'PricePerHour', 'paymentId', 'specialPrice', 'specialPriceAmount', 'registrationCosts', 'registrationFees', 'examDate', 'desiredLicenseCategory'];
+  displayedColumns = [...this.enrollmentColumns, 'actions'];
+  enrollmentControls: string[] = ['candidatCIN','candidatName', 'desiredLicenseCategory', 'registrationType', 'examDate'];
+
+  constructor(private fb: FormBuilder,private enrollmentService: EnrollmentService,private licenseService :FoldersService,private studentService:CoondidateService,private snackBar: MatSnackBar ) {
+    this.enrollmentForm = this.fb.group({
+      candidatCIN: ['', Validators.required],
+      candidatName: ['', Validators.required],
+      desiredLicenseCategory: ['', Validators.required],
+      registrationType: ['', Validators.required],
+      //examDate: ['', Validators.required]
+      examDate: [null], // nullable
+      registrationCosts: ['', Validators.required], // required
+      specialPrice: ['no', Validators.required], // required
+      specialPriceAmount: [{ value: null, disabled: true }], // initially disabled if specialPrice is 'no'
+      contratType: ['', Validators.required], // required
+      paymentId: [null] // nullable
+    });
+    this.licenseService.getAllLc().subscribe(categories => {
+      //this.desiredLicenseCategories = categories.map(category => category.CategoryCode);
+      this.desiredLicenseCategories = categories
+    });
+    
+    this.fetchStudents()
+    const registrationTypeControl = this.enrollmentForm.get('registrationType');
+    if (registrationTypeControl) {
+      registrationTypeControl.patchValue('code');
+      registrationTypeControl.disable();
+    }
+    // Listen to changes in specialPrice field
+    this.enrollmentForm.get('specialPrice')?.valueChanges.subscribe(value => {
+      const specialPriceAmountControl = this.enrollmentForm.get('specialPriceAmount');
+      if (value === 'yes') {
+        specialPriceAmountControl?.enable();
+        specialPriceAmountControl?.setValidators(Validators.required);
+      } else {
+        specialPriceAmountControl?.disable();
+        specialPriceAmountControl?.clearValidators();
+      }
+      specialPriceAmountControl?.updateValueAndValidity();
+    });
+  }
+ 
+     fetchStudents() {
+      this.studentService.getAllStudents().subscribe((data: any) => {
+        this.Students = data;
+      });
+    }
+    
   ngOnInit() {
-    this.enrollmentService.getAllEnrollments()
-      .subscribe(enrollments => {
+    this.fetchEnrollments()
+  }
+  fetchEnrollments(){this.enrollmentService.getCodeEnrollments()
+      .subscribe((data: any) => {
+        /*enrollments => {
         this.enrollments = enrollments;
-        console.log(enrollments)
+        console.log(enrollments)*/
+        console.log(data)
+        this.dataSource.data = data;
+        console.log(this.dataSource)
+        this.dataSource.paginator = this.paginator;
         // Initialize detailsVisible property for each enrollment
         this.enrollments.forEach(enrollment => enrollment.detailsVisible = false);
-      });
-  }
-  toggleDetails(enrollment: Enrollment) {
-    enrollment.detailsVisible = !enrollment.detailsVisible; // Toggle the detailsVisible property
-  }
-  getRegistrationTypeName(type: string): string {
-    switch (type) {
-      case 'code':
-        return 'Code';
-      case 'conduct':
-        return 'Conduct';
-      default:
-        return type;
+      });}
+
+  toggleForm() {
+    this.showForm = !this.showForm;
+    this.formMode = 'add'; // Reset form mode to 'add' when toggling the form
+    if (this.showForm) {
+      this.enrollmentForm.reset(); // Reset form values when showing the form
+      const registrationTypeControl = this.enrollmentForm.get('registrationType');
+     if (registrationTypeControl) {
+      registrationTypeControl.patchValue('code');
+      registrationTypeControl.disable();
+    }
+
     }
   }
 
-  deleteEnrollment(enrollment: Enrollment) {
+  /*
+  submitForm() {
+    if (this.enrollmentForm.valid) {
+      const formData = this.enrollmentForm.value;
+  
+      if (this.formMode === 'add') {
+        // Call enrollment service method to add new enrollment
+        this.enrollmentService.addEnrollment(formData).subscribe({
+          next: (response) => {
+            // Handle successful addition
+            console.log('Enrollment added:', response);
+            this.toggleForm(); // Close the form after successful addition
+          },
+          error: (error) => {
+            // Handle error
+            console.error('Error adding enrollment:', error);
+          },}
+        );
+
+
+
+      } else if (this.formMode === 'edit') {
+        // Call enrollment service method to edit enrollment
+        this.enrollmentService.editEnrollment(formData).subscribe(
+          (response) => {
+            // Handle successful edit
+            console.log('Enrollment edited:', response);
+            this.toggleForm(); // Close the form after successful edit
+          },
+          (error) => {
+            // Handle error
+            console.error('Error editing enrollment:', error);
+          }
+        );
+      }
+    } else {
+      // Handle form validation errors
+      console.error('Form validation failed.');
+    }
+  }*/
+   // Function to display a notification
+  displayNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+    });
+  }
+
+
+  submitForm() {
+    if (this.enrollmentForm.valid) {
+      const formData = this.enrollmentForm.value;
+
+      if (this.formMode === 'add') {
+        this.enrollmentService.addEnrollment(formData).subscribe({
+          next: (response) => {
+            console.log('Enrollment added:', response);
+            this.toggleForm();
+            this.displayNotification('Enrollment added successfully.'); // Display notification
+          },
+          error: (error) => {
+            console.error('Error adding enrollment:', error);
+            this.displayNotification('Error adding enrollment. Please try again.'); // Display notification
+          }
+        });
+      } else if (this.formMode === 'edit') {
+        this.enrollmentService.editEnrollment(formData).subscribe(
+          (response) => {
+            console.log('Enrollment edited:', response);
+            this.toggleForm();
+            this.displayNotification('Enrollment edited successfully.'); // Display notification
+          },
+          (error) => {
+            console.error('Error editing enrollment:', error);
+            this.displayNotification('Error editing enrollment. Please try again.'); // Display notification
+          }
+        );
+      }
+    } else {
+      console.error('Form validation failed.');
+      this.displayNotification('Form validation failed. Please fill in all required fields.'); // Display notification
+    }
+  }
+  
+
+  editEnrollment(enrollment: any) {
+    this.formMode = 'edit';
+    // Populate form with the selected enrollment's data
+    this.enrollmentForm.patchValue(enrollment);
+    this.showForm = true; // Show the form for editing
+  }
+
+  /*deleteEnrollment(enrollment: Enrollment) {
     // Implement delete functionality
     this.enrollmentService.deleteEnrollment(enrollment.id)
       .subscribe(() => {
         // Remove the deleted enrollment from the list
         this.enrollments = this.enrollments.filter(e => e !== enrollment);
         console.log('Deleted enrollment:', enrollment);
+        this.fetchEnrollments()
       });
-    }
-    editEnrollment(enrollment: Enrollment) {
-      this.selectedEnrollment = { ...enrollment }; // Make a copy to avoid directly modifying the original object
-      this.showEditForm = true;
-    }
-  
-    submitEdit() {
-      this.enrollmentService.editEnrollment(this.selectedEnrollment)
-        .subscribe({
-          next: (updatedEnrollment: Enrollment) => { // Specify the type of updatedEnrollment
-            // Update the enrollment in the list with the updated data
-            const index = this.enrollments.findIndex(e => e.id === updatedEnrollment.id);
-            if (index !== -1) {
-              this.enrollments[index] = updatedEnrollment;
-            }
-            this.showEditForm = false;
+    }*/
+    deleteEnrollment(enrollment: Enrollment) {
+      // Implement delete functionality
+      this.enrollmentService.deleteEnrollment(enrollment.id)
+        .subscribe(
+          () => {
+            // Remove the deleted enrollment from the list
+            this.enrollments = this.enrollments.filter(e => e !== enrollment);
+            console.log('Deleted enrollment:', enrollment);
+            this.fetchEnrollments();
+            this.displayNotification('Enrollment deleted successfully.'); // Display success notification
           },
-          error: (error) => {
-            // Handle error if necessary
-            console.error(error);
+          (error) => {
+            console.error('Error deleting enrollment:', error);
+            this.displayNotification('Error deleting enrollment. Please try again.'); // Display error notification
           }
-        });
+        );
     }
-    closeEditForm() {
-      this.showEditForm = false;
+      
+  
+    //pagination 
+    onPageChange(event: PageEvent) {
+      this.dataSource.paginator!.pageIndex = event.pageIndex;
+      this.dataSource.paginator!.pageSize = event.pageSize;
     }
-    resetForm() {
-      // Reset selectedRow object or any other form reset logic
-      window.location.reload();
-    }
-    
-    submitEnrollment() {
-      if (this.selectedEnrollment) {
-        this.enrollmentService.addEnrollment(this.selectedEnrollment).subscribe(response => {
-          console.log('New Enrollment added successfully', response);
-          this.resetForm();
-        }, error => {
-          console.error('Error adding Enrollment', error);
-        });
-      }
-    }
+    @ViewChild('printContent') printContent!: ElementRef;
 
+printTable() {
+  console.log('Printing table...');
 
-    showAddFormFlag: boolean = false;
-    newEnrollment: Enrollment = {
-      id:'',
-      candidatCIN: '',
-      candidatName: '',
-      candidatBalance: 0,
-      registrationType: 'code',
-      contratType: 'fixed',
-      PricePerHour: 0,
-      paymentId: null,
-      specialPrice: null,
-      specialPriceAmount: null,
-      registrationCosts: 0,
-      registrationFees: 0,
-      examDate: null,
-      desiredLicenseCategory: '',
-      detailsVisible: false
-    };
-  
-   
+  if (this.printContent && this.printContent.nativeElement) {
+    const printWindow = window.open('', '_blank');
 
-   
+    if (printWindow) {
+      let printContent = '<html><head><title>Print</title>';
+      printContent += '<style>';
+      printContent += 'table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }';
+      printContent += 'th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }';
+      printContent += 'tr:nth-child(even) { background-color: #f2f2f2; }';
+      printContent += '</style>';
+      printContent += '</head><body>';
 
-    
-  
-  
-  
-    showAddForm() {
-      this.showAddFormFlag = true;
-    }
-  
-    closeAddForm() {
-      this.showAddFormFlag = false;
-    }
-  
-    submitAdd() {
-      this.enrollmentService.addEnrollment(this.newEnrollment)
-        .subscribe({
-          next: (addedEnrollment: Enrollment) => {
-            this.enrollments.push(addedEnrollment);
-            this.closeAddForm();
-          },
-          error: (error) => {
-            console.error(error);
-          }
-        });
-    }
-    }
-  export interface Enrollment {
-    id: string;
-    candidatCIN: string;
-    candidatName: string;
-    candidatBalance: number;
-    registrationType: 'code' | 'conduct';
-    contratType: 'fixed' | 'variable';
-    PricePerHour: number;
-    paymentId?: number | null;
-    specialPrice?: 'yes' | 'no' | null;
-    specialPriceAmount?: number | null;
-    registrationCosts: number;
-    registrationFees: number;
-    examDate?: Date | null;
-    desiredLicenseCategory: string;
-    detailsVisible?: boolean; // Add detailsVisible property
+      // Generate table headers
+      printContent += '<table>';
+      printContent += '<tr>';
+      printContent += '<th>Candidat CIN</th>';
+      printContent += '<th>Candidat name</th>';
+      printContent += '<th>Candidat balance</th>';
+      printContent += '<th>Registration type</th>';
+      printContent += '<th>Contract type</th>';
+      printContent += '<th>Price per hour</th>';
+      printContent += '<th>Registration Fees</th>';
+      printContent += '<th>Desired license category</th>';
+      printContent += '<th>Exam date</th>';
+      printContent += '</tr>';
 
+      // Generate table rows from dataSource
+      this.dataSource.data.forEach(element => {
+        printContent += '<tr>';
+        printContent += '<td>' + element.candidatCIN + '</td>';
+        printContent += '<td>' + element.candidatName + '</td>';
+        printContent += '<td>' + element.candidatBalance + '</td>';
+        printContent += '<td>' + element.registrationType + '</td>';
+        printContent += '<td>' + element.contratType + '</td>';
+        printContent += '<td>' + element.PricePerHour+ '</td>';
+        printContent += '<td>' + element.registrationFees + '</td>';
+        printContent += '<td>' + element.desiredLicenseCategory + '</td>';
+        printContent += '<td>' + element.examDate+ '</td>';
+        printContent += '</tr>';
+      });
+
+      printContent += '</table>';
+      printContent += '</body></html>';
+
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.print();
+    } else {
+      console.error('Failed to open print window');
+    }
+  } else {
+    console.error('Print content not found or not initialized');
   }
+}
+canceladdForm() {
+  this.showForm = false;
+  this.resetForm(); // Optionally reset the form fields
+}
+resetForm() {
+ this.fetchEnrollments()
+
+
+}   
+}
+export interface Enrollment {
+  id: string;
+  candidatCIN: string;
+  candidatName: string;
+  candidatBalance: number;
+  registrationType: 'code' | 'conduct';
+  contratType: 'fixed' | 'variable';
+  PricePerHour: number;
+  paymentId?: number | null;
+  specialPrice?: 'yes' | 'no' | null;
+  specialPriceAmount?: number | null;
+  registrationCosts: number;
+  registrationFees: number;
+  examDate?: Date | null;
+  desiredLicenseCategory: string;
+  detailsVisible?: boolean; // Add detailsVisible property
+
+}
 

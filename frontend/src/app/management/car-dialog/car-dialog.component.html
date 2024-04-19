@@ -2,10 +2,14 @@
     <div class="modal-content">
       <span class="close" (click)="onClose()">&times;</span>
       <h2>Event Details</h2>
+      <p>date: {{ eventDetails?.date}}</p>
+      <p>start Hour: {{ eventDetails?.startHour }}</p>
+      <p>end Hour: {{ eventDetails?.endHour }}</p>
       <p>Task Category: {{ eventDetails?.taskCategory }}</p>
       <p>Result: {{ eventDetails?.result }}</p>
       <p>Accomplished: {{ eventDetails?.accomplished }}</p>
       <p>Candidate CIN: {{ eventDetails?.candidatCIN }}</p>
+      <button class="edit-button" (click)="openEditEventModal()">Edit</button>
+      <button class="delete-button" (click)="deleteEvent()">Delete</button>
     </div>
   </div>
-  

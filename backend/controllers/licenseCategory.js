@@ -63,5 +63,30 @@ exports.deleteLicenseCategory = async (req, res, next) => {
     res.status(500).json({message: 'An error occurred while deleting.'});
   }
 };
+exports.getRegistrationFees = async (req, res) => {
+  const { registrationType, categoryCode } = req.params;
 
+  try {
+    // Fetch registration fees based on registration type and category code
+    const licenseCategory = await LicenseC.findOne({ where: { CategoryCode: categoryCode } });
+
+    if (!licenseCategory) {
+      return res.status(404).json({ message: 'License category not found.' });
+    }
+
+    let registrationFees;
+    if (registrationType === 'code') {
+      registrationFees = licenseCategory.CodeRegistrationFees;
+    } else if (registrationType === 'conduct') {
+      registrationFees = licenseCategory.ConductRegistrationFees;
+    } else {
+      return res.status(400).json({ message: 'Invalid registration type.' });
+    }
+
+    res.status(200).json({ registrationFees });
+  } catch (error) {
+    console.error('Error fetching registration fees:', error);
+    res.status(500).json({ message: 'An error occurred while fetching registration fees.' });
+  }
+};
 

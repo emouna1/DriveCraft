@@ -2,6 +2,7 @@ import { Component, ViewChild,ElementRef } from '@angular/core';
 import { FoldersService } from './../../folders.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-maintenance-edition',
   templateUrl: './maintenance-edition.component.html',
@@ -17,7 +18,7 @@ export class MaintenanceEditionComponent {
   selectedRow: Entretien = { Mcode: 0, designation: '' };
 
    
-  constructor(private foldersService: FoldersService) {}
+  constructor(private foldersService: FoldersService,private snackBar: MatSnackBar) {}
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   //pagination 
    onPageChange(event: PageEvent) {
@@ -45,19 +46,23 @@ export class MaintenanceEditionComponent {
   }
 
   saveChanges() {
-    // Here you can save the changes to the backend
     this.foldersService.editCarM(this.selectedRow.Mcode, this.selectedRow).subscribe(() => {
-      console.log('Saved changes:', this.selectedRow);
-      this.showEditForm = false; // Hide the edit form after saving changes
-    });
-    this.fetchData();
-  }
-  deleteRow(element: Entretien) {
-    // Call deleteM function from the service to delete the row
-    this.foldersService.deleteCarM(element.Mcode).subscribe(() => {
-      console.log('Deleted row:', element);
-      // After successful deletion, you might want to refresh the data
+      this.showEditForm = false;
       this.fetchData();
+      this.displayNotification('Maintenance entry edited successfully.'); // Display success notification
+    }, error => {
+      console.error('Error editing maintenance entry:', error);
+      this.displayNotification('Error editing maintenance entry. Please try again.'); // Display error notification
+    });
+  }
+
+  deleteRow(element: Entretien) {
+    this.foldersService.deleteCarM(element.Mcode).subscribe(() => {
+      this.fetchData();
+      this.displayNotification('Maintenance entry deleted successfully.'); // Display success notification
+    }, error => {
+      console.error('Error deleting maintenance entry:', error);
+      this.displayNotification('Error deleting maintenance entry. Please try again.'); // Display error notification
     });
   }
 
@@ -109,30 +114,34 @@ export class MaintenanceEditionComponent {
       console.error('Print content not found or not initialized');
     }
   }
+  
   submitCarMaintenance() {
     this.foldersService.addCarM(this.selectedRow).subscribe(response => {
-      console.log("adding ",this.selectedRow)
       console.log('New Car maintenance added successfully', response);
-      this.resetForm();
+      this.showForm = false; 
+      this.fetchData();
+      this.displayNotification('New maintenance entry added successfully.'); // Display success notification
     }, error => {
-      console.error('Error !!!', error);
+      console.error('Error adding new maintenance entry:', error);
+      this.displayNotification('Error adding new maintenance entry. Please try again.'); // Display error notification
     });
   }
-  
  
-  resetForm() {
-    // Reset selectedRow object or any other form reset logic
-    window.location.reload();
-  }
+  
   cancelForm() {
     this.showEditForm = false; 
-    this.resetForm(); // Optionally reset the form fields
+    this.fetchData()// Optionally reset the form fields
   }
   canceladdForm() {
     this.showForm = false; 
-    this.resetForm(); // Optionally reset the form fields
+    this.fetchData()// Optionally reset the form fields
   }
-  
+  displayNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+    });
+  }
+
 }
 
 

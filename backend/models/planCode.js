@@ -34,7 +34,7 @@ const LessonExam = sequelize.define('CodeLessonExam', {
   },
   candidatCIN: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
 
 });

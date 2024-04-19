@@ -1,5 +1,5 @@
-<h2>Candidate Management</h2>
 <div class="container">
+<h2>Candidate Management</h2>
 
 <div class="candidat-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource.data">
@@ -48,149 +48,190 @@
 
 <button class="amouna-button" (click)="toggleForm()">Add New condidat</button>
 
+<div *ngIf="showForm">
+  <form (submit)="submitStudent()" class="example-form">
+    <mat-form-field class="example-full-width">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
+      <mat-error *ngIf="!selectedRow.User.username">Username is required</mat-error>
+    </mat-form-field>
 
-<!-- Form for editing -->
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
+      <mat-error *ngIf="!selectedRow.User.email">Email is required</mat-error>
+      <mat-error *ngIf="!selectedRow.User.email">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
 
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
+      <mat-error *ngIf="!selectedRow.User.name">Name is required</mat-error>
+    </mat-form-field>
 
-<div #printContent style="display:none">
-<table>
-  <!-- Table headers and rows will be generated dynamically -->
-</table>
-</div>
+    <mat-form-field class="example-full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
+      <mat-error *ngIf="!selectedRow.User.firstName">First Name is required</mat-error>
+    </mat-form-field>
 
+    <mat-form-field class="example-full-width">
+      <mat-label>CIN</mat-label>
+      <input matInput type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
+      <mat-error *ngIf="!selectedRow.User.CIN">CIN is required</mat-error>
+    </mat-form-field>
 
-<!-- Form for adding a new candidate entry -->
-<div *ngIf="showForm" >
-  <form (submit)="submitStudent()">
-    <label>
-      Username:
-      <input type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
-    </label>
-    <label>
-      Email:
-      <input type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
-    </label>
-    <label>
-      Name:
-      <input type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
-    </label>
-    <label>
-      First Name:
-      <input type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
-    </label>
-    <label>
-      CIN:
-      <input type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
-    </label>
-    <label>
-      Date of Issue:
-      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
-    </label>
-    <label>
-      License Category:
-      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.User.licenseCategory" required>
-    </label>
-    <label>
-      Situation:
-      <input type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
-    </label>
-    <label>
-      Balance:
-      <input type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
-    </label>
-    <label>
-      Date of Birth:
-      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
-    </label>
-    <label>
-      Nationality:
-      <input type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
-    </label>
-    <label>
-      Address:
-      <input type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
-    </label>
-    <label>
-      Telephone:
-      <input type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
-    </label>
-    <label>
-      Image:
-      <input type="text" name="image" [(ngModel)]="selectedRow.User.image">
-    </label>
-    
-    <!-- Submit button -->
-    <button type="submit" class="amouna-button">Add a candidate</button>
+    <mat-form-field class="example-full-width">
+      <mat-label>Date of Issue</mat-label>
+      <input matInput type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
+      <mat-error *ngIf="!selectedRow.User.dateOfIssue">Date of Issue is required</mat-error>
+    </mat-form-field>
+
+ 
+ 
+    <mat-form-field class="example-full-width">
+      <mat-label>Situation</mat-label>
+      <input matInput type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
+      <mat-error *ngIf="!selectedRow.User.situation">Situation is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Balance</mat-label>
+      <input matInput type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
+      <mat-error *ngIf="!selectedRow.User.balance">Balance is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
+      <mat-error *ngIf="!selectedRow.User.dateOfBirth">Date of Birth is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Nationality</mat-label>
+      <input matInput type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
+      <mat-error *ngIf="!selectedRow.User.nationality">Nationality is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Address</mat-label>
+      <input matInput type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
+      <mat-error *ngIf="!selectedRow.User.address">Address is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Telephone</mat-label>
+      <input matInput type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
+      <mat-error *ngIf="!selectedRow.User.telephone">Telephone is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Image</mat-label>
+      <input matInput type="text" name="image" [(ngModel)]="selectedRow.User.image">
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Add Student</button>
+    <button mat-raised-button color="warn" type="button" (click)="canceladdForm()">Cancel</button>
   </form>
 </div>
+
 
 <!-- Form for editing an existing candidate -->
 <div *ngIf="showEditForm">
   <h2>Edit candidate</h2>
   <form (submit)="saveChanges()">
-    <label>
-      Username:
-      <input type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
-    </label>
-    <label>
-      Email:
-      <input type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
-    </label>
-    <label>
-      Name:
-      <input type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
-    </label>
-    <label>
-      First Name:
-      <input type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
-    </label>
-    <label>
-      CIN:
-      <input type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
-    </label>
-    <label>
-      Date of Issue:
-      <input type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
-    </label>
-    <label>
-      License Category:
-      <input type="text" name="licenseCategory" [(ngModel)]="selectedRow.User.licenseCategory" required>
-    </label>
-    <label>
-      Situation:
-      <input type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
-    </label>
-    <label>
-      Balance:
-      <input type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
-    </label>
-    <label>
-      Date of Birth:
-      <input type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
-    </label>
-    <label>
-      Nationality:
-      <input type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
-    </label>
-    <label>
-      Address:
-      <input type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
-    </label>
-    <label>
-      Telephone:
-      <input type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
-    </label>
-    <label>
-      Image:
-      <input type="text" name="image" [(ngModel)]="selectedRow.User.image">
-    </label>
+    <mat-form-field class="example-full-width">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
+      <mat-error *ngIf="!selectedRow.User.username">Username is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
+      <mat-error *ngIf="!selectedRow.User.email">Email is required</mat-error>
+      <mat-error *ngIf="!selectedRow.User.email">
+        Please enter a valid email address
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
+      <mat-error *ngIf="!selectedRow.User.name">Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
+      <mat-error *ngIf="!selectedRow.User.firstName">First Name is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>CIN</mat-label>
+      <input matInput type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
+      <mat-error *ngIf="!selectedRow.User.CIN">CIN is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Date of Issue</mat-label>
+      <input matInput type="date" name="dateOfIssue" [(ngModel)]="selectedRow.User.dateOfIssue" required>
+      <mat-error *ngIf="!selectedRow.User.dateOfIssue">Date of Issue is required</mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Situation</mat-label>
+      <input matInput type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
+      <mat-error *ngIf="!selectedRow.User.situation">Situation is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Balance</mat-label>
+      <input matInput type="number" name="balance" [(ngModel)]="selectedRow.User.balance" required>
+      <mat-error *ngIf="!selectedRow.User.balance">Balance is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
+      <mat-error *ngIf="!selectedRow.User.dateOfBirth">Date of Birth is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Nationality</mat-label>
+      <input matInput type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
+      <mat-error *ngIf="!selectedRow.User.nationality">Nationality is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Address</mat-label>
+      <input matInput type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
+      <mat-error *ngIf="!selectedRow.User.address">Address is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Telephone</mat-label>
+      <input matInput type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
+      <mat-error *ngIf="!selectedRow.User.telephone">Telephone is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Image</mat-label>
+      <input matInput type="text" name="image" [(ngModel)]="selectedRow.User.image">
+    </mat-form-field>
     
     <!-- Submit button -->
-    <button type="submit" class="amouna-button">Save Changes</button>
+    <button mat-raised-button color="primary" type="submit">Save Changes</button>
+    <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
   </form>
 </div>
+<div #printContent style="display:none">
+<table>
+  <!-- Table headers and rows will be generated dynamically -->
+</table>
+</div>
+<br><br><br>
 
 </div>
-
-<!-- Button to add new candidate 
-<button mat-raised-button color="primary" (click)="openAddDialog()">Add Candidate</button>-->

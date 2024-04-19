@@ -21,6 +21,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CarDialogComponent } from "./car-dialog/car-dialog.component";
+import { ConductEnrollmentComponent } from './conduct-enrollment/conduct-enrollment.component';
 const routes: Routes = [
   { 
     path: 'dash', 
@@ -37,7 +38,10 @@ const routes: Routes = [
        {path: 'Enrollments' ,component: EnrollmentsComponent},
        {path: 'Schedule' ,component: ScheduleComponent},
        {path:'Admins', component: AdminsComponent},
-       {path:'Payment',component:PaymentComponent}
+       {path:'Payment',component:PaymentComponent},
+       {path:'conductEnrollments',component:ConductEnrollmentComponent},
+       {path:'schedulee',component:ScheduleeComponent}
+
     ]
   }
 ];
@@ -58,7 +62,8 @@ const routes: Routes = [
         AdminsComponent,
         PaymentComponent,
         ScheduleComponent,
-        CarDialogComponent
+        CarDialogComponent,
+        ConductEnrollmentComponent
     ],
     exports: [
         RouterModule,

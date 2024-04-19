@@ -16,7 +16,7 @@ export class LoginComponent {
   constructor(private router:Router,private authService:AuthService) {}
 
   
-    async login() {
+    /*async login() {
       const userData = { username: this.username, password: this.password };
       this.authService.login(userData.username,userData.password)
         .then((response: any) => {
@@ -48,7 +48,46 @@ export class LoginComponent {
         title: 'Login Failed',
         text: 'An error occurred during login. Please try again later.',
       });
-    }}
+    }}*/
+    async login() {
+      try {
+        console.log('Logging in...');
+        const success = await this.authService.login(this.username, this.password);
+        if (success) {
+          // Check if the user is a student
+          const currentUser = this.authService.getCurrentUser();
+          if (currentUser && currentUser.role === 'student') {
+            this.router.navigate(['/candidate/home']); // Redirect student to /candidate/home
+          } else if (currentUser && currentUser.role === 'instructor')
+          {
+            this.router.navigate(['/instructor/home']); // Redirect student to /candidate/home
+
+          }else{
+            this.router.navigate(['/manage/dash']); // Redirect other users to /manage/dash
+          }
+  
+          Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: 'You have been successfully logged in!',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Invalid username or password. Please try again.',
+          });
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'An error occurred during login. Please try again later.',
+        });
+      }
+    }
+  
    togglePasswordVisibility(): void { 
     this.hidePassword= !this.hidePassword}
 

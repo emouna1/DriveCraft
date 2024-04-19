@@ -15,7 +15,7 @@ const Enrollment = db.define('Enrollment', {
   },
   candidatBalance: {
     type: DataTypes.FLOAT, // Specify allowed registration types
-    allowNull: false,
+    allowNull: true,
   },
   registrationType: {
     type: DataTypes.ENUM('code', 'conduct'), // Specify allowed registration types
@@ -55,7 +55,7 @@ const Enrollment = db.define('Enrollment', {
   },
   registrationCosts: {
     type: DataTypes.FLOAT,
-    allowNull: false,
+    allowNull: true,
   },
   registrationFees: {
     type: DataTypes.FLOAT,

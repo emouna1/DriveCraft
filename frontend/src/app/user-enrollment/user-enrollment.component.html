@@ -1,0 +1,156 @@
+<div class="background-image">
+ 
+    
+      
+      <!-- Rest of your form goes here -->
+      
+    <div class="container mt-5">
+       
+    <div class="card shadow-sm p-4">
+    
+
+<div *ngIf="showForm" class="car-animation">
+    <svg viewBox="0 0 24 24" width="48" height="48">
+        <path fill="yellow" d="M20.5 11H21V9h-.5c-.3-1.9-1.6-3.4-3.5-3.5H9C6.8 5.5 5 7.3 5 9.5S6.8 13 9 13h1.5c.1.4.2.8.4 1.2L10 16H7l-2 4h2v2h2v-2h6v2h2v-2h2l-1-4c.3-.4.6-.9.9-1.3H20c2.2 0 4-1.8 4-4s-1.8-4-4-4zM9 11H7v-2h2v2zm7-4h-4c-1.1 0-2 .9-2 2h8c0-1.1-.9-2-2-2zm2 9h-8c-2.2 0-4 1.8-4 4h16c0-2.2-1.8-4-4-4z"/>
+      </svg>
+      
+      
+</div>
+    <form [formGroup]="enrollmentForm" >
+      <fieldset>
+        <legend style="color: #eef124; padding: 5px;border-radius: 10px;">Hey , Let's first get you enrolled !! 
+            </legend>
+        <mat-form-field>
+          <mat-label>Candidat CIN</mat-label>
+          <input matInput formControlName="candidatCIN" required>
+          <mat-error *ngIf="enrollmentForm.get('candidatCIN')?.hasError('required')">
+            Candidat CIN is required
+          </mat-error>
+        </mat-form-field>
+        <!-- Candidat Name 
+        <mat-form-field>
+          <mat-label>Candidat Name</mat-label>
+          <input matInput formControlName="candidatName" required>
+          <mat-error *ngIf="enrollmentForm.get('candidatName')?.hasError('required')">
+            Candidat Name is required
+          </mat-error>
+        </mat-form-field>-->
+        
+        <!-- Desired License Category -->
+        <mat-form-field>
+          <mat-label>Desired License Category</mat-label>
+          <mat-select formControlName="desiredLicenseCategory" required>
+            <mat-option *ngFor="let category of desiredLicenseCategories" [value]="category.CategoryCode">{{ category.CategoryCode}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="enrollmentForm.get('desiredLicenseCategory')?.hasError('required')">
+            Desired License Category is required
+          </mat-error>
+        </mat-form-field>
+        
+        <!-- Registration Type -->
+        <mat-form-field>
+          <mat-label>Registration Type</mat-label>
+          <mat-select formControlName="registrationType" required>
+            <mat-option value="code">Code</mat-option>
+            <mat-option value="conduct">Conduct</mat-option>
+          </mat-select>
+          <mat-error *ngIf="enrollmentForm.get('registrationType')?.hasError('required')">
+            Registration Type is required
+          </mat-error>
+        </mat-form-field>
+       
+        <br>
+        
+        <!-- Registration fees -->
+        <mat-form-field>
+          <mat-label>Registration Fees</mat-label>
+          <input matInput type="number" formControlName="registrationFees"  required>
+          <mat-error *ngIf="enrollmentForm.get('registrationFees')?.hasError('required')">
+          </mat-error>
+        </mat-form-field>
+        
+        <!-- Special Price -->
+        <mat-form-field>
+          <mat-label>Special Price</mat-label>
+          <mat-select formControlName="specialPrice" required>
+            <mat-option value="yes">Yes</mat-option>
+            <mat-option value="no">No</mat-option>
+          </mat-select>
+          <mat-error *ngIf="enrollmentForm.get('specialPrice')?.hasError('required')">
+            Special Price is required
+          </mat-error>
+        </mat-form-field>
+        
+        <!-- Special Price Amount -->
+        <mat-form-field *ngIf="enrollmentForm.get('specialPrice')?.value === 'yes'">
+          <mat-label>Special Price Amount</mat-label>
+          <input matInput type="number" formControlName="specialPriceAmount" [disabled]="enrollmentForm.get('specialPrice')?.value !== 'yes'">
+          <mat-error *ngIf="enrollmentForm.get('specialPriceAmount')?.hasError('required')">
+            Special Price Amount is required
+          </mat-error>
+        </mat-form-field>
+        
+        <!-- Contrat Type -->
+        <mat-form-field>
+          <mat-label>Contrat Type</mat-label>
+          <mat-select formControlName="contratType" required>
+            <mat-option value="fixed">Fixed</mat-option>
+            <mat-option value="variable">Variable</mat-option>
+          </mat-select>
+          <mat-error *ngIf="enrollmentForm.get('contratType')?.hasError('required')">
+            Contrat Type is required
+          </mat-error>
+        </mat-form-field>
+        
+     
+        <input type="hidden" formControlName="paymentId">
+
+        <!-- Button to submit the form -->
+       
+  
+      </fieldset>
+      <fieldset>
+
+        <legend style="color: #eef124; padding: 5px;border-radius: 10px;">Payment Details</legend>
+        <!-- Payment Date -->
+<form [formGroup]="paymentForm" (submit)="submitPaymentForm()">
+
+<mat-form-field>
+  <mat-label>Date</mat-label>
+  <input matInput [matDatepicker]="picker" formControlName="paymentDate" required>
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+  <mat-error *ngIf="enrollmentForm.get('paymentDate')?.hasError('required')">Date is required</mat-error>
+</mat-form-field>
+
+<!-- Payment Amount -->
+
+<mat-form-field>
+  <mat-label>Amount</mat-label>
+  <input matInput type="number" formControlName="paymentAmount" required>
+
+  <mat-error *ngIf="enrollmentForm.get('paymentAmount')?.hasError('required')">Amount is required</mat-error>
+</mat-form-field>
+
+<!-- Payment Method -->
+<mat-form-field>
+  <mat-label>Payment Method</mat-label>
+  <mat-select formControlName="paymentMethod" required>
+    <mat-option *ngFor="let method of paymentMethods" [value]="method.designation">{{ method.designation }}</mat-option>
+  </mat-select>
+  <mat-error *ngIf="enrollmentForm.get('paymentMethod')?.hasError('required')">Payment Method is required</mat-error>
+</mat-form-field>
+   
+<input type="hidden" formControlName="candidatCIN">
+
+
+<br><br>
+<button  mat-raised-button type="submit" color="primary"> Confirm the pament & Join us ! </button>
+<button mat-raised-button color="warn" class="amouna-button" type="button" (click)="canceladdForm()">Cancel :(</button>
+</form>
+ </fieldset>
+      
+    </form>
+</div>
+
+</div>

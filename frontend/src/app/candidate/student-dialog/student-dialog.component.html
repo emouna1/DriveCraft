@@ -1,0 +1,17 @@
+<div class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="onClose()">&times;</span>
+      <h2>Event Details</h2>
+      <p>Task Category: {{ eventDetails?.taskCategory }}</p>
+      <p>Result: {{ eventDetails?.result }}</p>
+      <p *ngIf="eventDetails?.taskType === 'exam'">Result: {{eventDetails?.result}}</p>
+      <p *ngIf="eventDetails?.taskType === 'lesson'">Accomplished: {{ eventDetails?.accomplished }}</p>
+      <button class="edit-button" (click)="openEditEventModal()">
+        <mat-icon>edit</mat-icon> <!-- Edit icon -->
+      </button>
+      <button class="delete-button" (click)="deleteEvent()">
+        <mat-icon>delete</mat-icon> <!-- Delete icon -->
+      </button>
+        </div>
+      </div>
+   

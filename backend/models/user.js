@@ -29,7 +29,7 @@ const users = db.define('users', {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
   },
   CIN: {
     type: DataTypes.STRING,
@@ -53,19 +53,19 @@ const users = db.define('users', {
   },
   dateOfBirth: {
     type: DataTypes.DATE,
-    allowNull: true
+    allowNull: false
   },
   nationality: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
   },
   address: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
   },
   telephone: {
     type: DataTypes.STRING,
-    allowNull: true
+    allowNull: false
   },
   image: {
     type: DataTypes.STRING,

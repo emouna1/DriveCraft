@@ -11,8 +11,8 @@
     background-color: #db4364; /* Adjust as needed */
   }
   .logout-button {
-    background-color: #3917b6; /* Red background color */
-    color: rgb(8, 8, 8); /* White text color */
+    background-color: #3F51B5    ; /* Red background color */
+    color: rgb(8, 8, 8); /* black text color */
     border: none; /* Remove border */
     padding: 10px 20px; /* Add padding */
     cursor: pointer; /* Add pointer cursor on hover */
@@ -52,5 +52,25 @@
     width: 100%; /* Adjust as needed */
     height: 100vh; /* Adjust as needed */
   }
+/* Adjust padding and margin for nested menu items */
+.mat-menu-content .mat-menu-item {
+  padding: 8px 24px;
+  margin: 4px 0;
+}
 
+/* Add indicator for nested menu items */
+.mat-menu-content .mat-menu-item::after {
+  content: '▸'; /* Unicode arrow character */
+  float: right;
+  margin-left: auto;
+}
+
+/* Change background color on hover for nested menu items */
+.mat-menu-content .mat-menu-item:hover {
+  background-color: #f3c1d8;
+  color: #000;
+}
+
+  
+  
   

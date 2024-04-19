@@ -4,4 +4,48 @@
     max-width: 600px;
 
   }
+  .snackbar-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
   
+  .snackbar-message {
+    display: inline-block;
+  }
+  
+.container {
+  max-width: 1200px; /* Adjust the max-width as needed */
+  margin: 0 auto; 
+  padding: 20px; 
+  /*height: auto;*/
+  height: calc(100% - 100px); /* Set the height to 100% of the viewport height */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
+.amouna-container {
+  /*max-height: calc(100% - 100px);*/ /* Adjust the height of the container */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
+
+.amouna-button {
+  margin: 5px;
+  border-radius: 10px;
+  padding: 10px 10px;
+  font-size: 16px;
+}
+.amouna-button:hover {
+  background-color: #eb848d; /* Green */
+  color: rgb(245, 235, 236);
+}
+
+.amouna-button:active {
+  background-color: #eb848d;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}

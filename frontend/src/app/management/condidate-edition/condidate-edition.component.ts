@@ -2,6 +2,7 @@ import { Component,  ElementRef,  ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { AuthService } from 'src/app/auth-service.service';
 import { CoondidateService } from 'src/app/coondidate.service';
 @Component({
   selector: 'app-condidate-edition',
@@ -20,13 +21,13 @@ studentColumns = [
   'firstName',
   'CIN',
   'dateOfIssue',
-  'licenseCategory',
+  'situation',
+  'balance',
   'dateOfBirth',
   'nationality',
   'address',
   'telephone',
-  'image',
-  'balance'
+  'image'
 ];
 displayedColumns = this.studentColumns.concat(['actions']);
 
@@ -34,7 +35,7 @@ showForm: boolean = false;
 showEditForm: boolean = false;
 //selectedRow: Student | null = null;
 
-selectedRow:Student = { User :{
+selectedRow: Student = { User :{
   username: 'default_user',
   password: 'default_password',
   email: 'default@student.com',
@@ -43,27 +44,26 @@ selectedRow:Student = { User :{
   firstName: 'Default',
   CIN: '1234567890',
   dateOfIssue: new Date(2000, 0, 1),
-  licenseCategory: 'N/A',
   situation: 'N/A',
   balance: 0,
   dateOfBirth: new Date(1990, 0, 1),
   nationality: 'N/A',
   address: '123 Main Street',
   telephone: '123-456-7890',
-  image: '',
-  personalCode:'',
-  personnelFunction:'',
-  recruitmentDate:new Date(2000, 0, 1),
-  netSalary:0,
-  grossSalary:0,
-  qualification:'',
-  leaveDaysPerYear:0,
-  cnssNumber:'',
-  CategoryCode:''
+  image: null,
+  personalCode:null,
+  personnelFunction:null,
+  recruitmentDate:null,
+  netSalary:null,
+  grossSalary:null,
+  qualification:null,
+  leaveDaysPerYear:null,
+  cnssNumber:null,
+  CategoryCode:'A'
 }};
 dataSource = new MatTableDataSource<Student>();
 
-constructor(private studentService: CoondidateService, private dialog: MatDialog) { }
+constructor(private studentService: CoondidateService, private dialog: MatDialog, private authService: AuthService) { }
 
 ngOnInit(): void {
   this.fetchData();
@@ -88,7 +88,6 @@ fetchData() {
           firstName: item.firstName,
           CIN: item.CIN,
           dateOfIssue: item.dateOfIssue,
-          licenseCategory: item.licenseCategory,
           situation: item.situation,
           balance: item.balance,
           dateOfBirth: item.dateOfBirth,
@@ -118,9 +117,11 @@ editRow(element: Student) {
 }
 
 
-
 saveChanges() {
   if (this.selectedRow) {
+    // Update selectedRow with the edited values before saving changes
+    this.selectedRow = { ...this.selectedRow };
+
     this.studentService.editStudent(this.selectedRow.User).subscribe(() => {
       console.log('Saved changes:', this.selectedRow);
       this.showEditForm = false;
@@ -129,18 +130,26 @@ saveChanges() {
   }
 }
 
+
 deleteRow(element: Student) {
-  if (element.User.username) {
-    this.studentService.deleteStudent(element.User.username).subscribe(() => {
+  if (element.User.CIN) {
+    this.studentService.deleteStudent(element.User.CIN).subscribe(() => {
       console.log('Deleted row:', element.User);
       this.fetchData(); // Refresh data after deletion
     });
   }
 }
 
+
 submitStudent() {
+  // Update selectedRow with the values entered in the form
+  this.selectedRow = {
+    User: { ...this.selectedRow.User }
+  };
+
+  // Now selectedRow contains the updated values entered by the user
   if (this.selectedRow) {
-    this.studentService.addStudent(this.selectedRow.User).subscribe(response => {
+    this.authService.signup(this.selectedRow.User).subscribe(response => {
       console.log('New student added successfully', response);
       this.resetForm();
     }, error => {
@@ -149,10 +158,6 @@ submitStudent() {
   }
 }
 
-resetForm() {
-  // Reset selectedRow object or any other form reset logic
-  window.location.reload();
-}
 @ViewChild(MatPaginator) paginator!: MatPaginator;
   //pagination 
    onPageChange(event: PageEvent) {
@@ -184,10 +189,10 @@ printTable() {
       //printContent += '<th>Role</th>';
       printContent += '<th>Name</th>';
       printContent += '<th>First Name</th>';
-      printContent += '<th>Last Name</th>';
+      //printContent += '<th>Last Name</th>';
       printContent += '<th>CIN</th>';
+      printContent += '<th>Situation</th>';
       printContent += '<th>Date of Issue</th>';
-      printContent += '<th>License Category</th>';
       printContent += '<th>Date of Birth</th>';
       printContent += '<th>Nationality</th>';
       printContent += '<th>Address</th>';
@@ -206,8 +211,8 @@ printTable() {
         printContent += '<td>' + element.User.name + '</td>';
         printContent += '<td>' + element.User.firstName + '</td>';
         printContent += '<td>' + element.User.CIN + '</td>';
+        printContent += '<td>' + element.User.situation + '</td>';
         printContent += '<td>' + element.User.dateOfIssue + '</td>';
-        printContent += '<td>' + element.User.licenseCategory + '</td>';
         printContent += '<td>' + element.User.dateOfBirth + '</td>';
         printContent += '<td>' + element.User.nationality + '</td>';
         printContent += '<td>' + element.User.address + '</td>';
@@ -234,6 +239,46 @@ printTable() {
     console.error('Print content not found or not initialized');
   }
 }
+resetForm(){
+  this.selectedRow = { 
+    User: {
+      username: 'default_user',
+      password: 'default_password',
+      email: 'default@student.com',
+      role: 'student',
+      name: 'Default Student',
+      firstName: 'Default',
+      CIN: '1234567890',
+      dateOfIssue: new Date(2000, 0, 1),
+      situation: 'N/A',
+      balance: 0,
+      dateOfBirth: new Date(1990, 0, 1),
+      nationality: 'N/A',
+      address: '123 Main Street',
+      telephone: '123-456-7890',
+      image: null,
+      personalCode:null,
+      personnelFunction:null,
+      recruitmentDate:null,
+      netSalary:null,
+      grossSalary:null,
+      qualification:null,
+      leaveDaysPerYear:null,
+      cnssNumber:null,
+      CategoryCode:'A'
+    }
+  };
+  this.fetchData();
+}
+cancelForm() {
+  this.showEditForm = false; 
+  this.resetForm()// Optionally reset the form fields
+
+}
+canceladdForm() {
+  this.showForm = false; 
+  this.resetForm()// Optionally reset the form fields
+}
 
 }
 interface Student {
@@ -247,20 +292,19 @@ interface Student {
   firstName: string;
   CIN: string; // Assuming CIN is a unique identifier
   dateOfIssue: Date;
-  licenseCategory: string;
   situation: string;
   balance: number;
   dateOfBirth: Date;
   nationality: string;
   address: string;
   telephone: string;
-  image?: string;
-  personalCode?:String,
-  personnelFunction?:String,
-  recruitmentDate?:Date,
-  netSalary?:number,
-  grossSalary?:number
-  qualification?:string,
-  leaveDaysPerYear?:number,
-  cnssNumber?:string
+  image: string |null;
+  personalCode?:String|null
+  personnelFunction?:String|null
+  recruitmentDate?:Date|null
+  netSalary?:number|null
+  grossSalary?:number|null
+  qualification?:string|null
+  leaveDaysPerYear?:number|null
+  cnssNumber:string |null
  CategoryCode?:string}}

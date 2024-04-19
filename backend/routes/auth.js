@@ -5,39 +5,25 @@ const router = express.Router();
 const authController = require('../controllers/auth');
 const loginController = require('../controllers/login');
 const forgotPasswordController = require('../controllers/forgotpassword');
-// POST /auth/signup
-/*router.post('/signup', [
-    check('username').not().isEmpty(),
-    check('email').isEmail(),
-    check('password').isLength({ min: 6 }),
-    check('name').not().isEmpty(),
-    check('firstName').not().isEmpty(),
-    check('CIN').not().isEmpty(),
-    check('dateOfIssue').isISO8601().toDate(),
-    check('licenseCategory').not().isEmpty(),
-    check('situation').not().isEmpty(),
-    check('balance').not().isEmpty(),
-    check('dateOfBirth').isISO8601().toDate(),
-    check('nationality').not().isEmpty(),
-    check('address').not().isEmpty(),
-    check('telephone').not().isEmpty()
-], authController.signup);*/
+const changePasswordController = require('../controllers/changePassword')
+
+
+
 router.post('/signup', [
   check('username').not().isEmpty(),
   check('email').isEmail(),
   check('password').isLength({min: 6}),
   // Adjust validation rules for properties that can be null
-  check('name').optional().not().isEmpty(),
+  check('name').not().isEmpty(),
   check('firstName').optional().not().isEmpty(),
-  check('CIN').optional().not().isEmpty(),
+  check('CIN').not().isEmpty(),
   check('dateOfIssue').optional().isISO8601().toDate(),
-  check('licenseCategory').optional().not().isEmpty(),
-  check('situation').optional().not().isEmpty(),
+  check('situation').not().isEmpty(),
   check('balance').optional().not().isEmpty(),
-  check('dateOfBirth').optional().isISO8601().toDate(),
-  check('nationality').optional().not().isEmpty(),
-  check('address').optional().not().isEmpty(),
-  check('telephone').optional().not().isEmpty(),
+  check('dateOfBirth').isISO8601().toDate(),
+  check('nationality').not().isEmpty(),
+  check('address').not().isEmpty(),
+  check('telephone').not().isEmpty(),
   check('personalCode').optional().not().isEmpty(),
   check('personnelFunction').optional().not().isEmpty(),
   check('recruitmentDate').optional().not().isEmpty(),
@@ -45,7 +31,8 @@ router.post('/signup', [
   check('grossSalary').optional().not().isEmpty(),
   check('qualification').optional().not().isEmpty(),
   check('leaveDaysPerYear').optional().not().isEmpty(),
-  check('cnssNumber').optional().not().isEmpty()
+  check('cnssNumber').optional().not().isEmpty(),
+  check('CategoryCode').optional().not().isEmpty()
 ], authController.signup);
 
 
@@ -74,5 +61,18 @@ router.post('/resetpassword', [
   check('token').notEmpty(),
   check('newPassword').isLength({min: 6}) // Adjust validation as needed
 ], forgotPasswordController.resetPassword);
+
+
+
+router.post('/changePassword', [
+  check('email').isEmail(),
+  check('oldPassword').notEmpty().withMessage('Old password is required'),
+  check('newPassword').notEmpty().withMessage('New password is required'),
+
+],changePasswordController.changePassword)
+
+
+
+
 
 module.exports = router;

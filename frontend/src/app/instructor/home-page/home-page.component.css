@@ -1,0 +1,71 @@
+
+
+.card-container {
+    background-color: white;
+    padding: 20px;
+  }
+ 
+  
+  .mat-sidenav {
+    width: 200px; /* Adjust as needed */
+    background-color: #918c99; /* Adjust as needed */
+  }
+  .logout-button {
+    background-color: #3F51B5    ; /* Red background color */
+    color: rgb(8, 8, 8); /* black text color */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Add padding */
+    cursor: pointer; /* Add pointer cursor on hover */
+    border-radius: 5px; /* Add border radius */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+  }
+  
+  .logout-button:hover {
+    background-color: #e9155b; /* Darker red background color on hover */
+  }
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+  }
+  
+  .account-icon {
+    font-size: 64px; /* Adjust the size as needed */
+  }
+  
+  .welcome-text {
+    font-size: 18px;
+    margin-top: 8px;
+  }
+  
+  .logo-img {
+    width: 55px; /* Adjust width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 20px; /* Add space between logo and text */
+  }
+  .menu-buttons button {
+    margin-right: 10px; /* Adjust as needed */
+  }
+
+  .container {
+    width: 100%; /* Adjust as needed */
+    height: 100vh; /* Adjust as needed */
+  }
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+
+
+
+
+
+
+
+

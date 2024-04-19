@@ -19,7 +19,13 @@ export class CoondidateService {
     return this.http.post<any>(`${this.apiUrl}/addStudent`,candidate);
 
   }
+  updateUser(cin: string, updatedData: any): Observable<any> {
+    const url = `${this.apiUrl}/updateStudent/${cin}`; // Assuming your API endpoint follows RESTful conventions
 
+    // Send PUT request to the API with updated user data
+    return this.http.put(url, updatedData)
+
+  }
   editStudent(candidate: any): Observable<any[]> {
     return this.http.put<any>(`${this.apiUrl}/updateStudent/${candidate.id}`, candidate);
   }

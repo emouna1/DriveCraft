@@ -1,3 +1,5 @@
+import { UserEnrollmentComponent } from './user-enrollment/user-enrollment.component';
+import { CandidateModule } from './candidate/candidate.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,6 +9,7 @@ import {FullCalendarModule} from '@fullcalendar/angular';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { InstructorModule } from './instructor/instructor.module';
 import { ManagementModule } from './management/management.module';
 import { CommonModule } from '@angular/common';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -17,7 +20,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -34,8 +36,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
       useFactory: adapterFactory,
     }),
     ManagementModule,
-    FullCalendarModule
-
+    FullCalendarModule,
+    CandidateModule,
+    InstructorModule,
+    UserEnrollmentComponent
 
   ],
   exports: [

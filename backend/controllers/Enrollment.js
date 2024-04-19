@@ -85,7 +85,7 @@ exports.enrollmentsController = {
   async deleteEnrollment(req, res) {
     try {
       const enrollmentId = req.params.id;
-      await codeEnrollment.destroy({where: {id: enrollmentId}});
+      await Enrollment.destroy({where: {id: enrollmentId}});
       res.json({message: 'Enrollment deleted successfully'});
     } catch (error) {
       res.status(500).json({error: error.message});
@@ -96,7 +96,7 @@ exports.enrollmentsController = {
       const enrollmentId = req.params.id;
       const updatedData = req.body;
 
-      const enrollment = await codeEnrollment.findByPk(enrollmentId);
+      const enrollment = await Enrollment.findByPk(enrollmentId);
       if (!enrollment) {
         return res.status(404).json({error: 'Enrollment not found'});
       }
@@ -124,7 +124,8 @@ exports.enrollmentsController = {
     } catch (error) {
       res.status(400).json({error: error.message});
     }
-  }
-
+  },
+  
+  
 
 };

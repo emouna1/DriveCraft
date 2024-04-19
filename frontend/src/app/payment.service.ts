@@ -25,4 +25,8 @@ export class PaymentService {
   deletePayment(id: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/deletePaymentS/${id}`);
   }
+  addEnrollmentPayment(Data: any): Observable<any>  {
+    return this.http.post<any[]>(`${this.apiUrl}/paymentSettlement`,Data);
+  }
+
 }

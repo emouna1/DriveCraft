@@ -21,15 +21,30 @@
           <!-- Home Menu -->
     <div class="menu-buttons">      
     <button mat-button [matMenuTriggerFor]="HomeMenu">
-      Home
+      <mat-icon> pending_actions </mat-icon> 
+      Schedule
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
+    <br><br>
+
+    <button mat-button [matMenuTriggerFor]="RegisterMenu">
+      <mat-icon>
+        how_to_reg
+        </mat-icon>
+      Registration management
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <br><br>
 
     <!-- Candidates Menu -->
     <button mat-button [matMenuTriggerFor]="FoldersMenu">
+      <mat-icon>
+        folder_open
+      </mat-icon>
       Folders
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
+    <br><br>
 
     <!-- Condidat Menu
     <button mat-button [matMenuTriggerFor]="CondidatMenu">
@@ -38,14 +53,21 @@
     </button>-->
     <!-- Condidat Menu -->
     <button mat-button [matMenuTriggerFor]="UsersMenu">
+      <mat-icon>group</mat-icon>
       Users Section
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <!-- Condidat Menu -->
+    <br><br>
     <button mat-button [matMenuTriggerFor]="Payments">
+      <mat-icon>
+        paid
+      </mat-icon>
       Payments
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
+    <br><br>
+
     <!-- Condidat Menu 
     <button mat-button [matMenuTriggerFor]="VehiclesMenu">
       Vehicles Section
@@ -66,16 +88,16 @@
     <mat-menu #HomeMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
       <a mat-menu-item routerLink="Schedule" routerLinkActive="active">Planning of code sessions & exams</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Planning of conduct sessions & exams</a>
-      <a mat-menu-item routerLink="Enrollments" routerLinkActive="active">Registration code</a>
-      <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">Registration conduct</a>
-       
+      <a mat-menu-item routerLink="schedulee" routerLinkActive="active">Planning of conduct sessions & exams</a>
     </mat-menu>
+
+
+       
     <mat-menu #FoldersMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
-      <a mat-menu-item routerLink="vehicles" routerLinkActive="active">vehicles edition</a>
-      <a mat-menu-item routerLink="Maintenance" routerLinkActive="active">Maintenance edition</a>
-      <a mat-menu-item routerLink="license" routerLinkActive="active">Driving License Category edition</a>
+      <a mat-menu-item routerLink="vehicles" routerLinkActive="active">      <mat-icon>no_crash</mat-icon> vehicles edition</a>
+      <a mat-menu-item routerLink="Maintenance" routerLinkActive="active"> <mat-icon>engineering</mat-icon>Maintenance edition</a>
+      <a mat-menu-item routerLink="license" routerLinkActive="active"> <mat-icon>commute</mat-icon>Driving License Category edition</a>
     </mat-menu>
     <mat-menu #CondidatMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
@@ -93,8 +115,8 @@
     </mat-menu>
     <mat-menu #Payments="matMenu">
       <!-- Add items for Candidates Menu here -->
-      <a mat-menu-item routerLink="Payment" routerLinkActive="active">Payment settlement </a>
-      <a mat-menu-item routerLink="paymentMethod" routerLinkActive="active">Payment method </a>
+      <a mat-menu-item routerLink="Payment" routerLinkActive="active"><mat-icon>receipt_long</mat-icon>Payment settlement </a>
+      <a mat-menu-item routerLink="paymentMethod" routerLinkActive="active"><mat-icon>payments</mat-icon>Payment method </a>
 
     </mat-menu>
     <mat-menu #VehiclesMenu="matMenu">
@@ -106,7 +128,11 @@
       <a mat-menu-item routerLink="/candidates/list" routerLinkActive="active">account</a>
     </mat-menu>
     
-
+    <mat-menu #RegisterMenu="matMenu">
+      <!-- Add items for users Menu here -->
+      <a mat-menu-item routerLink="Enrollments" routerLinkActive="active">Registration code</a>
+      <a mat-menu-item routerLink="conductEnrollments" routerLinkActive="active">Registration conduct</a>
+      </mat-menu>
 
     <mat-sidenav-content class="content"> <!-- Content Area -->    
       <router-outlet></router-outlet> <!-- Placeholder for component content -->

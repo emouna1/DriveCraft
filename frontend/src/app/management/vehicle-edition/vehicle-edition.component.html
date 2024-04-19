@@ -1,240 +1,138 @@
 <div class="container">
-<h2>Vehicles edition</h2>
-<div class="amouna-container mat-elevation-z8">
+  <h2>Vehicles edition</h2>
+  <div class="amouna-container mat-elevation-z8">
 
-  <table mat-table [dataSource]="dataSource">
-*
-    <!-- Displaying columns -->
-    <ng-container [matColumnDef]="column" *ngFor="let column of Columns">
-      <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
-      <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
-    </ng-container>
+    <!-- Table -->
+    <table mat-table [dataSource]="dataSource">
+      <!-- Displaying columns -->
+      <ng-container *ngFor="let column of columns" [matColumnDef]="column">
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let element">{{ element[column] !== null ? element[column] : '...' }}</td>
+      </ng-container>
 
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="editRow(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteRow(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
+      <!-- Header and Row definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions" >
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="primary" (click)="editRow(element)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deleteRow(element)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+    <!-- Paginator -->
+    <mat-paginator [pageSize]="3" [pageSizeOptions]="[2, 3, 4, 5]" [length]="dataSource.data.length" (page)="onPageChange($event)"></mat-paginator>
 
-    <!-- Header and Row definitions -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator [pageSize]="3"
-                  [pageSizeOptions]="[2, 3, 4, 5]"
-                  [length]="dataSource.data.length"
-                  (page)="onPageChange($event)">
-    </mat-paginator>
-  <button class="amouna-button" (click)="printTable()">Print</button>
-</div>
+    <!-- Print Button -->
+    <button class="amouna-button" (click)="printTable()">Print</button>
 
-<br><br>
+  </div>
 
+  <br>
+  <button class="amouna-button" (click)="toggleForm()">Add New Vehicle</button>
 
-<!-- Print Content -->
-<div #printContent style="display:none">
-  <table>
-    <!-- Table headers and rows will be generated dynamically -->
-  </table>
-</div>
+  <br>
 
-<button  class="amouna-button" (click)="toggleForm()">Add New Vehicle</button>
-<br>
-
-  <!-- Add Vehicle Form -->
-<div *ngIf="showForm">
-  <div *ngIf="addVehicleForm">
+  <!-- Add New Vehicle Form -->
+  <div *ngIf="showForm">
     <form [formGroup]="addVehicleForm" (submit)="submitVehicle()">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="LicensePlate">License Plate:</label>
-          <input type="text" formControlName="LicensePlate" required>
-          <div *ngIf="addVehicleForm.get('LicensePlate')!.invalid && addVehicleForm.get('LicensePlate')!.touched">
-            <small *ngIf="addVehicleForm.get('LicensePlate')!.errors?.['required']">License Plate is required</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="Brand">Brand:</label>
-          <input type="text" formControlName="Brand" required>
-          <div *ngIf="addVehicleForm.get('Brand')!.invalid && addVehicleForm.get('Brand')!.touched">
-            <small *ngIf="addVehicleForm.get('Brand')!.errors?.['required']">Brand is required</small>
-          </div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="Type">Type:</label>
-          <input type="text" formControlName="Type" required>
-          <div *ngIf="addVehicleForm.get('Type')!.invalid && addVehicleForm.get('Type')!.touched">
-            <small *ngIf="addVehicleForm.get('Type')!.errors?.['required']">Type is required</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="Power">Power:</label>
-          <input type="text" formControlName="Power" required>
-          <div *ngIf="addVehicleForm.get('Power')!.invalid && addVehicleForm.get('Power')!.touched">
-            <small *ngIf="addVehicleForm.get('Power')!.errors?.['required']">Power is required</small>
-          </div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="Fuel">Fuel:</label>
-          <input type="text" formControlName="Fuel" required>
-          <div *ngIf="addVehicleForm.get('Fuel')!.invalid && addVehicleForm.get('Fuel')!.touched">
-            <small *ngIf="addVehicleForm.get('Fuel')!.errors?.['required']">Fuel is required</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="Odometer">Odometer:</label>
-          <input type="number" formControlName="Odometer" required>
-          <div *ngIf="addVehicleForm.get('Odometer')!.invalid && addVehicleForm.get('Odometer')!.touched">
-            <small *ngIf="addVehicleForm.get('Odometer')!.errors?.['required']">Odometer is required</small>
-          </div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="Color">Color:</label>
-          <input type="text" formControlName="Color" required>
-          <div *ngIf="addVehicleForm.get('Color')!.invalid && addVehicleForm.get('Color')!.touched">
-            <small *ngIf="addVehicleForm.get('Color')!.errors?.['required']">Color is required</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="PurchasePrice">Purchase Price:</label>
-          <input type="number" formControlName="PurchasePrice" required>
-          <div *ngIf="addVehicleForm.get('PurchasePrice')!.invalid && addVehicleForm.get('PurchasePrice')!.touched">
-            <small *ngIf="addVehicleForm.get('PurchasePrice')!.errors?.['required']">Purchase Price is required</small>
-          </div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="Date">Date:</label>
-          <input type="datetime-local" formControlName="Date" required>
-          <div *ngIf="addVehicleForm.get('Date')!.invalid && addVehicleForm.get('Date')!.touched">
-            <small *ngIf="addVehicleForm.get('Date')!.errors?.['required']">Date is required</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="Observation">Observation:</label>
-          <input type="text" formControlName="Observation" required>
-          <div *ngIf="addVehicleForm.get('Observation')!.invalid && addVehicleForm.get('Observation')!.touched">
-            <small *ngIf="addVehicleForm.get('Observation')!.errors?.['required']">Observation is required</small>
-          </div>
-        </div>
-      </div>
-      <!-- Submit button -->
-      <button class="amouna-button" type="submit">Add Vehicle</button>
-      <button class="amouna-button" type="button" (click)="canceladdForm()">Cancel</button>
+      <fieldset>
+        <legend>Add vehicle</legend>
+       <!-- <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation']">
+          <mat-form-field>
+            <mat-label>{{ field }}</mat-label>
+            <input matInput type="{{ field === 'Date' ? 'datetime-local' : 'text' }}" formControlName="{{ field }}" required>
+            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          </mat-form-field>
+        </ng-container>-->
+        <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation']">
+          <mat-form-field *ngIf="field !== 'Date' && field !== 'Color' && field !== 'PurchasePrice'">
+            <mat-label>{{ field }}</mat-label>
+            <input matInput type="text" formControlName="{{ field }}" required>
+            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="field === 'Date'">
+            <mat-label>{{ field }}</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="{{ field }}" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="field === 'Color'">
+            <mat-label>{{ field }}</mat-label>
+            <input matInput type="color" formControlName="{{ field }}" required>
+            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="field === 'PurchasePrice'">
+            <mat-label>{{ field }}</mat-label>
+            <input matInput type="text" formControlName="{{ field }}" required pattern="^[0-9]+(\.[0-9]{1,2})?$">
+            <span matPrefix>$&nbsp;</span>
+            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('pattern')"> Invalid price format</mat-error>
+          </mat-form-field>
+        </ng-container>
+        
+        <!-- Submit and Cancel Buttons -->
+        <button class="amouna-button" type="submit">Add Vehicle</button>
+        <button class="amouna-button" type="button" (click)="canceladdForm()">Cancel</button>
+      </fieldset>
     </form>
   </div>
-</div>
 
-<!-- Form for editing -->
+  <!-- Edit Vehicle Form -->
+<!-- Edit Vehicle Form -->
 <div *ngIf="showEditForm">
-  <h2>Edit Maintenance</h2>
   <form [formGroup]="editVehicleForm" (submit)="saveChanges()">
-    <div class="form-row">
-      <div class="form-group">
-        <label for="LicensePlate">License Plate:</label>
-        <input type="text" formControlName="LicensePlate" required>
-        <div *ngIf="addVehicleForm.get('LicensePlate')!.invalid && editVehicleForm.get('LicensePlate')!.touched">
-          <small *ngIf="addVehicleForm.get('LicensePlate')!.errors?.['required']">License Plate is required</small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="Brand">Brand:</label>
-        <input type="text" formControlName="Brand" required>
-        <div *ngIf="addVehicleForm.get('Brand')!.invalid && editVehicleForm.get('Brand')!.touched">
-          <small *ngIf="addVehicleForm.get('Brand')!.errors?.['required']">Brand is required</small>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="Type">Type:</label>
-        <input type="text" formControlName="Type" required>
-        <div *ngIf="editVehicleForm.get('Type')!.invalid && editVehicleForm.get('Type')!.touched">
-          <small *ngIf="editVehicleForm.get('Type')!.errors?.['required']">Type is required</small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="Power">Power:</label>
-        <input type="text" formControlName="Power" required>
-        <div *ngIf="editVehicleForm.get('Power')!.invalid && editVehicleForm.get('Power')!.touched">
-          <small *ngIf="editVehicleForm.get('Power')!.errors?.['required']">Power is required</small>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="Fuel">Fuel:</label>
-        <input type="text" formControlName="Fuel" required>
-        <div *ngIf="editVehicleForm.get('Fuel')!.invalid && editVehicleForm.get('Fuel')!.touched">
-          <small *ngIf="editVehicleForm.get('Fuel')!.errors?.['required']">Fuel is required</small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="Odometer">Odometer:</label>
-        <input type="number" formControlName="Odometer" required>
-        <div *ngIf="editVehicleForm.get('Odometer')!.invalid && editVehicleForm.get('Odometer')!.touched">
-          <small *ngIf="editVehicleForm.get('Odometer')!.errors?.['required']">Odometer is required</small>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="Color">Color:</label>
-        <input type="text" formControlName="Color" required>
-        <div *ngIf="editVehicleForm.get('Color')!.invalid && editVehicleForm.get('Color')!.touched">
-          <small *ngIf="editVehicleForm.get('Color')!.errors?.['required']">Color is required</small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="PurchasePrice">Purchase Price:</label>
-        <input type="number" formControlName="PurchasePrice" required>
-        <div *ngIf="editVehicleForm.get('PurchasePrice')!.invalid && editVehicleForm.get('PurchasePrice')!.touched">
-          <small *ngIf="editVehicleForm.get('PurchasePrice')!.errors?.['required']">Purchase Price is required</small>
-        </div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="Date">Date:</label>
-        <input type="datetime-local" formControlName="Date" required>
-        <div *ngIf="editVehicleForm.get('Date')!.invalid && editVehicleForm.get('Date')!.touched">
-          <small *ngIf="editVehicleForm.get('Date')!.errors?.['required']">Date is required</small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="Observation">Observation:</label>
-        <input type="text" formControlName="Observation" required>
-        <div *ngIf="editVehicleForm.get('Observation')!.invalid && editVehicleForm.get('Observation')!.touched">
-          <small *ngIf="editVehicleForm.get('Observation')!.errors?.['required']">Observation is required</small>
-        </div>
-      </div>
-    </div>
-    <button class="amouna-button" type="submit">Save Changes</button>
-    <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
+    <fieldset>
+      <legend>Edit Vehicle</legend>
+      <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation']">
+        <mat-form-field *ngIf="field !== 'Date' && field !== 'Color' && field !== 'PurchasePrice'">
+          <mat-label>{{ field }}</mat-label>
+          <input matInput type="text" formControlName="{{ field }}" required>
+          <mat-error *ngIf="editVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="field === 'Date'">
+          <mat-label>{{ field }}</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="{{ field }}" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="editVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="field === 'Color'">
+          <mat-label>{{ field }}</mat-label>
+          <input matInput type="color" formControlName="{{ field }}" required>
+          <mat-error *ngIf="editVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="field === 'PurchasePrice'">
+          <mat-label>{{ field }}</mat-label>
+          <input matInput type="text" formControlName="{{ field }}" required pattern="^[0-9]+(\.[0-9]{1,2})?$">
+          <span matPrefix>$&nbsp;</span>
+          <mat-error *ngIf="editVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          <mat-error *ngIf="editVehicleForm.get(field)?.hasError('pattern')"> Invalid price format</mat-error>
+        </mat-form-field>
+      </ng-container>
+      <!-- Submit and Cancel Buttons -->
+      <button class="amouna-button" type="submit">Save changes </button>
+      <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
+    </fieldset>
   </form>
 </div>
 
-    <div #printContent style="display:none">
-      <table>
-        <!-- Table headers and rows will be generated dynamically -->
-      </table>
-    </div> 
+
+  <!-- Print Content -->
+  <div #printContent style="display:none">
+    <table>
+      <!-- Table headers and rows will be generated dynamically -->
+    </table>
+  </div>
 
   <br><br>
 </div>

@@ -86,20 +86,25 @@ export class AuthService {
   getUsername(): string | null {
     return localStorage.getItem('username');
   }
-   
+  getCurrentUserRole(): string | null {
+    const currentUser = this.getCurrentUser();
+    console.log(currentUser.role)
+    return currentUser ? currentUser.role : null;
+  }
+
+  getCurrentUserCIN(): string | null {
+    const currentUser = this.getCurrentUser();
+    console.log(currentUser.CIN)
+    return currentUser ? currentUser.CIN : null;
+  }
+
   deleteUser(email: string): Observable<any> {
     const url = `${this.baseUrl}/users/${email}`; // Assuming your API endpoint follows RESTful conventions
     return this.http.post<any>(url, {email});
 
    
   }
-  updateUser(email: string, userData: any): Observable<any> {
-    const url = `${this.baseUrl}/users/${email}`; // Assuming your API endpoint follows RESTful conventions
-
-    // Send PUT request to the API with updated user data
-    return this.http.put(url, userData)
-
-  }
+  
 requestPasswordReset(email: string): Observable<any> {
   const url = `${this.baseUrl}/forgotpassword`; // Backend endpoint URL
   return this.http.post<any>(url, { email });
@@ -117,6 +122,12 @@ setCurrentUser(user: any): void {
 getCurrentUser(): any | null {
   const userString = localStorage.getItem('currentUser');
   return userString ? JSON.parse(userString) : null;
+}
+
+
+changePassword(email: string, oldPassword: string, newPassword: string): Observable<any> {
+  const url = `${this.baseUrl}/changePassword`; // Backend endpoint URL for resetting password
+  return this.http.post<any>(url, { email , oldPassword, newPassword });
 }
 
 }

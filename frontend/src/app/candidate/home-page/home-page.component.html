@@ -1,0 +1,53 @@
+<!-- home.component.html -->
+<mat-toolbar color="primary"> <!-- Header -->
+    <img src="../../../assets/logo.png" alt="logo" class="logo-img">
+    <span>DriveCraft</span>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="container"> <!-- Container for sidebar and content -->
+    <mat-sidenav mode="side" opened> <!-- Sidebar -->
+      <mat-nav-list>
+        <div class="user-info">
+          <span class="material-icons account-icon">
+            account_circle
+          </span>
+          <span class="welcome-text">Welcome {{ userName }}</span>
+        </div>
+       <!-- <a mat-list-item routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        
+        <a mat-button [matMenuTriggerFor]="HomeMenu">Home</a>
+        <a mat-button [matMenuTriggerFor]="candidatesMenu">Folders</a>
+        <a mat-button [matMenuTriggerFor]="CondidatMenu">Condidat section</a>-->
+          <!-- Home Menu -->
+    
+      <span class="material-symbols-outlined">
+        <a mat-list-item routerLink="viewLessons" routerLinkActive="active">
+          <mat-icon>calendar_month</mat-icon> <!-- Calendar icon -->
+          My lessons</a>
+        </span>
+ 
+<span class="material-symbols-outlined">
+  <a mat-list-item routerLink="viewExams" routerLinkActive="active">  <mat-icon>event</mat-icon>
+    My exams
+</a>
+</span>
+<a mat-list-item routerLink="payments" routerLinkActive="active">
+    <mat-icon>paid</mat-icon><!-- Use the desired Material icon name here -->
+    Payments
+</a>
+<a mat-list-item routerLink="Profile" routerLinkActive="active">
+  <mat-icon>person_outline</mat-icon><!-- Use the desired Material icon name here -->
+  PROFILE
+</a>
+<br><br>
+<button class="logout-button" (click)="logout()">
+  <span class="material-icons">exit_to_app</span> Logout
+</button>
+   </mat-nav-list>
+    
+</mat-sidenav>
+
+    <mat-sidenav-content class="content"> <!-- Content Area -->    
+      <router-outlet></router-outlet> <!-- Placeholder for component content -->
+    </mat-sidenav-content>
+  </mat-sidenav-container>

@@ -1,0 +1,93 @@
+/* Add any custom styles for your calendar here */
+#calendar {
+    margin: 20px auto;
+    max-width: 1000px;
+    flex: 1; /* Take up remaining space */
+    margin-left: 60px; /* Adjust the value as needed */
+
+  }
+  .snackbar-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  .snackbar-message {
+    display: inline-block;
+  }
+  
+.container {
+  max-width: 1200px; /* Adjust the max-width as needed */
+  margin: 0 auto; 
+  padding: 20px; 
+  /*height: auto;*/
+  height: calc(100% - 100px); /* Set the height to 100% of the viewport height */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
+.amouna-container {
+  /*max-height: calc(100% - 100px);*/ /* Adjust the height of the container */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
+
+.amouna-button {
+  margin: 5px;
+  border-radius: 10px;
+  padding: 10px 10px;
+  font-size: 16px;
+}
+.amouna-button:hover {
+  background-color: #eb848d; /* Green */
+  color: rgb(245, 235, 236);
+}
+
+.amouna-button:active {
+  background-color: #eb848d;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+
+/* CSS for Color Legend */
+.color-legend {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+}
+
+.color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+}
+
+.legend-text {
+  font-size: 14px;
+}
+
+/* CSS for Events */
+.fc-event {
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.fc-event:hover {
+  background-color: #f0f0f0;
+}
+.calendar-container {
+  display: flex;
+}

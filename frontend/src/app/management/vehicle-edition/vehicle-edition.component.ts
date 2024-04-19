@@ -11,18 +11,16 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class VehicleEditionComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+
   dataSource = new MatTableDataSource<Vehicle>();
+  columns = ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation'];
+  displayedColumns = [...this.columns, 'actions'];
 
-  Columns = ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation'];
-  displayedColumns = this.Columns.concat(['actions']);
+  addVehicleForm!: FormGroup;
+  editVehicleForm!: FormGroup;
 
-  //dataSource: Vehicle[] = [];
-  showForm: boolean = false;
-  showEditForm: boolean = false;
-  data: any = {}; // Object to hold form data
-  addVehicleForm: FormGroup;
-  editVehicleForm: FormGroup;
+  showForm: boolean = false; // Added variable to control the visibility of the add form
+  showEditForm: boolean = false; // Added variable to control the visibility of the edit form
 
   selectedRow: Vehicle = {
     LicensePlate: '',
@@ -37,131 +35,103 @@ export class VehicleEditionComponent implements OnInit {
     Observation: ''
   };
 
-
-  cancelForm() {
-   this.showForm = false;
-    this.editVehicleForm.reset();
-    this.resetForm(); // Optionally reset the form fields
-
-  }
-  canceladdForm() {
-    this.showForm = false;
-    this.resetForm(); // Optionally reset the form fields
-  }
-
-  constructor
-  (private VehiclesEditionService: VehiclesEditionService,
-    private fb: FormBuilder,
-  ) {this.addVehicleForm = this.fb.group({
-    LicensePlate: ['', Validators.required],
-    Brand: ['', Validators.required],
-    Type: ['', Validators.required],
-    Power: ['', Validators.required],
-    Fuel: ['', Validators.required],
-    Odometer: [0, Validators.required],
-    Color: ['', Validators.required],
-    PurchasePrice: [0, Validators.required],
-    Date: ['', Validators.required],
-    Observation: ['', Validators.required]
-  });
- 
-  this.editVehicleForm = this.fb.group({
-    LicensePlate: ['', Validators.required],
-    Brand: ['', Validators.required],
-    Type: ['', Validators.required],
-    Power: ['', Validators.required],
-    Fuel: ['', Validators.required],
-    Odometer: [0, Validators.required],
-    Color: ['', Validators.required],
-    PurchasePrice: [0, Validators.required],
-    Date: ['', Validators.required],
-    Observation: ['', Validators.required]
-  });}
+  constructor(
+    private vehiclesEditionService: VehiclesEditionService,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
+    this.createForms();
     this.fetchData();
+  }
 
+  createForms() {
+    this.addVehicleForm = this.fb.group({
+      LicensePlate: ['', Validators.required],
+      Brand: ['', Validators.required],
+      Type: ['', Validators.required],
+      Power: ['', Validators.required],
+      Fuel: ['', Validators.required],
+      Odometer: [0, Validators.required],
+      Color: ['', Validators.required],
+      PurchasePrice: [0, Validators.required],
+      Date: ['', Validators.required],
+      Observation: ['', Validators.required]
+    });
+
+    this.editVehicleForm = this.fb.group({
+      LicensePlate: ['', Validators.required],
+      Brand: ['', Validators.required],
+      Type: ['', Validators.required],
+      Power: ['', Validators.required],
+      Fuel: ['', Validators.required],
+      Odometer: [0, Validators.required],
+      Color: ['', Validators.required],
+      PurchasePrice: [0, Validators.required],
+      Date: ['', Validators.required],
+      Observation: ['', Validators.required]
+    });
   }
 
   fetchData() {
-    this.VehiclesEditionService.getCars().subscribe((data: any) => {
+    this.vehiclesEditionService.getCars().subscribe((data: any) => {
       this.dataSource.data = data.vehicles;
-      console.log(this.dataSource)
       this.dataSource.paginator = this.paginator;
-
     });
   }
- 
+
   toggleForm() {
     this.showForm = !this.showForm;
+    this.showEditForm = false; // Ensure edit form is not shown when toggling edit form
+    this.addVehicleForm.reset();
   }
 
   editRow(element: Vehicle) {
-    this.showEditForm = true; // Show the edit form
-    this.selectedRow = { ...element }; // Copy the selected row's data
-    this.editVehicleForm.patchValue(this.selectedRow);
+    this.editVehicleForm.patchValue(element);
+    this.showEditForm = true;
+    this.showForm = false; // Ensure add form is not shown when opening edit form
+  }
 
-  }
-  //pagination 
-  onPageChange(event: PageEvent) {
-    this.dataSource.paginator!.pageIndex = event.pageIndex;
-    this.dataSource.paginator!.pageSize = event.pageSize;
-  }
-  
   saveChanges() {
     if (this.editVehicleForm.valid) {
       const formData = this.editVehicleForm.value;
-      this.VehiclesEditionService.updateCar(formData.LicensePlate, formData).subscribe(
+      this.vehiclesEditionService.updateCar(formData.LicensePlate, formData).subscribe(
         response => {
-          // Handle success
           console.log('Vehicle updated successfully', response);
-          this.showEditForm = false;
           this.editVehicleForm.reset();
           this.fetchData();
+          this.showEditForm = false; // Hide edit form after saving changes
         },
         error => {
-          // Handle error
           console.error('Error updating vehicle', error);
         }
       );
     }
   }
+
   deleteRow(element: Vehicle) {
-    // Call deleteM function from the service to delete the row
-    this.VehiclesEditionService.deleteCar(element.LicensePlate).subscribe(() => {
+    this.vehiclesEditionService.deleteCar(element.LicensePlate).subscribe(() => {
       console.log('Deleted row:', element);
-      // After successful deletion, you might want to refresh the data
       this.fetchData();
-    });}
+    });
+  }
 
-
-
-      submitVehicle() {
-        if (this.addVehicleForm.valid) {
-          //const formData = this.addVehicleForm.value;
-          console.log(this.addVehicleForm.value)
-          this.VehiclesEditionService.addCar(this.addVehicleForm.value)
-          .subscribe(response => {
-            // Handle response if needed
-            console.log('New license category added successfully', response);
-            // Optionally, you can reset the form after successful submission
-            console.log('Vehicle added successfully', response);
-            this.showForm = false;
-            this.addVehicleForm.reset();
-            this.fetchData();
-      //      this.resetForm();
-          }, error => {
-            // Handle error if needed
-            console.error('Error adding license category', error);
-          });
-      }
+  submitVehicle() {
+    if (this.addVehicleForm.valid) {
+      this.vehiclesEditionService.addCar(this.addVehicleForm.value).subscribe(
+        response => {
+          console.log('Vehicle added successfully', response);
+          this.addVehicleForm.reset();
+          this.fetchData();
+          this.showForm = false; // Hide add form after submitting
+        },
+        error => {
+          console.error('Error adding vehicle', error);
+        }
+      );
     }
-      resetForm() {
-        // Reset selectedRow object or any other form reset logic
-       // this.selectedRow = {}; // Assuming selectedRow is an object
-       window.location.reload();
+  }
 
-      }
 @ViewChild('printContent') printContent!: ElementRef;
 
 printTable() {
@@ -222,11 +192,23 @@ printTable() {
   } else {
     console.error('Print content not found or not initialized');
   }
+  
 }
   
   
-
-
+cancelForm() {
+  this.showEditForm = false; 
+  this.fetchData();
+}
+canceladdForm() {
+  this.showForm = false; 
+  this.fetchData();
+}
+ //pagination 
+ onPageChange(event: PageEvent) {
+  this.dataSource.paginator!.pageIndex = event.pageIndex;
+  this.dataSource.paginator!.pageSize = event.pageSize;
+}
   
   
 }

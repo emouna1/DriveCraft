@@ -1,56 +1,24 @@
-/* Add your custom styles here */
+.container {
+  display: flex;
+  flex-wrap: wrap; /* Allow containers to wrap onto multiple lines if needed */
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px; /* Adjust the max-width as needed */
+  margin: 0 auto; 
+  padding: 20px; 
+  height: auto; /* Set the height to 100% of the viewport height */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
 
-/* Style for the calendar container */
-:host {
-    display: block;
-    width: 100%;
-    max-width: 800px; /* Adjust as needed */
-    margin: 0 auto;
-  }
-  
-  /* Style for the calendar header */
-  .mwl-calendar-month-view-header {
-    background-color: #f0f0f0;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  /* Style for the calendar day cells */
-  .mwl-calendar-month-cell {
-    border: 1px solid #ddd;
-    height: 100px; /* Adjust as needed */
-  }
-  
-  /* Style for the calendar event */
-  .mwl-calendar-event {
-    display: block;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 3px;
-    padding: 5px;
-    margin: 2px 0;
-    cursor: pointer;
-  }
-  
-  /* Style for the add event button */
-  .add-event-button {
-    margin-bottom: 20px;
-  }
-  
-  /* Style for the modal content */
-  .modal-content {
-    padding: 20px;
-  }
-  
-  /* Style for the close button in the modal */
-  .modal-close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-  
-  /* Style for the overlay backdrop of the modal */
-  .modal-backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
+.calendar-container {
+  flex-basis: calc(50% - 2.5px); /* Adjust width to fit two calendars horizontally with some spacing */
+  margin-bottom: 20px; /* Adjust spacing between calendar containers */
+}
+
+.calendar-containerr {
+  flex-basis: 60%; /* Make sure the third calendar spans the full width */
+}
+.amouna-container {
+  max-height: calc(100% - 100px); /* Adjust the height of the container */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}

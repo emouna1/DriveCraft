@@ -1,94 +1,22 @@
-/* Style for the enrollment list */
 
-.enrollment-list {
-  display: flex; /* Use flexbox to display enrollments side by side */
-  flex-wrap: wrap; /* Allow the enrollments to wrap to the next line if needed */
-}
-/* Style for the enrollment details */
-
-.enrollment-card {
-  flex: 0 0 calc(50% - 20px); /* Set each enrollment card to occupy 50% of the container width with some spacing */
-  margin: 10px; /* Add spacing between enrollment cards */
-}
-
-
-
-.enrollment-details {
-  top: 100%; /* Position the details section just below the header */
-  left: 0;
-  width: 100%; /* Make the details section span the entire width of the enrollment card */
-  background-color: #0b0325; /* Background color to differentiate the details section */
-  border: 1px solid #360202;
-  border-top: none; /* Remove top border to merge with header */
-  border-radius: 0 0 30px 30px; /* Apply border-radius to match enrollment card */
-  padding: 10px;
-}
-
-
-
-/* Style for the enrollment header */
-.enrollment-header {
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #920e40;
-}
 .container {
-  max-width: 700px; /* Adjust the max-width as needed */
+  max-width: 1200px; /* Adjust the max-width as needed */
   margin: 0 auto; 
   padding: 20px; 
-  height: 70%; /* Set the height to 100% of the viewport height */
+  height: auto; /* Set the height to 100% of the viewport height */
   overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
 }
-/* Style for the header information */
-.header-info {
-  flex-grow: 1;
-}
-
-/* Style for the additional information */
-.additional-info {
-  margin-top: 5px;
-  font-size: 0.9em;
-  color: #e9e50e;
-}
-
-/* Style for the toggle icon */
-.toggle-icon {
-  color: #e0103d;
-}
-
-
-/* Style for the edit and delete buttons */
-.enrollment-details button {
-  margin-right: 10px;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-/* Style for the edit button */
-.enrollment-details button.edit-button {
-  background-color: #3498db;
-  color: #fff;
-}
-
-/* Style for the delete button */
-.enrollment-details button.delete-button {
-  background-color: #e74c3c;
-  color: #fff;
-}
-
 .amouna-container {
   max-height: calc(100% - 100px); /* Adjust the height of the container */
   overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
 }
 
+
 table {
   width: 100%;
 }
+
+
 .amouna-button {
   margin: 5px;
   border-radius: 10px;
@@ -96,12 +24,12 @@ table {
   font-size: 16px;
 }
 .amouna-button:hover {
-  background-color: #4CAF50; /* Green */
+  background-color: #eb848d; /* Green */
   color: rgb(245, 235, 236);
 }
 
 .amouna-button:active {
-  background-color: #45a049;
+  background-color: #eb848d;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
 }

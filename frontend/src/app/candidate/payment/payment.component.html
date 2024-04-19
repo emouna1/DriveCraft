@@ -1,0 +1,94 @@
+
+
+
+
+
+  <div class="payment-container">
+    <h2>Payment Settlements</h2>
+  
+    <!-- Displaying existing payment settlements -->
+    <div *ngFor="let payment of dataSource.data" class="payment-item">
+      <div class="payment-summary">
+        <p>Date: {{ payment.date | date }}</p>
+        <p>Amount: ${{ payment.montant }}</p>
+        <button (click)="editRow(payment)">Edit</button>
+
+      </div>
+
+      <div class="payment-details">
+        <div *ngFor="let detail of payment.paymentDetails" class="payment-detail">
+          <p>Detail Amount: ${{ detail.montant }}</p>
+          <p>Due Date: {{ detail.dateEcheance | date }}</p>
+          <!-- Display payment method designation -->
+        </div>
+    </div>
+      <!-- Edit button -->
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
+
+    <button class="amouna-button" (click)="toggleForm()">Add New Payment</button>
+  
+   <!-- Add new payment settlement form -->
+<div class="add-payment-form" *ngIf="showForm || showEditForm">
+    <h3>{{ showEditForm ? 'Edit Payment Settlement' : 'Add New Payment Settlement' }}</h3>
+    <form [formGroup]="paymentForm" (submit)="showEditForm ? saveChanges() : submitPayment()">
+      <fieldset>
+        <legend>{{ showEditForm ? 'Edit Payment Settlement' : 'Add New Payment Settlement' }}</legend>
+        <!-- Payment Date -->
+        <mat-form-field>
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="paymentForm.get('date')?.hasError('required')">Date is required</mat-error>
+          </mat-form-field>
+          
+        <!-- Payment Amount -->
+        <mat-form-field appearance="fill">
+            <mat-label>Amount</mat-label>
+            <input matInput [formControl]="amountControl" required>
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error *ngIf="amountControl.invalid">Amount is required</mat-error>
+          </mat-form-field>
+          
+        <!-- Edit payment details -->
+        <div formArrayName="paymentDetails">
+          <div *ngFor="let paymentControl of getControls(); let i = index" class="payment-detail-form">
+            <fieldset [formGroupName]="i">
+              <legend>Payment Detail {{ i + 1 }}</legend>
+              <mat-form-field appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" formControlName="montant" required>
+                <mat-icon matSuffix>attach_money</mat-icon>
+                <mat-error *ngIf="paymentForm.get('montant')?.hasError('required')">Amount is required</mat-error>
+              </mat-form-field>
+              
+              <mat-form-field>
+                <mat-label>Due Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dateEcheance" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="paymentForm.get('dateEcheance')?.hasError('required')">Due Date is required</mat-error>
+              </mat-form-field>
+            <!-- Dropdown for selecting payment method -->
+              <mat-form-field>
+                <mat-label>Payment Method</mat-label>
+                <mat-select formControlName="paymentMethodId" required>
+                  <mat-option *ngFor="let method of paymentMethods" [value]="method.designation">{{ method.designation }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="paymentForm.get('paymentDetails.' + i + '.paymentMethodId')?.hasError('required')">Payment Method is required</mat-error>
+              </mat-form-field>
+            </fieldset>
+          </div>
+        </div>
+        <button type="button" class="add-payment-detail-button" (click)="addPaymentDetail()">Add Payment Detail</button>
+        <!-- Button to save changes or add new payment -->
+        <button type="submit" class="amouna-button">{{ showEditForm ? 'Save Changes' : 'Add Payment Settlement' }}</button>
+        <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
+
+      </fieldset>
+    </form>
+  </div>
+  
+    </div>
+  

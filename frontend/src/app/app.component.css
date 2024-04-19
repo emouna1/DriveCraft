@@ -1,12 +1,12 @@
  /* Add styles for background image */
  .background-image {
-  background-image: url('../assets/trafic-roue-technologie-classique-automobile-moderne.png');
+  background-image: url('../assets/shutterstock_126644456-31.jpg') ;
   background-size: cover;
   background-position: center;
   height: 100vh;
   position: relative; /* Ensure relative positioning */
   overflow: overlay;
-
+ 
 }
 
 /* Add styles for content on background */

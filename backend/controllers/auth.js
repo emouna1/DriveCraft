@@ -1,12 +1,12 @@
-const {validationResult} = require('express-validator');
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {User} = require('../models/user'); // Import the User model
+const  User  = require('../models/user'); // Import the User model
 
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({errors: errors.array()}); // Return validation errors
+    return res.status(422).json({ errors: errors.array() }); // Return validation errors
   }
 
   const {
@@ -18,7 +18,6 @@ exports.signup = async (req, res, next) => {
     firstName,
     CIN,
     dateOfIssue,
-    licenseCategory,
     situation,
     balance,
     dateOfBirth,
@@ -33,14 +32,15 @@ exports.signup = async (req, res, next) => {
     grossSalary,
     qualification,
     leaveDaysPerYear,
-    cnssNumber
+    cnssNumber,
+    CategoryCode
   } = req.body;
 
   try {
     // Check if the email already exists
-    const existingUser = await User.findOne({where: {email: email}});
+    const existingUser = await User.findOne({ where: { email: email } });
     if (existingUser) {
-      return res.status(422).json({message: 'Email address already exists.'});
+      return res.status(422).json({ message: 'Email address already exists.' });
     }
 
     // Hash the password
@@ -56,7 +56,6 @@ exports.signup = async (req, res, next) => {
       firstName,
       CIN,
       dateOfIssue,
-      licenseCategory,
       situation,
       balance,
       dateOfBirth,
@@ -71,19 +70,24 @@ exports.signup = async (req, res, next) => {
       grossSalary,
       qualification,
       leaveDaysPerYear,
-      cnssNumber
+      cnssNumber,
+      CategoryCode
     });
 
     // Generate JWT token
     const token = jwt.sign(
-      {userId: newUser.id, username: newUser.username},
+      { userId: newUser.id, username: newUser.username },
       'Emounaaa', // actual secret key
-      {expiresIn: '1h'} // Token expires in 1 hour
+      { expiresIn: '1h' } // Token expires in 1 hour
     );
 
-    res.status(201).json({message: 'User registered!', token: token});
+    res.status(201).json({ message: 'User registered!', token: token });
   } catch (err) {
     console.error('Error during signup:', err);
-    res.status(500).json({message: 'An error occurred while signing up. Please try again later.'});
+    // Log the specific error message
+    console.error('Error message:', err.message);
+    // Log the stack trace for more detailed error information
+    console.error('Stack trace:', err.stack);
+    res.status(500).json({ message: 'An error occurred while signing up. Please try again later.' });
   }
 };

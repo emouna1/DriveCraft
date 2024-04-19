@@ -1,31 +1,22 @@
-/* Ensure that the entire page has a scrollbar when necessary */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
 
-/* Center the content horizontally */
 .container {
   max-width: 1200px; /* Adjust the max-width as needed */
-  margin: 10 auto; 
+  margin: 0 auto; 
   padding: 20px; 
   height: auto; /* Set the height to 100% of the viewport height */
-
-  /*overflow-y: auto;  Add a scrollbar if the content exceeds the container height */
-}
-
-
-.amouna-container {
-  max-height: calc(100% - 100px); /* Adjusted to cover the content */
   overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
 }
+.amouna-container {
+  max-height: calc(100% - 100px); /* Adjust the height of the container */
+  overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
+}
+
+
 table {
   width: 100%;
 }
-.small {
-  color: red;
-}
+
+
 .amouna-button {
   margin: 5px;
   border-radius: 10px;
@@ -33,48 +24,12 @@ table {
   font-size: 16px;
 }
 .amouna-button:hover {
-  background-color: #4CAF50; /* Green */
+  background-color: #eb848d; /* Green */
   color: rgb(245, 235, 236);
 }
 
 .amouna-button:active {
-  background-color: #45a049;
+  background-color: #eb848d;
   box-shadow: 0 5px #666;
   transform: translateY(4px);
-}
-/* Form field styling */
-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-/* Container for form fields */
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-/* Individual form groups within form row */
-.form-group {
-  width: calc(50% - 10px); /* Adjust width as needed */
-}
-
-/* Individual form fields */
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="datetime-local"] {
-  width: 100%; /* Make inputs fill the entire width of the form group */
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.form-group input[type="text"]:focus,
-.form-group input[type="number"]:focus,
-.form-group input[type="datetime-local"]:focus {
-  border-color: #4CAF50;
-  outline: none;
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Include your CSS stylesheets here -->
+</head>
+<body>
+    <img src="{{ currentUser.image }}" alt="User Image" style="display: block; margin: 0 auto; width: 20px; height: 20px;">
+
+    <div class="container">
+        <h1 class="heading"> Welcome to Your Account </h1>
+
+        <div class="info">
+
+            <p><strong>Username:</strong> {{ currentUser.username }}</p>
+            <p><strong>Email:</strong> {{ currentUser.email }}</p>
+            <p><strong>First Name:</strong> {{ currentUser.firstName }}</p>
+            <p><strong>Name:</strong> {{ currentUser.name }}</p>
+            <p><strong>CIN:</strong> {{ currentUser.CIN }}</p>
+            <p><strong>Date of Issue:</strong> {{ currentUser.dateOfIssue }}</p>
+            <p><strong>Date of Birth:</strong> {{ currentUser.dateOfBirth }}</p>
+            <p><strong>Nationality:</strong> {{ currentUser.nationality }}</p>
+            <p><strong>Address:</strong> {{ currentUser.address }}</p>
+            <p><strong>Telephone:</strong> {{ currentUser.telephone }}</p>
+            <p><strong>Image:</strong> {{ currentUser.image }}</p>
+         
+            <p><strong>Personal Code:</strong> {{currentUser.situation}}</p>
+            <p><strong>Balance:</strong> {{ currentUser.balance }}</p>
+            <br>
+            <p>***************************************************</p>
+            <br><br>
+            <div class="button-container">
+                <button mat-raised-button class="delete-button" (click)="deleteUser()">Delete account</button>
+                <button mat-raised-button class="edit-button" (click)="toggleEditMode()">Edit profile</button>
+            </div>
+    </div>
+        <br><br>
+
+        <!--<div *ngIf="editMode" class="edit-mode">
+            <div *ngFor="let key of getEditedUserKeys()">
+                <input type="text" [(ngModel)]="editedUser[key]" placeholder="{{ key | titlecase }}">
+            </div>
+            <button class="save-button" (click)="saveChanges()">Save Changes</button>
+        </div>
+        
+    </div>-->
+    <div *ngIf="showEditForm">
+        <form [formGroup]="editUserForm" (submit)="saveChanges()">
+            <fieldset>
+                <legend>Edit User</legend>
+                <ng-container *ngFor="let field of ['username', 'password', 'email', 'name', 'firstName', 'CIN', 'dateOfIssue', 'situation', 'balance', 'dateOfBirth', 'nationality', 'address', 'telephone', 'image' ]">
+                  
+                    <mat-form-field>
+                        <mat-label>{{ field }}</mat-label>
+                        <input matInput type="{{ field === 'dateOfIssue' || field === 'dateOfBirth'  ? 'date' : (field === 'password' ? 'password' : 'text') }}" formControlName="{{ field }}" required>
+                        <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="field === 'image'">
+                        <mat-label>{{ field }}</mat-label>
+                        <input matInput type="file" (change)="onImageSelected($event)" accept="image/*" formControlName="{{ field }}">
+                        <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+                        <img *ngIf="currentUser.image" [src]="currentUser.image" alt="User Image" style="width: 150px; height: 150px;">
+                    </mat-form-field>
+                </ng-container>
+                <!-- Submit and Cancel Buttons -->
+                <button class="amouna-button" type="submit">Save changes </button>
+                <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
+            </fieldset>
+        </form>
+    </div>
+    </div>
+</body>
+</html>    

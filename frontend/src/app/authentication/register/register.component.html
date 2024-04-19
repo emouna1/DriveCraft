@@ -1,35 +1,176 @@
 <div class="background-image">
   <div class="container mt-5">
-      <div class="card shadow-sm p-4">
-        <h1 class="text-center mb-4">Sign Up</h1>
-        <form (ngSubmit)="onSubmit()">
-          <div>
-            <mat-form-field>
+    <div class="card shadow-sm p-4">
+      <h1 class="text-center mb-4">Sign Up</h1>
+      <mat-horizontal-stepper linear>
+        <mat-step>
+          <fieldset>
+          <ng-template matStepLabel>Select Your Role</ng-template>
+          <mat-form-field>
+            <mat-label>Role</mat-label>
+            <mat-select [(ngModel)]="selectedRole" name="role" required>
+              <mat-option value="student">Student</mat-option>
+              <mat-option value="instructor">Instructor</mat-option>
+            </mat-select>
+          </mat-form-field>
+          </fieldset>
+          <div class="text-center">
+            <button mat-raised-button color="primary" matStepperNext [disabled]="!selectedRole">Next</button>
+          </div>
+
+          <!-- General information for students -->
+          <div *ngIf="selectedRole === 'student'" class="general-info">
+            <fieldset>
+            <p>As a student, you'll be able to:</p>
+            <ul>
+              <li>Access learning materials and resources</li>
+              <li>Schedule driving lessons</li>
+              <li>Track your progress</li>
+            </ul>
+            </fieldset>
+          </div>
+          <!-- General information for instructors -->
+          <div *ngIf="selectedRole === 'instructor'" class="general-info">
+          <fieldset>
+            <p>As an instructor, you'll be able to:</p>
+            <ul>
+              <li>Manage student schedules</li>
+              <li>Provide feedback and assessments</li>
+              <li>Access teaching resources</li>
+            </ul>
+          </fieldset>
+          </div>
+        </mat-step>
+        
+        <mat-step>
+          <ng-template matStepLabel>{{ selectedRole === 'student' ? 'Student' : 'Instructor' }} Sign-Up</ng-template>
+          <form (ngSubmit)="onSubmit()" class="form-container">
+            <fieldset>
+              <legend>General informations</legend>
+              <fieldset>
+            <mat-form-field appearance="fill">
               <mat-label>Username</mat-label>
               <input matInput [(ngModel)]="username" name="username" required>
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+              <mat-icon matSuffix *ngIf="!username">error</mat-icon>
+              <mat-error *ngIf="!username">Username is required.</mat-error>
             </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field>
+            
+            <mat-form-field appearance="fill">
               <mat-label>Email</mat-label>
-              <input matInput type="email" [(ngModel)]="email" name="email" required>
+              <input matInput type="email" [(ngModel)]="email" name="email" required #emailInput="ngModel">
+              <mat-icon matSuffix *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">error</mat-icon>
+              <mat-error *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+                <span *ngIf="emailInput.errors?.['required']">Email is required.</span>
+                <span *ngIf="emailInput.errors?.['email']">Please enter a valid email address.</span>
+              </mat-error>
             </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field>
+            
+            <mat-form-field appearance="fill">
               <mat-label>Password</mat-label>
-              <input matInput type="password" [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
-              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hide">
-              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+              <input matInput type="password" [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" placeholder="Placeholder" required>
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-icon matSuffix *ngIf="!password">error</mat-icon>
+              <mat-error *ngIf="!password">Password is required.</mat-error>
             </mat-form-field>
-          </div>
-          <button mat-raised-button color="primary" type="submit">Sign Up</button>
-        </form>
-        <p class="mt-3 text-center">   <a [routerLink]="['/auth/login']" [queryParams]="{debug: true}" queryParamsHandling="merge">
-          already have an account ?
-        </a>      </p>
-      </div>
-    </div></div>
-  <router-outlet></router-outlet> 
+              </fieldset>
+              <fieldset>
+            <mat-form-field appearance="fill">
+              <mat-label>First Name</mat-label>
+              <input matInput [(ngModel)]="firstName" name="firstName" required>
+              <mat-icon matSuffix *ngIf="!firstName">error</mat-icon>
+              <mat-error *ngIf="!firstName">First Name is required.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Name</mat-label>
+              <input matInput [(ngModel)]="name" name="name" required>
+              <mat-icon matSuffix *ngIf="!name">error</mat-icon>
+              <mat-error *ngIf="!name">Name is required.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>CIN</mat-label>
+              <input matInput [(ngModel)]="CIN" name="CIN" required>
+              <mat-icon matSuffix *ngIf="!CIN">error</mat-icon>
+              <mat-error *ngIf="!CIN">CIN is required.</mat-error>
+            </mat-form-field>
+              </fieldset>
+
+           <fieldset>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Situation</mat-label>
+              <mat-select [(ngModel)]="situation" name="situation" required>
+                <mat-option value="without code">Without Code</mat-option>
+                <mat-option value="with code">With Code</mat-option>
+                <mat-option value="license obtained">License Obtained</mat-option>
+              </mat-select>
+              <mat-icon matSuffix *ngIf="!situation">error</mat-icon>
+              <mat-error *ngIf="!situation">Situation is required.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Date of Birth</mat-label>
+              <input matInput [matDatepicker]="dateOfBirthPicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" required>
+              <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle>
+              <mat-datepicker #dateOfBirthPicker></mat-datepicker>
+              <mat-icon matSuffix *ngIf="!dateOfBirth">error</mat-icon>
+              <mat-error *ngIf="!dateOfBirth">Date of Birth is required.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Nationality</mat-label>
+              <input matInput [(ngModel)]="nationality" name="nationality" required>
+              <mat-icon matSuffix *ngIf="!nationality">error</mat-icon>
+              <mat-error *ngIf="!nationality">Nationality is required.</mat-error>
+            </mat-form-field>
+            
+            </fieldset>
+           <!-- <mat-form-field appearance="fill">
+              <mat-label>Date of Issue</mat-label>
+              <input matInput [matDatepicker]="datePicker" [(ngModel)]="dateOfIssue" name="dateOfIssue" required>
+              <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+              <mat-datepicker #datePicker></mat-datepicker>
+              <mat-icon matSuffix *ngIf="!dateOfIssue">error</mat-icon>
+              <mat-error *ngIf="!dateOfIssue">Date of Issue is required.</mat-error>
+            </mat-form-field>-->
+            <fieldset>
+            <mat-form-field appearance="fill">
+              <mat-label>Telephone</mat-label>
+              <input matInput type="tel" [(ngModel)]="telephone" name="telephone" required>
+              <mat-icon matSuffix *ngIf="!telephone">error</mat-icon>
+              <mat-error *ngIf="!telephone">Telephone is required.</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="fill">
+              <mat-label>Image URL</mat-label>
+              <input matInput [(ngModel)]="image" name="image" required>
+              <mat-icon matSuffix *ngIf="!image">error</mat-icon>
+              <mat-error *ngIf="!image">Image URL is required.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Address</mat-label>
+              <textarea matInput [(ngModel)]="address" name="address" required></textarea>
+              <mat-icon matSuffix *ngIf="!address">error</mat-icon>
+              <mat-error *ngIf="!address">Address is required.</mat-error>
+            </mat-form-field>
+            </fieldset>
+            </fieldset>
+            <div class="button-container">
+              <button mat-raised-button color="warn" matStepperPrevious>Back</button>
+              <button mat-raised-button color="success" type="submit" [disabled]="!selectedRole || !username || !email || !password || !selectedRole">Sign Up</button>
+
+            </div>
+          </form>
+        </mat-step>
+        
+      </mat-horizontal-stepper>
+      <p class="mt-3 text-center">
+        <a [routerLink]="['/auth/login']" [queryParams]="{debug: true}" queryParamsHandling="merge">Already have an account?</a>
+      </p>
+    </div>
+  </div>
+</div>

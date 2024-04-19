@@ -1,160 +1,85 @@
 <div class="container">
+  <h2>License Categories Edition</h2>
+  <div class="amouna-container mat-elevation-z8">
+    <!-- Table -->
+    <table mat-table [dataSource]="licenseCategories">
+      <!-- Displaying columns -->
+      <ng-container *ngFor="let column of columns" [matColumnDef]="column">
+        <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+        <td mat-cell *matCellDef="let category">{{ category[column] }}</td>
+      </ng-container>
 
-    <h2>License categories edition</h2>
-    <div class="amouna-container mat-elevation-z8">
-      <table mat-table [dataSource]="dataSource">
-      
-        <!-- Displaying columns -->
-        <ng-container [matColumnDef]="column" *ngFor="let column of Columns">
-          <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
-          <td mat-cell *matCellDef="let element"> {{ element[column] }} </td>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let category">
+          <button mat-icon-button color="primary" (click)="editCategory(category)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteCategory(category)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let category; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator [pageSize]="3" [pageSizeOptions]="[2, 3, 4, 5]" [length]="licenseCategories.length"></mat-paginator>
+
+    <!-- Print Button -->
+    <button class="amouna-button" (click)="printTable()">Print</button>
+  </div>
+
+  <!-- Add New Category Button -->
+  <button class="amouna-button" (click)="toggleForm()">Add New License Category</button>
+
+  <!-- Add New Category Form -->
+  <div *ngIf="showForm">
+    <form [formGroup]="form" (submit)="submitForm()">
+      <fieldset>
+        <legend>Add License Category</legend>
+        <ng-container *ngFor="let field of formFields">
+          <mat-form-field>
+            <mat-label>{{ field }}</mat-label>
+            <input matInput type="text" formControlName="{{ field }}" required>
+            <mat-error *ngIf="form.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          </mat-form-field>
         </ng-container>
+        <!-- Submit and Cancel Buttons -->
+        <button class="amouna-button" type="submit">Add License Category</button>
+        <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
+      </fieldset>
+    </form>
+  </div>
 
-       
-      
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions" >
-          <th mat-header-cell *matHeaderCellDef> Action </th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="primary" (click)="editRow(element)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deleteRow(element)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
+  <!-- Edit Category Form -->
+  <div *ngIf="showEditForm">
+    <form [formGroup]="form" (submit)="saveChanges()">
+      <fieldset>
+        <legend>Edit License Category</legend>
+        <ng-container *ngFor="let field of formFields">
+          <mat-form-field>
+            <mat-label>{{ field }}</mat-label>
+            <input matInput type="text" formControlName="{{ field }}" required>
+            <mat-error *ngIf="form.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+          </mat-form-field>
         </ng-container>
-      
-        <!-- Header and Row definitions -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-      <button class="amouna-button" (click)="printTable()">Print</button>
-    </div>
-    <br><br>
+        <!-- Submit and Cancel Buttons -->
+        <button class="amouna-button" type="submit">Save Changes</button>
+        <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
+      </fieldset>
+    </form>
+  </div>
 
-  <button class="amouna-button" (click)="toggleForm()">Add New Driving license category</button>
-
-
-  <!-- Form for editing -->
-
-  
+  <!-- Print Content -->
   <div #printContent style="display:none">
     <table>
       <!-- Table headers and rows will be generated dynamically -->
     </table>
   </div>
-
-
-  
-  
-
-
-
-  <div *ngIf="showForm">
-    <!-- Form for adding a new driving license category entry -->
-    <form (submit)="submitLicenseCategory()">
-      <label>
-        Rank:
-        <input type="number" name="Rank" [(ngModel)]="selectedRow.Rank" required>
-      </label>
-      <label>
-        Category Code:
-        <input type="text" name="CategoryCode" [(ngModel)]="selectedRow.CategoryCode" required>
-      </label>
-      <label>
-        Designation:
-        <input type="text" name="Designation" [(ngModel)]="selectedRow.Designation" required>
-      </label>
-      <label>
-        Code Registration Fees:
-        <input type="number" name="CodeRegistrationFees" [(ngModel)]="selectedRow.CodeRegistrationFees" required>
-      </label>
-      <label>
-        Conduct Registration Fees:
-        <input type="number" name="ConductRegistrationFees" [(ngModel)]="selectedRow.ConductRegistrationFees" required>
-      </label>
-      <label>
-        Code Review Price:
-        <input type="number" name="CodeReviewPrice" [(ngModel)]="selectedRow.CodeReviewPrice" required>
-      </label>
-      <label>
-        Driving Test Price:
-        <input type="number" name="DrivingTestPrice" [(ngModel)]="selectedRow.DrivingTestPrice" required>
-      </label>
-      <label>
-        Price Hour Code:
-        <input type="number" name="PriceHourCode" [(ngModel)]="selectedRow.PriceHourCode" required>
-      </label>
-      <label>
-        Price Per Hour Driven:
-        <input type="number" name="PricePerHourDriven" [(ngModel)]="selectedRow.PricePerHourDriven" required>
-      </label>
-      <label>
-        Code Exam Cancellation Fee:
-        <input type="number" name="CodeExamCancellationFee" [(ngModel)]="selectedRow.CodeExamCancellationFee" required>
-      </label>
-      <label>
-        Driving Test Cancellation Fees:
-        <input type="number" name="DrivingTestCancellationFees" [(ngModel)]="selectedRow.DrivingTestCancellationFees" required>
-      </label>
-      
-      <!-- Submit button -->
-      <button class="amouna-button" type="submit">Add License Category</button>
-    </form>
-  </div>
-
-
-
-
-  <div *ngIf="showEditForm">
-    <h2>Edit Maintenance</h2>
-    <form (submit)="saveChanges()">
-      <label>
-        Rank:
-        <input type="number" name="Rank" [(ngModel)]="selectedRow.Rank" required>
-      </label>
-      <label>
-        Category Code:
-        <input type="text" name="CategoryCode" [(ngModel)]="selectedRow.CategoryCode" required>
-      </label>
-      <label>
-        Designation:
-        <input type="text" name="Designation" [(ngModel)]="selectedRow.Designation" required>
-      </label>
-      <label>
-        Code Registration Fees:
-        <input type="number" name="CodeRegistrationFees" [(ngModel)]="selectedRow.CodeRegistrationFees" required>
-      </label>
-      <label>
-        Conduct Registration Fees:
-        <input type="number" name="ConductRegistrationFees" [(ngModel)]="selectedRow.ConductRegistrationFees" required>
-      </label>
-      <label>
-        Code Review Price:
-        <input type="number" name="CodeReviewPrice" [(ngModel)]="selectedRow.CodeReviewPrice" required>
-      </label>
-      <label>
-        Driving Test Price:
-        <input type="number" name="DrivingTestPrice" [(ngModel)]="selectedRow.DrivingTestPrice" required>
-      </label>
-      <label>
-        Price Hour Code:
-        <input type="number" name="PriceHourCode" [(ngModel)]="selectedRow.PriceHourCode" required>
-      </label>
-      <label>
-        Price Per Hour Driven:
-        <input type="number" name="PricePerHourDriven" [(ngModel)]="selectedRow.PricePerHourDriven" required>
-      </label>
-      <label>
-        Code Exam Cancellation Fee:
-        <input type="number" name="CodeExamCancellationFee" [(ngModel)]="selectedRow.CodeExamCancellationFee" required>
-      </label>
-      <label>
-        Driving Test Cancellation Fees:
-        <input type="number" name="DrivingTestCancellationFees" [(ngModel)]="selectedRow.DrivingTestCancellationFees" required>
-      </label>
-      <button class="amouna-button" type="submit">Save Changes</button>
-    </form>
-  </div>
-  </div>
+  <br><br><br>
+</div>
