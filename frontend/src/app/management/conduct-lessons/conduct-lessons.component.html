@@ -1,0 +1,147 @@
+<!-- schedule.component.html -->
+<div class="container">
+
+    <div class="amouna-container mat-elevation-z8">
+      <div id="calendar"></div>
+      <div class="color-legend">
+        <div class="legend-item">
+          <div class="color-box" style="background-color: rgb(112, 193, 247)"></div>
+          <div class="legend-text">accomplished</div>
+        </div>
+        <div class="legend-item">
+          <div class="color-box" style="background-color: rgb(248, 26, 163);"></div>
+          <div class="legend-text">Not accomplished </div>
+        </div> 
+      </div>
+      
+     
+      <div class="calendar-navigation">
+        <span class="material-symbols-outlined">
+            <button mat-button (click)="changeView('timeGridWeek')"><mat-icon>
+                calendar_view_day
+            </mat-icon>Week</button>
+           <button mat-button (click)="changeView('dayGridMonth')"> <mat-icon>
+            calendar_view_week
+            </mat-icon>Month</button>
+            </span> 
+        <button mat-button (click)="changeView('dayGridYear')"><mat-icon>
+            calendar_view_month
+        </mat-icon>Year</button>
+      </div>
+    
+      <!-- Include your event details component -->
+      <app-car-dialog *ngIf="selectedEvent" [eventDetails]="selectedEvent" (close)="selectedEvent = null" (editEvent)="openEditEventModal($event)"></app-car-dialog>
+    
+    <!-- Add Event Button -->
+    <button class="amouna-button" (click)="openAddEventModal()">Add Lesson</button>
+    
+ <!-- Add Event Form -->
+<div *ngIf="showAddEventModal">
+  <form [formGroup]="addEventForm" (ngSubmit)="addEvent()">
+    <fieldset>
+    <legend>add lesson </legend>
+
+    <mat-form-field>
+        <mat-label>Candidat CIN</mat-label>
+        <mat-select formControlName="candidatCIN" required>
+          <mat-option *ngFor="let student of Students" [value]="student.CIN">{{ student.CIN}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEventForm.get('candidatCIN')?.hasError('required')">
+          Candidat CIN is required
+        </mat-error>
+      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="addEventForm.get('date')?.hasError('required')">Date is required</mat-error>
+    </mat-form-field>
+   <!-- Start Hour -->
+<mat-form-field appearance="fill">
+  <mat-label>Start Hour</mat-label>
+  <mat-icon matPrefix>access_time</mat-icon> <!-- Icon as a prefix -->
+  <input matInput type="time" formControlName="startHour" required>
+  <mat-error *ngIf="addEventForm.get('startHour')?.hasError('required')">Start Hour is required</mat-error>
+</mat-form-field>
+
+<!-- End Hour -->
+<mat-form-field appearance="fill">
+  <mat-label>End Hour</mat-label>
+  <mat-icon matPrefix>access_time</mat-icon> <!-- Icon as a prefix -->
+  <input matInput type="time" formControlName="endHour" required>
+  <mat-error *ngIf="addEventForm.get('endHour')?.hasError('required')">End Hour is required</mat-error>
+</mat-form-field>
+
+<input type="hidden" formControlName="taskType" value="lesson">
+<mat-form-field>
+    <mat-label>Task Category</mat-label>
+    <mat-select formControlName="taskCategory" required>
+      <mat-option value="code">Code</mat-option>
+      <mat-option value="conduct">Conduct</mat-option>
+    </mat-select>
+    <mat-error *ngIf="addEventForm.get('taskCategory')?.hasError('required')">Task Category is required</mat-error>
+  </mat-form-field>
+    
+    <mat-checkbox formControlName="accomplished" (change)="updateAccomplished($event.checked)">Accomplished</mat-checkbox>
+
+    <div class="button-container">
+      <button mat-raised-button type="submit">Save</button>
+      <button mat-raised-button type="button" (click)="closeAddEventModal()">Cancel</button>
+    </div>
+  </fieldset>
+  </form>
+</div>
+
+<!-- Edit Event Form -->
+<div *ngIf="showEditEventModal">
+
+  <form [formGroup]="editEventForm" (ngSubmit)="editEvent()">
+    <fieldset>
+      <legend>Edit the lesson </legend>
+    <mat-form-field>
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="editEventForm.get('date')?.hasError('required')">Date is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Start Hour</mat-label>
+      <mat-icon matPrefix>access_time</mat-icon> <!-- Icon as a prefix -->
+      <input matInput type="time" formControlName="startHour" required>
+      <mat-error *ngIf="addEventForm.get('startHour')?.hasError('required')">Start Hour is required</mat-error>
+    </mat-form-field>
+    
+    <!-- End Hour -->
+    <mat-form-field appearance="fill">
+      <mat-label>End Hour</mat-label>
+      <mat-icon matPrefix>access_time</mat-icon> <!-- Icon as a prefix -->
+      <input matInput type="time" formControlName="endHour" required>
+      <mat-error *ngIf="addEventForm.get('endHour')?.hasError('required')">End Hour is required</mat-error>
+    </mat-form-field>
+    <input type="hidden" formControlName="taskType" value="lesson">
+     <mat-form-field>
+        <mat-label>Task Category</mat-label>
+        <mat-select formControlName="taskCategory" required>
+          <mat-option value="code">Code</mat-option>
+          <mat-option value="conduct">Conduct</mat-option>
+        </mat-select>
+        <mat-error *ngIf="addEventForm.get('taskCategory')?.hasError('required')">Task Category is required</mat-error>
+      </mat-form-field>
+    
+    <mat-checkbox formControlName="accomplished" (change)="updateAccomplished($event.checked)">Accomplished</mat-checkbox>
+  
+    <div class="button-container">
+      <button mat-raised-button type="submit">Save</button>
+      <button mat-raised-button type="button" (click)="closeEditEventModal()">Cancel</button>
+    </div>
+    
+  </fieldset>
+
+  </form>
+</div>
+
+    </div>
+    </div>
+    

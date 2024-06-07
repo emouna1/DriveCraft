@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CoondidateService } from 'src/app/coondidate.service';
 import { EnrollmentService } from 'src/app/enrollment.service';
 import { FoldersService } from 'src/app/folders.service';
+import { PaymentService } from 'src/app/payment.service';
 
 @Component({
   selector: 'app-conduct-enrollment',
@@ -15,6 +16,7 @@ import { FoldersService } from 'src/app/folders.service';
 export class ConductEnrollmentComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  paymentIds: number[] = []; // Array to hold payment IDs
   data: any = {}; // Object to hold form data
   dataSource = new MatTableDataSource<Enrollment>();
   enrollments: any[] = []; // Assuming enrollments is an array of objects
@@ -30,18 +32,19 @@ export class ConductEnrollmentComponent {
   displayedColumns = [...this.enrollmentColumns, 'actions'];
   enrollmentControls: string[] = ['candidatCIN','candidatName', 'desiredLicenseCategory', 'registrationType', 'examDate'];
 
-  constructor(private fb: FormBuilder,private enrollmentService: EnrollmentService,private licenseService :FoldersService,private studentService:CoondidateService,private snackBar : MatSnackBar ) {
+  constructor(private fb: FormBuilder,private paymentService: PaymentService, private enrollmentService: EnrollmentService,private licenseService :FoldersService,private studentService:CoondidateService,private snackBar : MatSnackBar ) {
     this.enrollmentForm = this.fb.group({
+      candidatCIN: ['', Validators.required],
       candidatName: ['', Validators.required],
       desiredLicenseCategory: ['', Validators.required],
-      registrationType: ['', Validators.required],
+      registrationType: ['conduct', Validators.required],
       //examDate: ['', Validators.required]
       examDate: [null], // nullable
       registrationCosts: ['', Validators.required], // required
       specialPrice: ['no', Validators.required], // required
       specialPriceAmount: [{ value: null, disabled: true }], // initially disabled if specialPrice is 'no'
       contratType: ['', Validators.required], // required
-      paymentId: [null] // nullable
+      paymentId: ['', Validators.required] // nullable
     });
     this.licenseService.getAllLc().subscribe(categories => {
       //this.desiredLicenseCategories = categories.map(category => category.CategoryCode);
@@ -67,40 +70,7 @@ export class ConductEnrollmentComponent {
       specialPriceAmountControl?.updateValueAndValidity();
     });
   }
-  /*fetchStudents() {
-    this.studentService.getAllStudents().subscribe((data: any) => {
-      // Assuming data is fetched and structured as in your example
-      this.Students= data.map((item: any) => {
-        return {
-          User: {
-            username: item.username,
-            password: item.password,
-            email: item.email,
-            role: item.role,
-            name: item.name,
-            firstName: item.firstName,
-            CIN: item.CIN,
-            dateOfIssue: item.dateOfIssue,
-            licenseCategory: item.licenseCategory,
-            situation: item.situation,
-            balance: item.balance,
-            dateOfBirth: item.dateOfBirth,
-            nationality: item.nationality,
-            address: item.address,
-            telephone: item.telephone,
-            image: item.image,
-            personalCode: item.personalCode,
-            personnelFunction: item.personnelFunction,
-            recruitmentDate: item.recruitmentDate,
-            netSalary: item.netSalary,
-            grossSalary: item.grossSalary,
-            qualification: item.qualification,
-            leaveDaysPerYear: item.leaveDaysPerYear,
-            cnssNumber: item.cnssNumber,
-            CategoryCode: item.CategoryCode
-          }
-        };}
-     ) })}*/
+ 
      fetchStudents() {
       this.studentService.getAllStudents().subscribe((data: any) => {
         this.Students = data;
@@ -109,6 +79,7 @@ export class ConductEnrollmentComponent {
     
   ngOnInit() {
     this.fetchEnrollments()
+    this.fetchPaymentIds()
   }
   fetchEnrollments(){this.enrollmentService.getConductEnrollments()
       .subscribe((data: any) => {
@@ -149,7 +120,7 @@ export class ConductEnrollmentComponent {
   submitForm() {
     if (this.enrollmentForm.valid) {
       const formData = this.enrollmentForm.value;
-
+       formData.registrationType = 'conduct'
       if (this.formMode === 'add') {
         this.enrollmentService.addEnrollment(formData).subscribe({
           next: (response) => {
@@ -203,8 +174,17 @@ export class ConductEnrollmentComponent {
           console.error('Error deleting enrollment:', error);
           this.displayNotification('Error deleting enrollment. Please try again.'); // Display error notification
         }
-      );
-  }
+      );}
+      fetchPaymentIds() {
+        // Assuming you have a method in your paymentService to fetch payment IDs
+        this.paymentService.getAllPayments().subscribe((payments: Payment[]) => {
+          // Extract payment IDs from payment objects
+          this.paymentIds = payments.map(payment => payment.id);
+          console.log(payments)
+          console.log(this.paymentIds)
+        });
+      }
+  
   
   
     //pagination 
@@ -298,4 +278,26 @@ export interface Enrollment {
   desiredLicenseCategory: string;
   detailsVisible?: boolean; // Add detailsVisible property
 
+}
+export interface Payment {
+  id: number;
+  date: string;
+  montant: string;
+  createdAt: string;
+  updatedAt: string;
+  candidatCIN: number | null;
+  paymentDetails: PaymentDetail[];
+  isSuccessful: boolean;
+  [key: string]: any; // Index signature allowing dynamic property access
+
+}
+interface PaymentDetail {
+  id: number;
+  montant: number;
+  dateEcheance: string;
+  createdAt: string;
+  updatedAt: string;
+  PaymentMethodId: number | null;
+  paymentId: number;
+  verificationUrl : string;
 }

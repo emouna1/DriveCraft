@@ -10,12 +10,19 @@ import { CoondidateService } from 'src/app/coondidate.service';
 })
 export class UserProfileComponent {
   
+  
+
+  imageUrl: string | null = null;
+
   currentUser!: User;
   editUserForm!: FormGroup;
   editMode: boolean = false;
   showEditForm: boolean=false;
   passwordChangeForm!: FormGroup;
   showPasswordChangeForm: boolean = false;
+ // imageUrl: string | null = null;
+ selectedFile: File | undefined;
+
   constructor(
     private candidateService: CoondidateService,
     private authService: AuthService,
@@ -29,8 +36,11 @@ export class UserProfileComponent {
 
   }
 
-  initializeForm(): void {
-    this.editUserForm = this.formBuilder.group({
+  /*initializeForm(): void {
+    const imageUrl = this.currentUser['image'] ? `http://localhost:3000/${this.currentUser['image'].replace(/\\/g, '/')}` : null;
+
+    this.editUserForm = this.formBuilder
+    .group({
       username: [this.currentUser.username, Validators.required],
       password: [''],
       email: [this.currentUser.email, [Validators.required, Validators.email]],
@@ -45,12 +55,29 @@ export class UserProfileComponent {
       nationality: [this.currentUser.nationality, Validators.required],
       address: [this.currentUser.address, Validators.required],
       telephone: [this.currentUser.telephone, Validators.required],
-      image: [this.currentUser.image],
+      image: [this.currentUser.imageUrl],
       CategoryCode: [this.currentUser.CategoryCode, Validators.required],
 
     });
-  }
+  }*/
+  initializeForm(): void {
+    const imageUrl = this.currentUser['image'] ? `http://localhost:3000/${this.currentUser['image'].replace(/\\/g, '/')}` : null;
 
+    this.imageUrl = imageUrl;
+
+    this.editUserForm = this.formBuilder.group({
+      username: [this.currentUser.username, Validators.required],
+      email: [this.currentUser.email, [Validators.required, Validators.email]],
+      firstName: [this.currentUser.firstName, Validators.required],
+      dateOfBirth: [this.currentUser.dateOfBirth, Validators.required],
+      nationality: [this.currentUser.nationality, Validators.required],
+      address: [this.currentUser.address, Validators.required],
+      telephone: [this.currentUser.telephone, Validators.required],
+      //image: [null]
+      image: [this.imageUrl || null]
+
+    });
+  }
   toggleEditMode(): void {
     this.editMode = !this.editMode;
     if (!this.editMode) {
@@ -60,14 +87,25 @@ export class UserProfileComponent {
 
   }
 
-  saveChanges(): void {
+  /*saveChanges(): void {
     console.log("Form value:", this.editUserForm.value);
     console.log("Form validity:", this.editUserForm.valid);
+    if (this.selectedFile) {
+
+    this.editUserForm.append('file', this.selectedFile, this.selectedFile.name);
 
     if (this.editUserForm.valid) {
       console.log("updating candidat")
-    
-      const editedUser: User = this.editUserForm.value;
+      if (this.editUserForm.valid) {
+        //const editedUser: User = { ...this.currentUser, ...this.editUserForm.value };
+        const editedUser: User = this.editUserForm.value;
+
+        // If an image was selected, use its URL
+        if (this.imageUrl) {
+          editedUser.image = this.imageUrl;
+
+        }
+      //const editedUser: User = this.editUserForm.value;
       this.candidateService.updateUser(this.currentUser.CIN, editedUser)
         .subscribe(
           () => {
@@ -81,11 +119,54 @@ export class UserProfileComponent {
           }
           
         );
-    
+     } else {
+    console.log("Form is not valid. Cannot save changes.");
+  } }else{
+    console.log("chooooooooose an image !!");
+  }
+  }
+}
+*/
+saveChanges(): void {
+  console.log("Form value:", this.editUserForm.value);
+  console.log("Form validity:", this.editUserForm.valid);
+
+  if (this.editUserForm.valid) {
+    console.log("Updating candidate");
+
+    const editedUser: User = this.editUserForm.value;
+
+    // If an image was selected, create FormData and append the file
+    const formData = new FormData();
+    formData.append('username', editedUser.username);
+    formData.append('email', editedUser.email);
+    formData.append('firstName', editedUser.firstName);
+    formData.append('dateOfBirth', editedUser.dateOfBirth.toString());
+    formData.append('nationality', editedUser.nationality);
+    formData.append('address', editedUser.address);
+    formData.append('telephone', editedUser.telephone);
+
+    if (this.selectedFile) {
+      formData.append('image', this.selectedFile, this.selectedFile.name);
+    }
+
+    // Call service to update user
+    this.candidateService.updateUser(this.currentUser.CIN, formData)
+      .subscribe(
+        () => {
+          this.currentUser = editedUser;
+          this.toggleEditMode();
+          alert("Changes saved successfully");
+        },
+        error => {
+          console.error('Error updating user:', error);
+          alert("An error occurred while saving changes");
+        }
+      );
   } else {
     console.log("Form is not valid. Cannot save changes.");
   }
-  }
+}
 
   deleteUser(): void {
     if (confirm("Are you sure you want to delete your account?")) {
@@ -101,7 +182,7 @@ export class UserProfileComponent {
         );
     }
   }
-  onImageSelected(event: any): void {
+  /*onImageSelected(event: any): void {
     const file: File = event.target.files[0];
     // You can perform further operations with the selected file, like uploading it to the server
     // For now, let's assume we set the image preview directly
@@ -112,6 +193,22 @@ export class UserProfileComponent {
       });
     };
     reader.readAsDataURL(file);
+  }*/
+  /*onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imageUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+*/
+  onImageSelected(event: any): void {
+    const file: File = event.target.files[0];
+    this.selectedFile = file;
   }
   cancelForm() {
     this.showEditForm = false; 
@@ -122,6 +219,7 @@ export class UserProfileComponent {
       newPassword: ['', Validators.required]
     });
   }
+
 
   togglePasswordChange(): void {
     this.showPasswordChangeForm = !this.showPasswordChangeForm;
@@ -151,6 +249,18 @@ export class UserProfileComponent {
           alert('Failed to change password. Please try again.');
         }
       );
+  }
+  getFieldType(field: string): string {
+    if (field === 'dateOfIssue' || field === 'dateOfBirth') {
+      return 'date';
+    } else {
+      return 'text';
+    }
+  }
+  cancelPasswordChange() {
+    // Reset the form and hide the password change form
+    this.passwordChangeForm.reset();
+    this.showPasswordChangeForm = false;
   }
 }
 interface User {

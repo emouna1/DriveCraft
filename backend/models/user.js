@@ -1,7 +1,8 @@
 const {DataTypes} = require('sequelize');
 const db = require('../util/database');
 const LicenseCategory = require('./licenseCategory');
-
+const Image=require('./image')
+const Vehicle=require('../models/Vehicle')
 const users = db.define('users', {
   username: {
     type: DataTypes.STRING,
@@ -69,7 +70,7 @@ const users = db.define('users', {
   },
   image: {
     type: DataTypes.STRING,
-    allowNull: true // Assuming image is optional
+    allowNull: true 
   },
   personalCode: {
     type: DataTypes.STRING, // Properties for instructor
@@ -102,6 +103,11 @@ const users = db.define('users', {
   cnssNumber: {
     type: DataTypes.STRING, // Properties for instructor
     allowNull: true, // If instructor, this field will be populated
+  },
+  status: {
+    type: DataTypes.ENUM('active', 'inactive'),
+    defaultValue: 'active',
+    allowNull: false
   }
 
 },{
@@ -126,6 +132,10 @@ const users = db.define('users', {
 
 
 users.belongsTo(LicenseCategory, {foreignKey: 'CategoryCode'});
+
+//users.belongsTo(Image, { foreignKey: 'imageUrl', as: 'Image' });
+//users.hasMany(LessonExam, { foreignKey: 'candidateId', as: 'candidateScedule' });
+//users.hasMany(LessonExam, { foreignKey: 'instructorId', as: 'instructorSchedule' });
 
 // Define the findByEmail method in users
 users.findByEmail = async function (email) {

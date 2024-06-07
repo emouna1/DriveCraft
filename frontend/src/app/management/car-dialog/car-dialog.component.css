@@ -1,62 +1,85 @@
 /* Modal Container */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(227, 237, 241, 0.5); /* Semi-transparent background */
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(227, 237, 241, 0.5); /* Semi-transparent background */
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fffd83;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(202, 89, 132, 0.3); /* Shadow effect */
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto; /* Enable scrolling if content exceeds the modal height */
+}
+
+/* Modal Title */
+.modal-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Close Button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #555; /* Close button color */
+}
+
+/* Close Button Hover */
+.close:hover {
+  color: #e09696; /* Change color on hover */
+}
+
+/* Show the modal */
+/*.modal.active {
+  display: block;
+  animation: fadeIn 0.3s ease-out; /* Fade-in animation */
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  /* Modal Content */
-  .modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #b2eeb0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(202, 89, 132, 0.3); /* Shadow effect */
-    max-width: 80%;
-    max-height: 80%;
-    overflow-y: auto; /* Enable scrolling if content exceeds the modal height */
+  to {
+    opacity: 1;
   }
-  
-  /* Modal Title */
-  .modal-content h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-  
-  /* Close Button */
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #555; /* Close button color */
-  }
-  
-  /* Close Button Hover */
-  .close:hover {
-    color: #e09696; /* Change color on hover */
-  }
-  
-  /* Show the modal */
-  /*.modal.active {
-    display: block;
-    animation: fadeIn 0.3s ease-out; /* Fade-in animation */
-  
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
+}
+.edit-button,
+.delete-button {
+padding: 10px 20px; /* Adjust padding as needed */
+margin-right: 10px; /* Add margin between buttons */
+border: none; /* Remove button border */
+border-radius: 5px; /* Add border radius */
+cursor: pointer; /* Show pointer cursor on hover */
+transition: background-color 0.3s; /* Smooth transition for background color change */
+}
+
+.edit-button {
+background-color: #007bff; /* Blue background color */
+color: #fff; /* White text color */
+}
+
+.delete-button {
+background-color: #b40c0c; /* Red background color */
+color: #fff; /* White text color */
+}
+
+.edit-button:hover,
+.delete-button:hover {
+background-color: #e70d0d; /* Darker background color on hover */
+}

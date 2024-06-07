@@ -2,7 +2,7 @@
 
 const User = require('../models/user');
 
-// Fetch all students
+// Fetch all 
 exports.getAllEmployees = async (req, res, next) => {
   try {
     const employees = await User.findAll({
@@ -36,7 +36,7 @@ exports.getAllAdmins = async (req, res, next) => {
     res.status(500).json({message: 'An error occurred while fetching employees.'});
   }
 };
-// Add a new student
+// Add a new 
 exports.addEmployee = async (req, res, next) => {
   const employeeData = req.body;
 
@@ -44,7 +44,7 @@ exports.addEmployee = async (req, res, next) => {
     const newEmployee = await User.create(employeeData);
     res.status(201).json(newEmployee);
   } catch (error) {
-    console.error('Error adding student:', error);
+    console.error('Error adding !:', error);
     res.status(500).json({message: 'An error occurred while adding the intructor.'});
   }
 }
@@ -69,12 +69,12 @@ exports.updateEmployee = async (req, res, next) => {
   }
 };
 
-// Delete a student by CIN
+// Delete 
 exports.deleteEmployee = async (req, res, next) => {
   const {cin} = req.params;
 
   try {
-    // Find the student by CIN and delete
+    // Find 
     const deletedRows = await User.destroy({
       where: {CIN: cin}
     });
@@ -90,7 +90,7 @@ exports.deleteEmployee = async (req, res, next) => {
   }
 };
 
-// Search for a student by CIN
+// Search 
 exports.searchEmployeeByCIN = async (req, res, next) => {
   const {cin} = req.params;
 

@@ -1,0 +1,36 @@
+<div class="container" *ngIf="instructor && vehicle">
+
+  <!-- Instructor Details -->
+  <div class="instructor-details">
+    <h1>Instructor Details</h1>
+    <div *ngIf="instructor" class="instructor-info">
+      <img [src]="getImageUrl(instructor.image)" alt="Instructor Image" class="image">
+      <div class="info">
+        <h2>Name: {{ instructor.name }}</h2>
+        <p>Email: {{ instructor.email }}</p>
+        <p>Phone: {{ instructor.telephone }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vehicle Information -->
+  <div class="vehicle-info">
+    <h2>Vehicle Information</h2>
+    <div *ngIf="vehicle" class="vehicle-details">
+      <img [src]="getImageUrl(vehicle.Image)" alt="Vehicle Image" class="image" height="100px" width="100px">
+      <div class="info">
+        <p><strong>License Plate:</strong> {{ vehicle.LicensePlate }}</p>
+        <p><strong>Brand:</strong> {{ vehicle.Brand }}</p>
+        <p><strong>Type:</strong> {{ vehicle.Type }}</p>
+        <p><strong>Power:</strong> {{ vehicle.Power }}</p>
+        <p><strong>Fuel:</strong> {{ vehicle.Fuel }}</p>
+        <p><strong>Odometer:</strong> {{ vehicle.Odometer }}</p>
+        <p><strong>Color:</strong> {{ vehicle.Color }}</p>
+        <p><strong>Purchase Price:</strong> {{ vehicle.PurchasePrice }}</p>
+        <p><strong>Date:</strong> {{ vehicle.Date }}</p>
+        <p><strong>Observation:</strong> {{ vehicle.Observation }}</p>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -10,15 +10,18 @@ import { LessonsScheduleComponent } from './lessons-schedule/lessons-schedule.co
 import { StudentDialogComponent } from './student-dialog/student-dialog.component';
 import { ExamsScheduleComponent } from './exams-schedule/exams-schedule.component';
 import { PaymentComponent } from './payment/payment.component';
+import { InstructorPageComponent } from './instructor-page/instructor-page.component';
 const routes: Routes = [
    {
     path: 'home', 
     component: HomePageComponent,
     children: [
+      { path: '', redirectTo: 'Profile', pathMatch: 'full' }, // Default redirect
       { path: 'Profile', component: CandidateProfileComponent },
       { path: 'viewLessons', component: LessonsScheduleComponent },
       {path: 'viewExams' ,component:ExamsScheduleComponent },
-      {path:'payments' ,component:PaymentComponent}
+      {path:'payments' ,component:PaymentComponent},
+      {path:'instructor' ,component:InstructorPageComponent}
     ],}]
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ const routes: Routes = [
     LessonsScheduleComponent,
     StudentDialogComponent,
     ExamsScheduleComponent,
-    PaymentComponent
+    PaymentComponent,
+    InstructorPageComponent
+    
   ],exports: [
     RouterModule,
     MaterialModule,

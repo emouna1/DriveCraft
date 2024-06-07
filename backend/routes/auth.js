@@ -6,7 +6,7 @@ const authController = require('../controllers/auth');
 const loginController = require('../controllers/login');
 const forgotPasswordController = require('../controllers/forgotpassword');
 const changePasswordController = require('../controllers/changePassword')
-
+const userE = require('../controllers/userController')
 
 
 router.post('/signup', [
@@ -69,10 +69,11 @@ router.post('/changePassword', [
   check('oldPassword').notEmpty().withMessage('Old password is required'),
   check('newPassword').notEmpty().withMessage('New password is required'),
 
-],changePasswordController.changePassword)
+],changePasswordController.changePassword);
 
 
 
+router.get('/enrollment/:cin',[] ,userE.isHeEnrolled);
 
 
 module.exports = router;

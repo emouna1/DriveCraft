@@ -22,12 +22,17 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CarDialogComponent } from "./car-dialog/car-dialog.component";
 import { ConductEnrollmentComponent } from './conduct-enrollment/conduct-enrollment.component';
+import { InstructorCandidateComponent } from './instructor-candidate/instructor-candidate.component';
+import { ConductExamsComponent } from './conduct-exams/conduct-exams.component';
+import { ConductLessonsComponent } from './conduct-lessons/conduct-lessons.component';
 const routes: Routes = [
   { 
     path: 'dash', 
     component: HomeComponent,
     children: [
       //{ path: '', component: HomeComponent },
+      { path: '', redirectTo: 'lesson', pathMatch: 'full' }, // Default redirect
+
       { path: 'vehicles', component: VehicleEditionComponent },
       { path: 'Candidat', component: CondidateEditionComponent},
       { path: 'Maintenance', component: MaintenanceEditionComponent},
@@ -40,8 +45,10 @@ const routes: Routes = [
        {path:'Admins', component: AdminsComponent},
        {path:'Payment',component:PaymentComponent},
        {path:'conductEnrollments',component:ConductEnrollmentComponent},
-       {path:'schedulee',component:ScheduleeComponent}
-
+       {path:'schedulee',component:ScheduleeComponent},
+       {path:'instructor_candidate',component:InstructorCandidateComponent},
+       {path:'exams',component:ConductExamsComponent},
+       {path:'lesson',component:ConductLessonsComponent}
     ]
   }
 ];
@@ -63,7 +70,10 @@ const routes: Routes = [
         PaymentComponent,
         ScheduleComponent,
         CarDialogComponent,
-        ConductEnrollmentComponent
+        ConductEnrollmentComponent,
+        InstructorCandidateComponent,
+        ConductExamsComponent,
+        ConductLessonsComponent
     ],
     exports: [
         RouterModule,

@@ -27,12 +27,12 @@ exports.addpayMethod = async (req, res, next) => {
 };
 
 exports.updatepayMethod = async (req, res, next) => {
-  const {method} = req.params;
+  const {id} = req.params;
   const updatedData = req.body;
 
   try {
     const [updatedRows] = await PaymentMethod.update(updatedData, {
-      where: {method: method}
+      where: {id: id}
     });
 
     if (updatedRows === 0) {
@@ -47,11 +47,11 @@ exports.updatepayMethod = async (req, res, next) => {
 };
 
 exports.deletepayMethod = async (req, res, next) => {
-  const {method} = req.params;
+  const {id} = req.params;
 
   try {
     const deletedRows = await PaymentMethod.destroy({
-      where: {method: method}
+      where: {id: id}
     });
 
     if (deletedRows === 0) {

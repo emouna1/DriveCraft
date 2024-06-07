@@ -91,5 +91,8 @@ export class LoginComponent {
    togglePasswordVisibility(): void { 
     this.hidePassword= !this.hidePassword}
 
-    
+    navigateToHome() {
+      this.router.navigate(['/']); // Navigate to home page
+    }
   }
+

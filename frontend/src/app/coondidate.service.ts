@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CoondidateService {
+  
   private apiUrl = 'http://localhost:3000/User'; // Adjust this to your API URL
 
   constructor(private http: HttpClient) { }
@@ -54,5 +55,17 @@ export class CoondidateService {
   deleteEmployee(candidateId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/deleteEmployee/${candidateId}`);
   }
+  getInstructorForCandidate(candidateId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/instructor-for-candidate/${candidateId}`);
+  }
 
+  getLessonsForInstructor(instructorId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getLessonsForInstructor/${instructorId}`);
+  }
+  getExamsForInstructor(instructorId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getExamsForInstructor/${instructorId}`);
+  }
+  getStudentsForInstructor(instructorId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/getStudentsForInstructor/${instructorId}`);
+  }
 }

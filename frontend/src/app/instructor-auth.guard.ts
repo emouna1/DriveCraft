@@ -6,7 +6,7 @@ export const instructorAuthGuard: CanActivateFn = (route, state) => {
   const userService = inject(AuthService);
   const router = inject(Router);
 
-  if (userService.isLoggedIn() && userService.getCurrentUserRole() === 'instructor') {
+  if (userService.isLoggedIn() && userService.getCurrentUserRole() === 'instructor' && userService.getCurrentUserStatus() === 'active') {
     return true;
 
   }else{

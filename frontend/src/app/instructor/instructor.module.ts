@@ -9,13 +9,15 @@ import { InstructorProfileComponent } from './instructor-profile/instructor-prof
 import { ManageLessonsComponent } from './manage-lessons/manage-lessons.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ManageStudentsComponent } from './manage-students/manage-students.component';
+import { InstructorDialogComponent } from './instructor-dialog/instructor-dialog.component';
 const routes: Routes = [
   {
    path: 'home', 
    component: HomePageComponent,
    children: [
+    { path: '', redirectTo: 'Profile', pathMatch: 'full' }, // Default redirect
      { path: 'Profile', component: InstructorProfileComponent },
-     { path: 'Lessons', component:ManageLessonsComponent },
+     { path: 'lessons', component:ManageLessonsComponent },
       {path: 'viewExams' ,component:ScheduleComponent },
       {path:'manage' ,component:ManageStudentsComponent}
 
@@ -26,6 +28,8 @@ const routes: Routes = [
     InstructorProfileComponent,
     ManageLessonsComponent,
     ScheduleComponent,
+    ManageStudentsComponent,
+    InstructorDialogComponent
   ],exports: [
     RouterModule,
     MaterialModule,

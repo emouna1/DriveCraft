@@ -1,0 +1,25 @@
+<div class="modal">
+    <div class="modal-content">
+      <h2 *ngIf="isLesson(eventDetails)">Lesson details</h2>
+      <h2 *ngIf="isExam(eventDetails)">Exam Details</h2>
+
+      <span class="close" (click)="onClose()">&times;</span>
+      <p>date: {{ eventDetails?.date}}</p>
+    <p>start Hour: {{ eventDetails?.startHour }}</p>
+    <p>end Hour: {{ eventDetails?.endHour }}</p>
+      <p>Task Category: {{ eventDetails?.taskCategory }}</p>
+
+      <p>Candidate CIN: {{ eventDetails?.candidatCIN }}</p>
+      <p *ngIf="isExam(eventDetails)">
+        
+        Result: {{ eventDetails?.result }}</p>
+     <!-- Display accomplished for lessons -->
+    <p *ngIf="isLesson(eventDetails)">Accomplished: {{ eventDetails?.accomplished }}
+      <br><br>
+      <button class="edit-button" *ngIf="eventDetails" (click)="openEditEventModal()">
+        Edit <!-- Edit icon -->
+       </button>
+    </p>
+     
+    </div>
+  </div>

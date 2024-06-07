@@ -1,0 +1,54 @@
+/* instructor-details.component.css */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.details-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1000px; /* Adjust the maximum width as needed */
+  width: 100%;
+}
+
+.instructor-details,
+.vehicle-info {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  margin-right: 20px; /* Adjust the spacing between the sections */
+}
+
+.instructor-details h1,
+.vehicle-info h2 {
+  text-align: center;
+}
+
+.image-container {
+  width: 150px; /* Adjust the width of the image container */
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.text-container {
+  padding-left: 20px; /* Adjust the spacing between the image and text */
+}
+
+.text-container h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.text-container p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: #555;
+}

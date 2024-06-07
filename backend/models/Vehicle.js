@@ -1,6 +1,8 @@
 const {DataTypes} = require('sequelize');
 const db = require('../util/database');
 const CarMaintenance = require('./carMaintenance');
+const users = require('../models/user')
+
 const Vehicle = db.define('Vehicle', {
 
     LicensePlate: {
@@ -40,6 +42,10 @@ const Vehicle = db.define('Vehicle', {
       allowNull: false
     },
     Observation: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    Image: {
       type: DataTypes.STRING,
       allowNull: false
     },

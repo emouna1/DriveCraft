@@ -10,11 +10,7 @@
       max-height: calc(100% - 100px); /* Adjusted to cover the content */
       overflow-y: auto; /* Add a scrollbar if the content exceeds the container height */
     }
-  .payment-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
+
   
   .payment-item p {
     margin: 5px 0;
@@ -111,7 +107,7 @@
 }
 
 .payment-item {
-  border: 1px solid #ccc;
+  border: 1px solid #52df27;
   margin-bottom: 20px;
   padding: 10px;
   display: flex;
@@ -146,3 +142,10 @@
   margin: 5px 0;
 }
 
+.payment-successful {
+  border: 1px solid #28a745; /* Green for successful payments */
+}
+
+.payment-unsuccessful {
+  border: 1px solid #dc3545; /* Red for unsuccessful payments */
+}

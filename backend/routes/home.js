@@ -20,7 +20,10 @@ homeRouter.delete('/deleteEnrollment/:id', enrollmentsController.deleteEnrollmen
 const {codeLessonExamController} = require('../controllers/planCode');
 
 // Routes for code lessons and exams
-homeRouter.get('/code-lesson-exams', codeLessonExamController.getAllCodeLessonExams);
+//homeRouter.get('/code-lesson-exams', codeLessonExamController.getAllCodeLessonExams);
+homeRouter.get('/code-lessons', codeLessonExamController.getAllLessons);
+homeRouter.get('/code-exams', codeLessonExamController.getAllExams);
+
 homeRouter.delete('/code-lesson-exams/:id', codeLessonExamController.deleteCodeLessonExam);
 homeRouter.put('/code-lesson-exams/:id', codeLessonExamController.updateCodeLessonExam);
 homeRouter.post('/code-lesson-exams', codeLessonExamController.createCodeLessonExam);

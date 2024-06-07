@@ -1,0 +1,55 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #f8c4d9;
+    border-radius: 8px;
+  }
+  
+  h2, h3 {
+    text-align: center;
+  }
+  
+  .assign-section, .list-section, .vehicle-section {
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  h4.instructor-name {
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  h4.instructor-name:hover {
+    text-decoration: underline;
+  }
+  
+  .candidate-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .candidate-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .assignment-info {
+    margin-bottom: 10px;
+  }
+  
+  mat-icon {
+    vertical-align: middle;
+  }
+  

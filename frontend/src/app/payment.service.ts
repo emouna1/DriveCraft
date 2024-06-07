@@ -15,6 +15,7 @@ export class PaymentService {
     return this.http.get<any[]>(`${this.apiUrl}/getAllPaymentS`);
   }
   addPayment(Data: any): Observable<any>  {
+    console.log(Data)
     return this.http.post<any[]>(`${this.apiUrl}/addPaymentS`,Data);
   }
 
@@ -27,6 +28,9 @@ export class PaymentService {
   }
   addEnrollmentPayment(Data: any): Observable<any>  {
     return this.http.post<any[]>(`${this.apiUrl}/paymentSettlement`,Data);
+  }
+  markPaymentAsSuccessful(paymentId: number): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${paymentId}/success`, {});
   }
 
 }

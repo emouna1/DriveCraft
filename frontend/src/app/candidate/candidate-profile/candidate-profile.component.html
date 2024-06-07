@@ -7,10 +7,12 @@
     <!-- Include your CSS stylesheets here -->
 </head>
 <body>
-    <img src="{{ currentUser.image }}" alt="User Image" style="display: block; margin: 0 auto; width: 20px; height: 20px;">
 
     <div class="container">
         <h1 class="heading"> Welcome to Your Account </h1>
+        <img *ngIf="imageUrl" [src]="imageUrl" alt="User Image" style="display: block; margin: 0 auto; width: 150px; height: 150px;">
+
+
 
         <div class="info">
 
@@ -24,16 +26,14 @@
             <p><strong>Nationality:</strong> {{ currentUser.nationality }}</p>
             <p><strong>Address:</strong> {{ currentUser.address }}</p>
             <p><strong>Telephone:</strong> {{ currentUser.telephone }}</p>
-            <p><strong>Image:</strong> {{ currentUser.image }}</p>
-            <p><strong>Situation</strong> {{currentUser.situation}}</p>
-            <p><strong>Balance:</strong> {{ currentUser.balance }}</p>
             <br>
-            <mat-divider>***</mat-divider>   
-
+            <mat-divider></mat-divider>   
           
             <div class="button-container">
-                <button mat-raised-button class="delete-button" (click)="deleteUser()">Delete account</button>
                 <button mat-raised-button class="edit-button" (click)="toggleEditMode()">Edit profile</button>
+            </div>
+            <div class="button-container">
+                <button mat-raised-button class="change-password-button" (click)="togglePasswordChange()">Change Password</button>
             </div>
             <br><br>
      </div>
@@ -48,34 +48,86 @@
         </div>
         
     </div>-->
-    <div *ngIf="showEditForm">
+     <div *ngIf="showEditForm">
         <form [formGroup]="editUserForm" (submit)="saveChanges()">
+                
             <fieldset>
                 <legend>Edit User</legend>
-                <ng-container *ngFor="let field of ['username', 'email', 'name', 'firstName', 'CIN', 'dateOfIssue', 'situation', 'balance', 'dateOfBirth', 'nationality', 'address', 'telephone', 'image' ,'CategoryCode']">
-                  
-                    <mat-form-field>
+                <ng-container *ngFor="let field of ['username', 'email', 'firstName', 'dateOfBirth', 'nationality', 'address', 'telephone']">
+                    <mat-form-field *ngIf=" field !== 'dateOfBirth' ">
                         <mat-label>{{ field }}</mat-label>
-                        <input matInput type="{{ field === 'dateOfIssue' || field === 'dateOfBirth'  ? 'date' :'text' }}" formControlName="{{ field }}" required>
+                        <input matInput [type]="getFieldType(field)" formControlName="{{ field }}">
+                        <!-- Add specific error messages for each field if needed -->
                         <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
-                        <mat-error *ngIf="editUserForm.get(field)?.invalid"> Invalid {{ field }} </mat-error>
-                  </mat-form-field>
-                    <!--<mat-form-field *ngIf="field === 'image'">
+                        <mat-error *ngIf="field === 'email' && editUserForm.get(field)?.hasError('email')"> Invalid email format</mat-error>
+                    </mat-form-field>
+                
+                   <!--<mat-form-field *ngIf=" field === 'dateOfBirth'">
                         <mat-label>{{ field }}</mat-label>
-                        <input matInput type="file" (change)="onImageSelected($event)" accept="image/*" formControlName="{{ field }}">
+                        <input matInput [type]="getFieldType(field)" formControlName="{{ field }}" [matDatepicker]="picker">
+                        <!-- Add specific error messages for each field if needed -
                         <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
-                        <img *ngIf="currentUser.image" [src]="currentUser.image" alt="User Image" style="width: 150px; height: 150px;">
+                        <!--<mat-error *ngIf="editUserForm.get(field)?.hasError('matDatepickerParse')"> Invalid date</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>-->
+                    <mat-form-field *ngIf=" field === 'dateOfBirth'">
+                        <mat-label>Choose the date of birth</mat-label>
+                        <input matInput formControlName="{{ field }}" [matDatepicker]="picker" [matDatepicker]="picker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                
+                 <!-- Other form fields -->
                 </ng-container>
+
+         
+                  <div>
+                    <label for="image">Image </label>
+                    <input id="image" type="file" (change)="onImageSelected($event)">
+                    <mat-error *ngIf="!selectedFile">Image is required</mat-error>
+                  </div>
+                   <!-- <div *ngIf="currentUser['imageUrl']">
+                        <img [src]="currentUser['imageUrl']" alt="User Image" style="width: 150px; height: 150px;">
+                    </div>
+                </mat-form-field>-->
+
                 <!-- Submit and Cancel Buttons -->
-                <button class="amouna-button" type="submit">Save changes </button>
+                <button class="amouna-button" type="submit">Save changes</button>
                 <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
             </fieldset>
+    
         </form>
+
     </div>
-    </div>
-    <!-- Add a button to trigger password change -->
-<button mat-raised-button class="change-password-button" (click)="togglePasswordChange()">Change Password</button>
+
+
+
+
+    <!-- <div *ngIf="showEditForm">
+                    <form [formGroup]="editUserForm" (submit)="saveChanges()">
+                        <fieldset>
+                            <legend>Edit User</legend>
+                            <ng-container *ngFor="let field of ['username', 'email', 'firstName', 'dateOfBirth', 'nationality', 'address', 'telephone']">
+                                <mat-form-field >
+                                    <mat-label>{{ field }}</mat-label>
+                                    <input matInput [type]="getFieldType(field)" formControlName="{{ field }}">
+                                    <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
+                                    <mat-error *ngIf="field === 'email' && editUserForm.get(field)?.hasError('email')"> Invalid email format</mat-error>
+                                </mat-form-field>
+                            </ng-container>
+                         <mat-form-field >
+                                <mat-label>Image</mat-label>
+                                <input type="file" (change)="onImageSelected($event)" accept="image/*" formControlName="image">
+                                <mat-error *ngIf="editUserForm.get('image')?.hasError('required')">Image is required</mat-error>
+                                <img [src]="imageUrl" alt="User Image" style="width: 150px; height: 150px;">
+                            </mat-form-field>
+                            <button class="amouna-button" type="submit">Save changes</button>
+                            <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
+                        </fieldset>
+                    </form>
+                </div> -->
 
 <!-- Password change form -->
 <div *ngIf="showPasswordChangeForm">
@@ -89,7 +141,9 @@
             <mat-error *ngIf="passwordChangeForm.get('newPassword')?.hasError('required')">New Password is required</mat-error>
         </mat-form-field>
         <button mat-raised-button type="submit" [disabled]="passwordChangeForm.invalid">Change Password</button>
+        <button mat-raised-button type="button" (click)="cancelPasswordChange()">Cancel</button>
     </form>
+</div>
 </div>
 
 </body>

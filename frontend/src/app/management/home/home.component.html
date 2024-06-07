@@ -22,7 +22,14 @@
     <div class="menu-buttons">      
     <button mat-button [matMenuTriggerFor]="HomeMenu">
       <mat-icon> pending_actions </mat-icon> 
-      Schedule
+      Exams Schedule
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <button mat-button [matMenuTriggerFor]="HomeeMenu">
+      <mat-icon> 
+          calendar_month
+      </mat-icon> 
+      Lessons
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <br><br>
@@ -31,7 +38,7 @@
       <mat-icon>
         how_to_reg
         </mat-icon>
-      Registration management
+      Registration 
       <mat-icon>arrow_drop_down</mat-icon>
     </button>
     <br><br>
@@ -72,23 +79,36 @@
     <button mat-button [matMenuTriggerFor]="VehiclesMenu">
       Vehicles Section
       <mat-icon>arrow_drop_down</mat-icon>
-    </button>-->
-    <a mat-list-item routerLink="userProfile" routerLinkActive="active">
-      <mat-icon>person_outline</mat-icon><!-- Use the desired Material icon name here -->
-      PROFILE
-  </a>
+    </button>
   
+  <a mat-list-item routerLink="instructor_candidate" routerLinkActive="active">
+    <mat-icon>groups_2</mat-icon><!-- Use the desired Material icon name here 
+    Attributions management
+</a>
+-->
+<a mat-list-item routerLink="userProfile" routerLinkActive="active">
+  <mat-icon>person_outline</mat-icon><!-- Use the desired Material icon name here -->
+  PROFILE
+</a>
     </div>
-    <br><br>
+    <br>
         <button class="logout-button" (click)="logout()">
           <span class="material-icons">exit_to_app</span> Logout
         </button>
       </mat-nav-list>
     </mat-sidenav>
+    <mat-menu #HomeeMenu="matMenu">
+      <!-- Add items for Candidates Menu here -->
+      
+      <a mat-menu-item routerLink="lesson" routerLinkActive="active">Planning of sessions </a>
+      <a mat-menu-item routerLink="schedulee" routerLinkActive="active">lessons list</a>
+
+    </mat-menu>
     <mat-menu #HomeMenu="matMenu">
       <!-- Add items for Candidates Menu here -->
-      <a mat-menu-item routerLink="Schedule" routerLinkActive="active">Planning of code sessions & exams</a>
-      <a mat-menu-item routerLink="schedulee" routerLinkActive="active">Planning of conduct sessions & exams</a>
+      <a mat-menu-item routerLink="Schedule" routerLinkActive="active">Planning of exams</a>
+      <a mat-menu-item routerLink="exams" routerLinkActive="active">exams list</a>
+
     </mat-menu>
 
 

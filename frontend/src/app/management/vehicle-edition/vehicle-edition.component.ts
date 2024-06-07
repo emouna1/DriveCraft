@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { VehiclesEditionService } from 'src/app/vehicles-edition.service';
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-vehicle-edition',
   templateUrl: './vehicle-edition.component.html',
@@ -13,14 +14,16 @@ export class VehicleEditionComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<Vehicle>();
-  columns = ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation'];
+  columns = ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation', 'Image'];
   displayedColumns = [...this.columns, 'actions'];
 
   addVehicleForm!: FormGroup;
   editVehicleForm!: FormGroup;
+  backendUrl = 'http://localhost:3000'; // Replace with your backend URL
 
   showForm: boolean = false; // Added variable to control the visibility of the add form
   showEditForm: boolean = false; // Added variable to control the visibility of the edit form
+  fileToUpload: File | null = null;
 
   selectedRow: Vehicle = {
     LicensePlate: '',
@@ -32,12 +35,15 @@ export class VehicleEditionComponent implements OnInit {
     Color: '',
     PurchasePrice: 0,
     Date: '', // Assuming date is represented as a string in ISO 8601 format
-    Observation: ''
+    Observation: '',
+    Image: ''
   };
 
   constructor(
     private vehiclesEditionService: VehiclesEditionService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar // Inject MatSnackBar
+
   ) { }
 
   ngOnInit() {
@@ -56,7 +62,8 @@ export class VehicleEditionComponent implements OnInit {
       Color: ['', Validators.required],
       PurchasePrice: [0, Validators.required],
       Date: ['', Validators.required],
-      Observation: ['', Validators.required]
+      Observation: ['', Validators.required],
+      Image: [null]
     });
 
     this.editVehicleForm = this.fb.group({
@@ -69,7 +76,8 @@ export class VehicleEditionComponent implements OnInit {
       Color: ['', Validators.required],
       PurchasePrice: [0, Validators.required],
       Date: ['', Validators.required],
-      Observation: ['', Validators.required]
+      Observation: ['', Validators.required],
+      Image:[null]
     });
   }
 
@@ -92,7 +100,7 @@ export class VehicleEditionComponent implements OnInit {
     this.showForm = false; // Ensure add form is not shown when opening edit form
   }
 
-  saveChanges() {
+  /*saveChanges() {
     if (this.editVehicleForm.valid) {
       const formData = this.editVehicleForm.value;
       this.vehiclesEditionService.updateCar(formData.LicensePlate, formData).subscribe(
@@ -130,8 +138,94 @@ export class VehicleEditionComponent implements OnInit {
         }
       );
     }
+  }*/
+  onFileChange(event: any) {
+    this.fileToUpload = event.target.files[0];
   }
 
+  saveChanges() {
+    if (this.editVehicleForm.valid) {
+      const formData: FormData = new FormData();
+      const formValues = this.editVehicleForm.value;
+
+      for (const key in formValues) {
+        formData.append(key, formValues[key]);
+      }
+
+      if (this.fileToUpload) {
+        formData.append('image', this.fileToUpload, this.fileToUpload.name);
+      }
+
+      this.vehiclesEditionService.updateCar(formValues.LicensePlate, formData).subscribe(
+        response => {
+          console.log('Vehicle updated successfully', response);
+          this.snackBar.open('Vehicle updated successfully', 'Close', {
+            duration: 3000
+          });
+          this.editVehicleForm.reset();
+          this.fetchData();
+          this.showEditForm = false;
+        },
+        error => {
+          console.error('Error updating vehicle', error);
+          this.snackBar.open('Error updating vehicle', 'Close', {
+            duration: 3000
+          }); 
+        }
+      );
+    }
+  }
+
+  deleteRow(element: Vehicle) {
+    this.vehiclesEditionService.deleteCar(element.LicensePlate).subscribe(
+      () => {
+        console.log('Deleted row:', element);
+        this.snackBar.open('Vehicle deleted successfully', 'Close', {
+          duration: 3000
+        }); // Success notification
+        this.fetchData();
+      },
+      error => {
+        console.error('Error deleting vehicle', error);
+        this.snackBar.open('Error deleting vehicle', 'Close', {
+          duration: 3000
+        }); // Error notification
+      }
+    );
+  }
+
+  submitVehicle() {
+    if (this.addVehicleForm.valid) {
+      const formData: FormData = new FormData();
+      const formValues = this.addVehicleForm.value;
+
+      for (const key in formValues) {
+        formData.append(key, formValues[key]);
+      }
+
+      if (this.fileToUpload) {
+        formData.append('image', this.fileToUpload, this.fileToUpload.name);
+      }
+
+      this.vehiclesEditionService.addCar(formData).subscribe(
+        response => {
+          console.log('Vehicle added successfully', response);
+          this.snackBar.open('Vehicle added successfully', 'Close', {
+            duration: 3000
+          });
+          this.addVehicleForm.reset();
+          this.fetchData();
+          this.showForm = false;
+        },
+        error => {
+          console.error('Error adding vehicle', error);
+          this.snackBar.open('Error adding vehicle', 'Close', {
+            duration: 3000
+          });
+        }
+      );
+    }
+  }
 @ViewChild('printContent') printContent!: ElementRef;
 
 printTable() {
@@ -162,6 +256,7 @@ printTable() {
       printContent += '<th>Purchase Price</th>';
       printContent += '<th>Date</th>';
       printContent += '<th>Observation</th>';
+      printContent += '<th>Image</th>';
       printContent += '</tr>';
 
       // Generate table rows from dataSource
@@ -177,6 +272,9 @@ printTable() {
         printContent += '<td>' + element.PurchasePrice + '</td>';
         printContent += '<td>' + element.Date + '</td>';
         printContent += '<td>' + element.Observation + '</td>';
+        //printContent += '<td><img src="' + element.Image + '" alt="Vehicle Image" width="100"></td>';
+        printContent += '<td><img src="' + this.getAbsoluteUrl(element.Image) + '" alt="Vehicle Image" width="100"></td>';
+
         printContent += '</tr>';
       });
 
@@ -210,7 +308,15 @@ canceladdForm() {
   this.dataSource.paginator!.pageSize = event.pageSize;
 }
   
-  
+getAbsoluteUrl(relativePath: string): string {
+  if (!relativePath) {
+    return '';
+  }
+  // Replace backslashes with forward slashes and prepend the backend URL
+  return this.backendUrl + relativePath.replace(/\\/g, '/');
+  //return this.backendUrl + relativePath
+
+}
 }
 export interface Vehicle {
   LicensePlate: string;
@@ -223,4 +329,5 @@ export interface Vehicle {
   PurchasePrice: number;
   Date: string; // Assuming date is represented as a string in ISO 8601 format
   Observation: string;
+  Image: string;
 }

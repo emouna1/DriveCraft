@@ -52,13 +52,13 @@ export class FoldersService {
     return this.http.post<any[]>(`${this.apiUrl}/addpayMethod`,Data);
   }
 
-  editPaymentM(method: number,Data: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/updatepayMethod/${method}`,Data);
+  editPaymentM(id: number,Data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/updatepayMethod/${id}`,Data);
   }
 
   deletePaymentM(method: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/deletepayMethod/${method}`);
   }
 
-
+ 
 }

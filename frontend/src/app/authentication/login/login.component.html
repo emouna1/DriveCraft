@@ -1,6 +1,9 @@
 <div class="background-image">
 
 <div class="container mt-5">
+  <button mat-icon-button class="back-to-home-button" (click)="navigateToHome()">
+    <mat-icon>home</mat-icon>
+  </button>
     <div class="card shadow-sm p-4">
       <h1 class="text-center mb-4">Login</h1>
       <form (ngSubmit)="login()">

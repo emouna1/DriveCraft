@@ -1,0 +1,79 @@
+.amouna-container {
+    padding: 20px;
+  }
+  
+  .page-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #3f51b5;
+  }
+  
+  .legend {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  .legend-text {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .calendar-container,
+  .calendar-containerr {
+    flex: 1;
+    min-width: 300px;
+    margin: 10px;
+  }
+  
+  .calendar-container {
+    height: 500px; /* Adjust as needed */
+  }
+  
+  .calendar-containerr {
+    height: 600px; /* Adjust as needed */
+  }
+  /* CSS for Color Legend */
+.color-legend {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+  }
+  
+  .legend-item {
+  display: flex;
+  align-items: center;
+  }
+  
+  .color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  }
+  
+  .legend-text {
+  font-size: 14px;
+  }
+  
+ 
+  

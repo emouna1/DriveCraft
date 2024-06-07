@@ -22,6 +22,14 @@ export class StudentDialogComponent {
   deleteEvent(): void {
     this.deleteEventEmitter.emit(this.eventDetails);
   }
+  isLesson(event: CodeLessonExam | null): boolean {
+    return event?.taskType === 'lesson';
+  }
+
+  // Function to check if the event is an exam
+  isExam(event: CodeLessonExam | null): boolean {
+    return event?.taskType === 'exam';
+  }
 }
 export interface CodeLessonExam {
   id?: number;

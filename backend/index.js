@@ -2,6 +2,7 @@ const express = require('express');
 
 const cors = require("cors");
 const db = require('./util/database');
+const multer = require('multer');
 
 //const cookieSession  = require("cookie-session");
 
@@ -51,6 +52,37 @@ app.get('/set-cookies', (req, res) => {
 app.get('/', (req, res) => {
   res.send('Welcome to the driving school management website!');
 });
+
+
+
+
+
+
+
+//MULTER 
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'images/'); // Specify the directory where uploaded images will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname); // Generate a unique filename for the uploaded image
+  }
+});
+
+const upload = multer({ storage: storage });
+
+
+
+
+
+
+
+
+
+
+
+app.use('/images', express.static('images'));
 
 app.use('/auth', authRoutes);
 app.use('/Car', CarRoutes);

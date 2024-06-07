@@ -1,10 +1,8 @@
-<!-- schedule.component.html -->
-   <!-- Color legend -->
-   <div class="calendar-container">
+<div class="calendar-container">
+  <h2 class="centered-title">Exams schedule</h2>
+  <div id="calendar" class="calendar"></div>
 
-   <div id="calendar"></div>
-
-   <div class="color-legend">
+  <div class="color-legend">
     <div class="legend-item">
       <div class="color-box" style="background-color: green;"></div>
       <div class="legend-text">Success</div>
@@ -22,24 +20,25 @@
       <div class="legend-text">Other</div>
     </div>
   </div>
-    
-      <!-- Include navigation controls for different views -->
-      <div class="calendar-navigation">
-        <span class="material-symbols-outlined">
-            <button mat-button (click)="changeView('timeGridWeek')"><mat-icon>
-                calendar_view_day
-            </mat-icon>Week</button>
-           <button mat-button (click)="changeView('dayGridMonth')"> <mat-icon>
-            calendar_view_week
-            </mat-icon>Month</button>
-            </span> 
-        <button mat-button (click)="changeView('dayGridYear')"><mat-icon>
-            calendar_view_month
-        </mat-icon>Year</button>
-      </div>
-      <!-- Include your event details component -->
-      <app-student-dialog *ngIf="selectedEvent" [eventDetails]="selectedEvent" (close)="selectedEvent = null" (editEvent)="openEditEventModal($event)"></app-student-dialog>
-   
- 
-    
-    </div>
+
+  <div class="calendar-navigation">
+    <span class="material-symbols-outlined">
+      <button mat-button (click)="changeView('timeGridWeek')">
+        <mat-icon>calendar_view_day</mat-icon>Week
+      </button>
+      <button mat-button (click)="changeView('dayGridMonth')">
+        <mat-icon>calendar_view_week</mat-icon>Month
+      </button>
+    </span>
+    <button mat-button (click)="changeView('dayGridYear')">
+      <mat-icon>calendar_view_month</mat-icon>Year
+    </button>
+  </div>
+
+  <app-student-dialog 
+    *ngIf="selectedEvent" 
+    [eventDetails]="selectedEvent" 
+    (close)="selectedEvent = null" 
+    (editEvent)="openEditEventModal($event)">
+  </app-student-dialog>
+</div>

@@ -39,6 +39,7 @@ export class PaymentMethodComponent {
     editRow(element: method) {
       this.showEditForm = true; // Show the edit form
       this.selectedRow = { ...element }; // Copy the selected row's data
+      console.log(this.selectedRow)
     }
   
     saveChanges() {
@@ -48,6 +49,8 @@ export class PaymentMethodComponent {
         this.showEditForm = false; // Hide the edit form after saving changes
       });
       this.fetchData();
+      this.resetForm();
+
     }
     deleteRow(element: method) {
       // Call deleteM function from the service to delete the row
@@ -55,6 +58,8 @@ export class PaymentMethodComponent {
         console.log('Deleted row:', element);
         // After successful deletion, you might want to refresh the data
         this.fetchData();
+        this.resetForm();
+
       });
     }
   

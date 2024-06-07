@@ -7,7 +7,16 @@
       <!-- Displaying columns -->
       <ng-container *ngFor="let column of columns" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-        <td mat-cell *matCellDef="let element">{{ element[column] !== null ? element[column] : '...' }}</td>
+        <td mat-cell *matCellDef="let element">
+          <ng-container *ngIf="column !== 'Image'">
+            {{ element[column] !== null ? element[column] : '...' }}
+          </ng-container>
+          <ng-container *ngIf="column === 'Image'">
+            <img [src]="getAbsoluteUrl(element.Image)" alt="Vehicle Image" width="100">
+
+          </ng-container>
+          
+        </td>
       </ng-container>
 
       <!-- Actions Column -->
@@ -46,15 +55,9 @@
     <form [formGroup]="addVehicleForm" (submit)="submitVehicle()">
       <fieldset>
         <legend>Add vehicle</legend>
-       <!-- <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation']">
-          <mat-form-field>
-            <mat-label>{{ field }}</mat-label>
-            <input matInput type="{{ field === 'Date' ? 'datetime-local' : 'text' }}" formControlName="{{ field }}" required>
-            <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
-          </mat-form-field>
-        </ng-container>-->
-        <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation']">
-          <mat-form-field *ngIf="field !== 'Date' && field !== 'Color' && field !== 'PurchasePrice'">
+  
+        <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation', 'Image']">
+          <mat-form-field *ngIf="field !== 'Date' && field !== 'Color' && field !== 'PurchasePrice' && field !== 'Image'">
             <mat-label>{{ field }}</mat-label>
             <input matInput type="text" formControlName="{{ field }}" required>
             <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
@@ -78,6 +81,11 @@
             <mat-error *ngIf="addVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
             <mat-error *ngIf="addVehicleForm.get(field)?.hasError('pattern')"> Invalid price format</mat-error>
           </mat-form-field>
+           <!-- File input for image -->
+           <div *ngIf="field === 'Image'">
+            <label for="image">Image</label>
+            <input id="image" type="file" (change)="onFileChange($event)">
+          </div>
         </ng-container>
         
         <!-- Submit and Cancel Buttons -->
@@ -93,8 +101,8 @@
   <form [formGroup]="editVehicleForm" (submit)="saveChanges()">
     <fieldset>
       <legend>Edit Vehicle</legend>
-      <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation']">
-        <mat-form-field *ngIf="field !== 'Date' && field !== 'Color' && field !== 'PurchasePrice'">
+      <ng-container *ngFor="let field of ['LicensePlate', 'Brand', 'Type', 'Power', 'Fuel', 'Odometer', 'Color', 'PurchasePrice', 'Date', 'Observation', 'Image']">
+        <mat-form-field *ngIf="field !== 'Date' && field !== 'Color' && field !== 'PurchasePrice' && field !== 'Image'">
           <mat-label>{{ field }}</mat-label>
           <input matInput type="text" formControlName="{{ field }}" required>
           <mat-error *ngIf="editVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
@@ -118,6 +126,13 @@
           <mat-error *ngIf="editVehicleForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
           <mat-error *ngIf="editVehicleForm.get(field)?.hasError('pattern')"> Invalid price format</mat-error>
         </mat-form-field>
+         <!-- File input for image 
+  
+    <!-- File input for image -->
+           <div *ngIf="field === 'Image'">
+            <label for="image">Image</label>
+            <input id="image" type="file" (change)="onFileChange($event)">
+          </div>
       </ng-container>
       <!-- Submit and Cancel Buttons -->
       <button class="amouna-button" type="submit">Save changes </button>

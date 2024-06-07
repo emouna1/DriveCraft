@@ -17,7 +17,12 @@ const PaymentDetails = db.define('paymentDetails', {
   dateEcheance: {
     type: DataTypes.DATE,
     allowNull: false,
-  }
+  },
+  verificationUrl: {
+    type: DataTypes.STRING, // Assuming paymentCheckUrl is a string
+    allowNull: true // Allow null values if paymentCheckUrl is optional
+  },
+ 
 });
 PaymentDetails.belongsTo(PaymentMethod); // Add this association to link PaymentDetails with PaymentMethod
 

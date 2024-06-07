@@ -1,0 +1,58 @@
+<div class="container">
+    <h2>Manage Instructor and Vehicle Assignments</h2>
+  
+    <div class="assign-section">
+      <h3>Assign a Candidate to an Instructor</h3>
+      <form (ngSubmit)="assignCandidate()">
+        <mat-form-field class="form-group">
+          <mat-label>Candidate</mat-label>
+          <mat-select [(ngModel)]="selectedCandidate" name="candidate" required>
+            <mat-option *ngFor="let candidate of candidates" [value]="candidate">{{ candidate.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Instructor</mat-label>
+          <mat-select [(ngModel)]="selectedInstructor" name="instructor" required>
+            <mat-option *ngFor="let instructor of instructors" [value]="instructor">{{ instructor.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="form-group">
+          <mat-label>Vehicle</mat-label>
+          <mat-select [(ngModel)]="selectedVehicle" name="vehicle" required>
+            <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">{{ vehicle.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">Assign</button>
+      </form>
+    </div>
+  
+    <div class="list-section">
+      <h3>List of Candidates by Instructor</h3>
+      <div *ngFor="let instructor of instructors">
+        <h4 (click)="toggleInstructor(instructor)" class="instructor-name">{{ instructor.name }}</h4>
+        <ul *ngIf="isInstructorExpanded(instructor)" class="candidate-list">
+          <li *ngFor="let candidate of instructor.candidates" class="candidate-item">
+            {{ candidate.name }}
+            <button (click)="removeCandidate(instructor, candidate)" mat-icon-button color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="vehicle-section">
+      <h3>Vehicle Information</h3>
+      <div *ngFor="let assignment of assignments" class="assignment-info">
+        <p>
+          <strong>Candidate:</strong> {{ assignment.candidate.name }},
+          <strong>Instructor:</strong> {{ assignment.instructor.name }},
+          <strong>Vehicle:</strong> {{ assignment.vehicle.name }}
+          <button (click)="removeVehicle(assignment)" mat-icon-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+  

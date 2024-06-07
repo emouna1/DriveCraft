@@ -32,7 +32,7 @@ export class LessonsScheduleComponent {
   const userCIN= this.authService.getCurrentUserCIN()
   console.log(userCIN) // Assuming the user's CIN is stored as 'userCIN' in local storage
   if (userCIN) {
-    this.calendarService.getAll().subscribe((data: CodeLessonExam[]) => {
+    this.calendarService.getAllLessons().subscribe((data: CodeLessonExam[]) => {
 
       this.populateCalendar(data, userCIN);
     });
@@ -54,9 +54,13 @@ export class LessonsScheduleComponent {
       end: item.date + 'T' + item.endHour,
       backgroundColor: this.getEventColor(item.accomplished),
       extendedProps: {
+        date : item.date,
+        startHour: item.startHour,
+        endHour: item.endHour,
+        result: item.result,
         taskCategory: item.taskCategory,
         accomplished: item.accomplished,
-        candidatCIN: item.candidatCIN
+        taskType:item.taskType
       }
     };
   });
@@ -142,17 +146,13 @@ export class LessonsScheduleComponent {
 
  
 
-
-  getEventColor(accomplished: boolean | null): string {
-  switch (accomplished) {
-    case true:
-      return 'green';
-    case false:
-      return 'red';
-    case null:
-      return 'gray';
-    default:
-      return 'blue';
+ getEventColor(accomplished: boolean | null): string {
+  if (accomplished === true) {
+    return 'blue'; // Accomplished lessons are blue
+  } else if (accomplished === false) {
+    return 'pink'; // Not accomplished lessons are pink
+  } else {
+    return 'gray'; // Default color for other cases
   }
 }
 

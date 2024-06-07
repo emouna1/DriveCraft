@@ -50,7 +50,7 @@ export class ExamsScheduleComponent {
   const userCIN= this.authService.getCurrentUserCIN()
   console.log(userCIN) // the user's CIN is stored as 'userCIN' in local storage
   if (userCIN) {
-    this.calendarService.getAll().subscribe((data: CodeLessonExam[]) => {
+    this.calendarService.getAllExams().subscribe((data: CodeLessonExam[]) => {
 
       this.populateCalendar(data, userCIN);
     });
@@ -74,6 +74,10 @@ export class ExamsScheduleComponent {
       extendedProps: {
         result: item.result,
         taskCategory: item.taskCategory,
+        date : item.date,
+        startHour: item.startHour,
+        endHour: item.endHour,
+        taskType:item.taskType
       }
     };
   });
@@ -227,7 +231,7 @@ export class ExamsScheduleComponent {
    this.editEventDetails = null;
  }
 
- // Method to edit an existing event
+ /*// Method to edit an existing event
  editEvent(): void {
    const editedEvent: CodeLessonExam = this.editEventForm.value;
 
@@ -240,7 +244,7 @@ export class ExamsScheduleComponent {
        console.error('Error editing event:', error);
        this.openSnackBar('Error editing event. Please try again.');
      });
-   }
+   }*/
  deleteEvent(event: FullCalendar.EventApi): void {
    const eventId = event.id;
    if (eventId) {
@@ -256,7 +260,6 @@ export class ExamsScheduleComponent {
      }
    }
  }
-   
    
    addEventForm: FormGroup;
    editEventForm: FormGroup;

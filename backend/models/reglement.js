@@ -16,6 +16,12 @@ const Payment = db.define('payment', {
   montant: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
+  },
+
+  
+  isSuccessful: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false // Default value for isSuccessful
   }
 });
 //Payment.belongsTo(User, {foreignKey: 'StudentId'});

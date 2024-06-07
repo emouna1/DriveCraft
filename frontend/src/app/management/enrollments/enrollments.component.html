@@ -156,11 +156,13 @@
       </mat-form-field>
       
       <!-- Payment ID -->
+      
       <mat-form-field>
         <mat-label>Payment ID</mat-label>
-        <input matInput type="text" formControlName="paymentId">
+        <mat-select formControlName="paymentId">
+          <mat-option *ngFor="let paymentId of paymentIds" [value]="paymentId">{{ paymentId }}</mat-option>
+        </mat-select>
       </mat-form-field>
-      
       <!-- Button to submit the form -->
       <button type="submit" class="amouna-button">{{ formMode === 'edit' ? 'Save Changes' : 'Add Enrollment' }}</button>
       <button class="amouna-button" type="button" (click)="canceladdForm()">Cancel</button>

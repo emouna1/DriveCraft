@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CoondidateService } from 'src/app/coondidate.service';
 import { EnrollmentService } from 'src/app/enrollment.service';
 import { FoldersService } from 'src/app/folders.service';
+import { PaymentService } from 'src/app/payment.service';
 @Component({
   selector: 'app-enrollments',
   templateUrl: './enrollments.component.html',
@@ -27,8 +28,9 @@ export class EnrollmentsComponent {
   enrollmentColumns: string[] = ['candidatCIN', 'candidatName', 'candidatBalance', 'registrationType', 'contratType', 'PricePerHour', 'paymentId', 'specialPrice', 'specialPriceAmount', 'registrationCosts', 'registrationFees', 'examDate', 'desiredLicenseCategory'];
   displayedColumns = [...this.enrollmentColumns, 'actions'];
   enrollmentControls: string[] = ['candidatCIN','candidatName', 'desiredLicenseCategory', 'registrationType', 'examDate'];
+  paymentIds: number[] = []; // Array to hold payment IDs
 
-  constructor(private fb: FormBuilder,private enrollmentService: EnrollmentService,private licenseService :FoldersService,private studentService:CoondidateService,private snackBar: MatSnackBar ) {
+  constructor(private fb: FormBuilder, private paymentService: PaymentService ,private enrollmentService: EnrollmentService,private licenseService :FoldersService,private studentService:CoondidateService,private snackBar: MatSnackBar ) {
     this.enrollmentForm = this.fb.group({
       candidatCIN: ['', Validators.required],
       candidatName: ['', Validators.required],
@@ -40,7 +42,8 @@ export class EnrollmentsComponent {
       specialPrice: ['no', Validators.required], // required
       specialPriceAmount: [{ value: null, disabled: true }], // initially disabled if specialPrice is 'no'
       contratType: ['', Validators.required], // required
-      paymentId: [null] // nullable
+      paymentId: ['', Validators.required] // nullable
+
     });
     this.licenseService.getAllLc().subscribe(categories => {
       //this.desiredLicenseCategories = categories.map(category => category.CategoryCode);
@@ -75,6 +78,7 @@ export class EnrollmentsComponent {
     
   ngOnInit() {
     this.fetchEnrollments()
+    this.fetchPaymentIds()
   }
   fetchEnrollments(){this.enrollmentService.getCodeEnrollments()
       .subscribe((data: any) => {
@@ -154,6 +158,7 @@ export class EnrollmentsComponent {
   submitForm() {
     if (this.enrollmentForm.valid) {
       const formData = this.enrollmentForm.value;
+      formData.registrationType = 'code'
 
       if (this.formMode === 'add') {
         this.enrollmentService.addEnrollment(formData).subscribe({
@@ -293,9 +298,16 @@ canceladdForm() {
 }
 resetForm() {
  this.fetchEnrollments()
-
-
 }   
+fetchPaymentIds() {
+  // Assuming you have a method in your paymentService to fetch payment IDs
+  this.paymentService.getAllPayments().subscribe((payments: Payment[]) => {
+    // Extract payment IDs from payment objects
+    this.paymentIds = payments.map(payment => payment.id);
+    console.log(payments)
+    console.log(this.paymentIds)
+  });
+}
 }
 export interface Enrollment {
   id: string;
@@ -316,3 +328,25 @@ export interface Enrollment {
 
 }
 
+export interface Payment {
+  id: number;
+  date: string;
+  montant: string;
+  createdAt: string;
+  updatedAt: string;
+  candidatCIN: number | null;
+  paymentDetails: PaymentDetail[];
+  isSuccessful: boolean;
+  [key: string]: any; // Index signature allowing dynamic property access
+
+}
+interface PaymentDetail {
+  id: number;
+  montant: number;
+  dateEcheance: string;
+  createdAt: string;
+  updatedAt: string;
+  PaymentMethodId: number | null;
+  paymentId: number;
+  verificationUrl : string;
+}

@@ -1,52 +1,57 @@
 <div class="payment-container">
-    <h2>Payment Settlements</h2>
+  <h2>Payment Settlements</h2>
   
-    <!-- Displaying existing payment settlements -->
-    <div *ngFor="let payment of dataSource.data" class="payment-item">
-      <div class="payment-summary">
-        <p>Date: {{ payment.date | date }}</p>
-        <p>Amount: ${{ payment.montant }}</p>
-        <p>Student CIN: {{payment.candidatCIN}}</p>
-        <button (click)="editRow(payment)">Edit</button>
-
-      </div>
-
-      <div class="payment-details">
-        <div *ngFor="let detail of payment.paymentDetails" class="payment-detail">
-          <p>Detail Amount: ${{ detail.montant }}</p>
-          <p>Due Date: {{ detail.dateEcheance | date }}</p>
-          <!-- Display payment method designation -->
-        </div>
+  <!-- Displaying existing payment settlements -->
+  <div *ngFor="let payment of dataSource.data" [ngClass]="getPaymentClass(payment)" class="payment-item">
+    <div class="payment-summary">
+      <p>Date: {{ payment.date | date }}</p>
+      <p>Amount: ${{ payment.montant }}</p>
+      <p>Student CIN: {{ payment.candidatCIN }}</p>
+      <button (click)="editRow(payment)">Edit</button>
+      <!-- New button to mark as successful -->
+      <button (click)="markAsSuccessful(payment)">Mark as Successful</button>
     </div>
-      <!-- Edit button -->
-    </div>
-    <mat-paginator [length]="dataSource.data.length" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
 
-    <button class="amouna-button" (click)="toggleForm()">Add New Payment</button>
-  
-   <!-- Add new payment settlement form -->
-<div class="add-payment-form" *ngIf="showForm || showEditForm">
+    <div class="payment-details">
+      <div *ngFor="let detail of payment.paymentDetails" class="payment-detail">
+        <p>Detail Amount: ${{ detail.montant }}</p>
+        <p>Due Date: {{ detail.dateEcheance | date }}</p>
+        <!-- Display payment method designation -->
+        <ng-container *ngIf="detail.verificationUrl">
+          <img [src]="constructVerificationImg(detail.verificationUrl)" alt="Payment Proof" style="width: 200px; height: 100px;">
+      </ng-container>
+      <ng-container *ngIf="!detail.verificationUrl">
+          <p>No verification image available</p>
+      </ng-container>
+    </div>
+  </div>
+
+ <!-- <mat-paginator [length]="dataSource.data.length" [pageSize]="pageSize" [pageSizeOptions]="[2, 4, 5]" (page)="onPageChange($event)"></mat-paginator>-->
+
+
+  <!-- Add new payment settlement form -->
+  <div class="add-payment-form" *ngIf="showForm || showEditForm">
     <h3>{{ showEditForm ? 'Edit Payment Settlement' : 'Add New Payment Settlement' }}</h3>
     <form [formGroup]="paymentForm" (submit)="showEditForm ? saveChanges() : submitPayment()">
       <fieldset>
         <legend>{{ showEditForm ? 'Edit Payment Settlement' : 'Add New Payment Settlement' }}</legend>
         <!-- Payment Date -->
         <mat-form-field>
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="date" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="paymentForm.get('date')?.hasError('required')">Date is required</mat-error>
-          </mat-form-field>
-          
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="paymentForm.get('date')?.hasError('required')">Date is required</mat-error>
+        </mat-form-field>
+        
         <!-- Payment Amount -->
         <mat-form-field appearance="fill">
-            <mat-label>Amount</mat-label>
-            <input matInput [formControl]="amountControl" required>
-            <mat-icon matSuffix>attach_money</mat-icon>
-            <mat-error *ngIf="amountControl.invalid">Amount is required</mat-error>
-          </mat-form-field>
-      
+          <mat-label>Amount</mat-label>
+          <input matInput [formControl]="amountControl" required>
+          <mat-icon matSuffix>attach_money</mat-icon>
+          <mat-error *ngIf="amountControl.invalid">Amount is required</mat-error>
+        </mat-form-field>
+
         <!-- Edit payment details -->
         <div formArrayName="paymentDetails">
           <div *ngFor="let paymentControl of getControls(); let i = index" class="payment-detail-form">
@@ -66,7 +71,8 @@
                 <mat-datepicker #picker></mat-datepicker>
                 <mat-error *ngIf="paymentForm.get('dateEcheance')?.hasError('required')">Due Date is required</mat-error>
               </mat-form-field>
-            <!-- Dropdown for selecting payment method -->
+
+              <!-- Dropdown for selecting payment method -->
               <mat-form-field>
                 <mat-label>Payment Method</mat-label>
                 <mat-select formControlName="paymentMethodId" required>
@@ -81,10 +87,9 @@
         <!-- Button to save changes or add new payment -->
         <button type="submit" class="amouna-button">{{ showEditForm ? 'Save Changes' : 'Add Payment Settlement' }}</button>
         <button type="button" class="cancel-button" (click)="cancelForm()">Cancel</button>
-
       </fieldset>
     </form>
   </div>
-  
-    </div>
-  
+</div>
+<button class="amouna-button" (click)="toggleForm()">Add New Payment</button>
+</div>

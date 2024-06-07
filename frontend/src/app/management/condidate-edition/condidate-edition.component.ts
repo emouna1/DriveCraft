@@ -70,14 +70,62 @@ ngOnInit(): void {
 }
 
 
-
 toggleForm() {
   this.showForm = !this.showForm;
 }
-fetchData() {
+/*fetchData() {
   this.studentService.getAllStudents().subscribe((data: any) => {
     // Assuming data is fetched and structured as in your example
     this.dataSource.data= data.map((item: any) => {
+      console.log('Image URL:', item.Image ? item.Image.imageUrl : null); // Add this line to log the image URL
+
+      return {
+        User: {
+
+          username: item.username,
+          password: item.password,
+          email: item.email,
+          role: item.role,
+          name: item.name,
+          firstName: item.firstName,
+          CIN: item.CIN,
+          dateOfIssue: item.dateOfIssue,
+          situation: item.situation,
+          balance: item.balance,
+          dateOfBirth: item.dateOfBirth,
+          nationality: item.nationality,
+          address: item.address,
+          telephone: item.telephone,
+          //image: item.image,
+          personalCode: item.personalCode,
+          personnelFunction: item.personnelFunction,
+          recruitmentDate: item.recruitmentDate,
+          netSalary: item.netSalary,
+          grossSalary: item.grossSalary,
+          qualification: item.qualification,
+          leaveDaysPerYear: item.leaveDaysPerYear,
+          cnssNumber: item.cnssNumber,
+          CategoryCode: item.CategoryCode,
+          //image: item.image // Assign image property
+          //image: item.Image ? item.Image.imageUrl : null,
+          image: item.Image ? `http://localhost:3000/images/${item.Image.imageUrl}` : null,
+
+
+        }
+      };
+    });
+    this.dataSource.paginator = this.paginator;
+  });
+}*/
+fetchData() {
+  this.studentService.getAllStudents().subscribe((data: any) => {
+    // Assuming data is fetched and structured as in your example
+    this.dataSource.data = data.map((item: any) => {
+      //const imageUrl = item.Image ? `http://localhost:3000/${item.Image.imageUrl.replace('\\', '/')}` : null;
+      const imageUrl = item.image ? `http://localhost:3000/${item.image.replace(/\\/g, '/')}` : null;
+
+      console.log('Image URL:', imageUrl); // Log the constructed image URL.replace('\\', '/')}
+
       return {
         User: {
           username: item.username,
@@ -94,7 +142,6 @@ fetchData() {
           nationality: item.nationality,
           address: item.address,
           telephone: item.telephone,
-          image: item.image,
           personalCode: item.personalCode,
           personnelFunction: item.personnelFunction,
           recruitmentDate: item.recruitmentDate,
@@ -103,13 +150,15 @@ fetchData() {
           qualification: item.qualification,
           leaveDaysPerYear: item.leaveDaysPerYear,
           cnssNumber: item.cnssNumber,
-          CategoryCode: item.CategoryCode
+          CategoryCode: item.CategoryCode,
+          image: imageUrl
         }
       };
     });
     this.dataSource.paginator = this.paginator;
   });
 }
+
 
 editRow(element: Student) {
   this.showEditForm = true;

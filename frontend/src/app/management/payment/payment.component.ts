@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -13,6 +13,7 @@ interface Payment {
   updatedAt: string;
   candidatCIN: number | null;
   paymentDetails: PaymentDetail[];
+  isSuccessful: boolean;
   [key: string]: any; // Index signature allowing dynamic property access
 
 }
@@ -25,6 +26,7 @@ interface PaymentDetail {
   updatedAt: string;
   PaymentMethodId: number | null;
   paymentId: number;
+  verificationUrl : string;
 }
 
 @Component({
@@ -32,12 +34,11 @@ interface PaymentDetail {
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
-export class PaymentComponent {
+export class PaymentComponent  {
 
   
   
   
- 
     paymentForm!: FormGroup;
     dataSource = new MatTableDataSource<Payment>();
     showForm: boolean = false;
@@ -49,23 +50,27 @@ export class PaymentComponent {
       createdAt: '',
       updatedAt: '',
       candidatCIN: null,
-      paymentDetails: []
+      paymentDetails: [],
+      isSuccessful: true
     };
-  
+    pageSize: number = 2; // or 4, or 5
+
     @ViewChild(MatPaginator) paginator!: MatPaginator;
   
     paymentColumns = ['id', 'date', 'montant', 'createdAt', 'updatedAt','candidatCIN'];
     displayedColumns = [...this.paymentColumns, 'actions'];
     paymentMethods: any[]=[];
      amountControl = new FormControl();
-     pageSize: number = 3; // Number of payments per page
+    // pageSize: number = 3; // Number of payments per page
 
     constructor(private formBuilder: FormBuilder, private paymentService: PaymentService,private foldersService: FoldersService) { }
-  
+   
     ngOnInit(): void {
       this.createForm();
       this.fetchData();
       this.fetchPaymentMethods(); // Fetch payment methods when component initializes
+      //this.dataSource.paginator = this.paginator;
+
 
     }
     fetchPaymentMethods(): void {
@@ -122,14 +127,16 @@ export class PaymentComponent {
     fetchData(): void {
       this.paymentService.getAllPayments().subscribe((data: Payment[]) => {
         this.dataSource.data = data;
+        this.dataSource.paginator = this.paginator; // Set the paginator here
         console.log(data)
       });
     }
   
     onPageChange(event: PageEvent): void {
-      this.dataSource.paginator!.pageIndex = event.pageIndex;
-      this.dataSource.paginator!.pageSize = event.pageSize;
-    }
+      if (this.dataSource.paginator) {
+        this.dataSource.paginator.pageIndex = event.pageIndex;
+        this.dataSource.paginator.pageSize = event.pageSize;
+      }}
   
     toggleForm(): void {
       this.showForm = !this.showForm;
@@ -216,7 +223,20 @@ export class PaymentComponent {
       this.createForm();
     }
     
-    
+    markAsSuccessful(payment : Payment) {
+      this.paymentService.markPaymentAsSuccessful(payment.id).subscribe(() => {
+        this.fetchData();
+      });
+    }
+    constructVerificationImg(url: string): string {
+      const constructedUrl = 'http://localhost:3000/' + url.replace(/\\/g, '/');
+     console.log('Constructed URL:', constructedUrl);
+      return constructedUrl;
+    }
+    // Add this method in your component
+   getPaymentClass(payment: Payment): string {
+  return payment.isSuccessful ? 'payment-successful' : 'payment-unsuccessful';
+   }
 
   }
   

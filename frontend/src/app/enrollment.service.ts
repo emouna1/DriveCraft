@@ -42,22 +42,24 @@ export class EnrollmentService {
     return this.http.delete<void>(`${this.apiUrl}/deleteEnrollment/${EnrollmentId}`);
     
   }
-  getAll(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/code-lesson-exams`);
+  getAllLessons(): Observable<CodeLessonExam[]> {
+    return this.http.get<CodeLessonExam[]>(`${this.apiUrl}/code-lessons`);
   }
-
+  getAllExams(): Observable<CodeLessonExam[]> {
+    return this.http.get<CodeLessonExam[]>(`${this.apiUrl}/code-exams`);
+  }
   add(data:CodeLessonExam): Observable<CodeLessonExam> {
     console.log(data)
     return this.http.post<CodeLessonExam>(`${this.apiUrl}/code-lesson-exams`,data);
 
   }
 
-  edit(data:CodeLessonExam): Observable<CodeLessonExam> {
-    return this.http.put<CodeLessonExam>(`${this.apiUrl}/code-lesson-exams/:id/${data.id}`, data);
+  edit(id :number,data:CodeLessonExam): Observable<CodeLessonExam> {
+    return this.http.put<CodeLessonExam>(`${this.apiUrl}/code-lesson-exams/${id}`, data);
   }
 
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/code-lesson-exams/:id/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/code-lesson-exams/${id}`);
     
   }
 }

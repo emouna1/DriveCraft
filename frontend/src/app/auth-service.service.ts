@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators'; // Import catchError and map operators
 
 
 
@@ -97,6 +98,11 @@ export class AuthService {
     console.log(currentUser.CIN)
     return currentUser ? currentUser.CIN : null;
   }
+  getCurrentUserStatus(): string | null {
+    const currentUser = this.getCurrentUser();
+    console.log(currentUser.status)
+    return currentUser ? currentUser.status : null;
+  }
 
   deleteUser(email: string): Observable<any> {
     const url = `${this.baseUrl}/users/${email}`; // Assuming your API endpoint follows RESTful conventions
@@ -130,4 +136,28 @@ changePassword(email: string, oldPassword: string, newPassword: string): Observa
   return this.http.post<any>(url, { email , oldPassword, newPassword });
 }
 
+/*checkCandidateEnrollment(cin: string): Observable<boolean> {
+  return this.http.get<{ enrolled: boolean }>(`${this.baseUrl}/enrollment/${cin}`)
+    .pipe(
+      map(response => response.enrolled),
+      catchError(error => {
+        console.error('Error checking candidate enrollment:', error);
+        return new Observable<boolean>(observer => observer.next(false)); // Return false in case of error
+      })
+    );
+}*/
+checkCandidateEnrollment(cin: string | null): Observable<boolean> {
+  if (!cin) {
+    console.error('CIN is null or undefined');
+    return new Observable<boolean>(observer => observer.next(false));
+  }
+  return this.http.get<{ enrolled: boolean }>(`${this.baseUrl}/enrollment/${cin}`)
+    .pipe(
+      map(response => response.enrolled),
+      catchError(error => {
+        console.error('Error checking candidate enrollment:', error);
+        return new Observable<boolean>(observer => observer.next(false));
+      })
+    );
+}
 }

@@ -16,51 +16,56 @@ export class ScheduleeComponent {
 
   constructor(private eventService: EnrollmentService) {}
 
-  ngAfterViewInit(): void {
-    const calendarOptions = {
-      plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
-      events: (fetchInfo: any, successCallback: Function, failureCallback: Function) => {
-        this.eventService.getAll().subscribe(
-          (events: CodeLessonExam[]) => {
-            const formattedEvents = this.formatEvents(events);
-            successCallback(formattedEvents);
-          },
-          error => {
-            console.error('Error fetching events:', error);
-            failureCallback(error);
-          }
-        );
-      },
-      initialView: 'timeGridWeek', // Default view
-      eventDisplay: 'block', // Display event information
-    };
+  
 
-    const calendarViews = ['timeGridWeek', 'listWeek', 'dayGridMonth'];
-    calendarViews.forEach((view, index) => {
-      const calendarElement = document.getElementById(`calendar${index + 1}`);
-      if (calendarElement) {
-        const options = {
-          ...calendarOptions,
-          initialView: view
-        };
-        const calendar = new FullCalendar.Calendar(calendarElement, options);
-        this.calendars.push(calendar);
-        calendar.render();
-      } else {
-        console.error(`Calendar ${index + 1} element not found.`);
-      }
-    });
-  }
+ngAfterViewInit(): void {
+  const calendarOptions = {
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin],
+    events: (fetchInfo: any, successCallback: Function, failureCallback: Function) => {
+      this.eventService.getAllLessons().subscribe(
+        (events: CodeLessonExam[]) => {
+          const formattedEvents = this.formatEvents(events);
+          successCallback(formattedEvents);
+        },
+        error => {
+          console.error('Error fetching events:', error);
+          failureCallback(error);
+        }
+      );
+    },
+    initialView: 'timeGridWeek', // Default view
+    eventDisplay: 'block', // Display event information
+  };
 
-  // Helper function to format events and assign colors
-  private formatEvents(events: CodeLessonExam[]): any[] {
-    return events.map(event => ({
-      title: this.getEventTitle(event),
+  const calendarViews = ['timeGridWeek', 'listWeek', 'dayGridMonth'];
+  calendarViews.forEach((view, index) => {
+    const calendarElement = document.getElementById(`calendar${index + 1}`);
+    if (calendarElement) {
+      const options = {
+        ...calendarOptions,
+        initialView: view
+      };
+      const calendar = new FullCalendar.Calendar(calendarElement, options);
+      this.calendars.push(calendar);
+      calendar.render();
+    } else {
+      console.error(`Calendar ${index + 1} element not found.`);
+    }
+  });
+}
+
+// Helper function to format events and assign colors
+private formatEvents(events: CodeLessonExam[]): any[] {
+  return events
+    //.filter(event => event.taskType === 'lesson') // Filter only lessons
+    .map(event => ({
+      title: 'Lesson', // Set title to 'Lesson'
       start: event.date,
       end: event.endHour,
-      color: this.getEventColor(event),
+      color: event.accomplished ? '#4CAF50' : '#F44336', // Green for accomplished, red for not accomplished
     }));
-  }
+}
+
 
   // Helper function to determine event title
   private getEventTitle(event: CodeLessonExam): string {
