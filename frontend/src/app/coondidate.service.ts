@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoondidateService {
   
-  private apiUrl = 'http://localhost:3000/User'; // Adjust this to your API URL
+  private apiUrl = environment.coondidateApi; // Adjust this to your API URL
 
   constructor(private http: HttpClient) { }
 
@@ -28,11 +29,11 @@ export class CoondidateService {
 
   }
   editStudent(candidate: any): Observable<any[]> {
-    return this.http.put<any>(`${this.apiUrl}/updateStudent/${candidate.id}`, candidate);
+    return this.http.put<any>(`${this.apiUrl}/updateStudent/${candidate.CIN}`, candidate);
   }
 
-  deleteStudent(candidateId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/deleteStudent/${candidateId}`);
+  deleteStudent(candidateCIN: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/deleteStudent/${candidateCIN}`);
   }
   getAllُُُEmployees(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/getAllEmployees`);

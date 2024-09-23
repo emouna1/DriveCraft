@@ -36,30 +36,7 @@ export class UserProfileComponent {
 
   }
 
-  /*initializeForm(): void {
-    const imageUrl = this.currentUser['image'] ? `http://localhost:3000/${this.currentUser['image'].replace(/\\/g, '/')}` : null;
-
-    this.editUserForm = this.formBuilder
-    .group({
-      username: [this.currentUser.username, Validators.required],
-      password: [''],
-      email: [this.currentUser.email, [Validators.required, Validators.email]],
-      //role: [this.currentUser.role, Validators.required],
-      name: [this.currentUser.name, Validators.required],
-      firstName: [this.currentUser.firstName, Validators.required],
-      CIN: [this.currentUser.CIN, Validators.required],
-      dateOfIssue: [this.currentUser.dateOfIssue, Validators.required],
-      situation: [this.currentUser.situation, Validators.required],
-      balance: [this.currentUser.balance],
-      dateOfBirth: [this.currentUser.dateOfBirth, Validators.required],
-      nationality: [this.currentUser.nationality, Validators.required],
-      address: [this.currentUser.address, Validators.required],
-      telephone: [this.currentUser.telephone, Validators.required],
-      image: [this.currentUser.imageUrl],
-      CategoryCode: [this.currentUser.CategoryCode, Validators.required],
-
-    });
-  }*/
+  
   initializeForm(): void {
     const imageUrl = this.currentUser['image'] ? `http://localhost:3000/${this.currentUser['image'].replace(/\\/g, '/')}` : null;
 
@@ -86,47 +63,6 @@ export class UserProfileComponent {
     this.showEditForm = true;
 
   }
-
-  /*saveChanges(): void {
-    console.log("Form value:", this.editUserForm.value);
-    console.log("Form validity:", this.editUserForm.valid);
-    if (this.selectedFile) {
-
-    this.editUserForm.append('file', this.selectedFile, this.selectedFile.name);
-
-    if (this.editUserForm.valid) {
-      console.log("updating candidat")
-      if (this.editUserForm.valid) {
-        //const editedUser: User = { ...this.currentUser, ...this.editUserForm.value };
-        const editedUser: User = this.editUserForm.value;
-
-        // If an image was selected, use its URL
-        if (this.imageUrl) {
-          editedUser.image = this.imageUrl;
-
-        }
-      //const editedUser: User = this.editUserForm.value;
-      this.candidateService.updateUser(this.currentUser.CIN, editedUser)
-        .subscribe(
-          () => {
-            this.currentUser = editedUser;
-            this.toggleEditMode();
-            alert("Changes saved successfully");
-          },
-          error => {
-            console.error('Error updating user:', error);
-            alert("An error occurred while saving changes");
-          }
-          
-        );
-     } else {
-    console.log("Form is not valid. Cannot save changes.");
-  } }else{
-    console.log("chooooooooose an image !!");
-  }
-  }
-}
-*/
 saveChanges(): void {
   console.log("Form value:", this.editUserForm.value);
   console.log("Form validity:", this.editUserForm.valid);
@@ -182,30 +118,7 @@ saveChanges(): void {
         );
     }
   }
-  /*onImageSelected(event: any): void {
-    const file: File = event.target.files[0];
-    // You can perform further operations with the selected file, like uploading it to the server
-    // For now, let's assume we set the image preview directly
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.editUserForm.patchValue({
-        image: e.target.result
-      });
-    };
-    reader.readAsDataURL(file);
-  }*/
-  /*onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imageUrl = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-*/
+  
   onImageSelected(event: any): void {
     const file: File = event.target.files[0];
     this.selectedFile = file;

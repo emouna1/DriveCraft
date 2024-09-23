@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { CoondidateService } from 'src/app/coondidate.service';
+import { MatDialog } from '@angular/material/dialog';
+
 interface Employee {
   User: {
     username: string;
@@ -20,18 +22,17 @@ interface Employee {
     nationality: string;
     address: string;
     telephone: string;
-    image: string |null;
-    personalCode?:String|null
-    personnelFunction?:String|null
-    recruitmentDate?:Date|null
-    netSalary?:number|null
-    grossSalary?:number|null
-    qualification?:string|null
-    leaveDaysPerYear?:number|null
-    cnssNumber:string |null
-    CategoryCode?:string
-    [key: string]: any; // Index signature allowing dynamic property access
-
+    image: string | null;
+    personalCode?: string | null;
+    personnelFunction?: string | null;
+    recruitmentDate?: Date | null;
+    netSalary?: number | null;
+    grossSalary?: number | null;
+    qualification?: string | null;
+    leaveDaysPerYear?: number | null;
+    cnssNumber: string | null;
+    CategoryCode?: string;
+    [key: string]: any;
   };
 }
 
@@ -41,135 +42,183 @@ interface Employee {
   styleUrls: ['./personnel-edition.component.css']
 })
 export class PersonnelEditionComponent implements OnInit {
-  employeeForm!: FormGroup;
+  employeeForm!: FormGroup; // The form group for adding or editing employees
+
+  studentColumns = [
+    'username',
+    'email',
+    'name',
+    'firstName',
+    'CIN',
+    'dateOfIssue',
+    'situation',
+    'balance',
+    'dateOfBirth',
+    'nationality',
+    'address',
+    'telephone',
+    'image'
+  ];
+
+  displayedColumns = this.studentColumns.concat(['actions']);
   dataSource = new MatTableDataSource<Employee>();
   showForm: boolean = false;
   showEditForm: boolean = false;
-  selectedRow: Employee = {
-    User: {
-      username: 'default_user',
-      password: 'default_password',
-      email: 'defaultEmployee.com',
-      role: 'instructor',
-      name: 'DefaultEmployee',
-      firstName: 'Default',
-      CIN: '1234567890',
-      dateOfIssue: new Date(2000, 0, 1),
-      situation: 'N/A',
-      balance: 0,
-      dateOfBirth: new Date(1990, 0, 1),
-      nationality: 'N/A',
-      address: '123 Main Street',
-      telephone: '123-456-7890',
-      image: '_ _ _',
-      personalCode: '',
-      personnelFunction: '',
-      recruitmentDate: new Date(2000, 0, 1),
-      netSalary: 0,
-      grossSalary: 0,
-      qualification: '',
-      leaveDaysPerYear: 0,
-      cnssNumber: '',
-      CategoryCode: ''
-    }
-  };
+  selectedRow: Employee | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('printContent') printContent!: ElementRef;
 
-  employeeColumns = [
-    'username', 'email', 'name', 'firstName', 'CIN', 'dateOfIssue', 'licenseCategory',
-    'dateOfBirth', 'nationality', 'address', 'telephone', 'image', 'balance', 'personalCode',
-    'personnelFunction', 'recruitmentDate', 'netSalary', 'grossSalary', 'qualification',
-    'leaveDaysPerYear', 'cnssNumber'
-  ];
-  displayedColumns = [...this.employeeColumns, 'actions'];
-
-  constructor(private formBuilder: FormBuilder, private EmployeeService: CoondidateService, private authService:AuthService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog,
+    private EmployeeService: CoondidateService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.createForm();
     this.fetchData();
-  }
 
-  createForm(): void {
+    // Initialize the form for adding/editing employees
     this.employeeForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      role: ['', Validators.required],
       name: ['', Validators.required],
       firstName: ['', Validators.required],
       CIN: ['', Validators.required],
       dateOfIssue: ['', Validators.required],
+      situation: ['', Validators.required],
+      balance: ['', Validators.required],
       dateOfBirth: ['', Validators.required],
       nationality: ['', Validators.required],
       address: ['', Validators.required],
       telephone: ['', Validators.required],
-      image: ['', Validators.required],
-      balance: ['', Validators.required],
-      personalCode: ['', Validators.required],
-      personnelFunction: ['', Validators.required],
-      recruitmentDate: ['', Validators.required],
-      netSalary: ['', Validators.required],
-      grossSalary: ['', Validators.required],
-      qualification: ['', Validators.required],
-      leaveDaysPerYear: ['', Validators.required],
-      cnssNumber: ['', Validators.required],
+      image: ['']
     });
   }
 
-  fetchData(): void {
+  toggleForm() {
+    this.showForm = !this.showForm;
+  }
+
+  fetchData() {
     this.EmployeeService.getAllُُُInstructors().subscribe((data: any) => {
-      this.dataSource.data = data.map((item: any) => ({ User: { ...item } }));
+      this.dataSource.data = data.map((item: any) => {
+        const imageUrl = item.image ? `http://localhost:3000/${item.image.replace(/\\/g, '/')}` : null;
+        return {
+          User: {
+            username: item.username,
+            password: item.password,
+            email: item.email,
+            role: item.role,
+            name: item.name,
+            firstName: item.firstName,
+            CIN: item.CIN,
+            dateOfIssue: item.dateOfIssue,
+            situation: item.situation,
+            balance: item.balance,
+            dateOfBirth: item.dateOfBirth,
+            nationality: item.nationality,
+            address: item.address,
+            telephone: item.telephone,
+            personalCode: item.personalCode,
+            personnelFunction: item.personnelFunction,
+            recruitmentDate: item.recruitmentDate,
+            netSalary: item.netSalary,
+            grossSalary: item.grossSalary,
+            qualification: item.qualification,
+            leaveDaysPerYear: item.leaveDaysPerYear,
+            cnssNumber: item.cnssNumber,
+            CategoryCode: item.CategoryCode,
+            image: imageUrl
+          }
+        };
+      });
+      this.dataSource.paginator = this.paginator;
     });
   }
 
-  onPageChange(event: PageEvent): void {
+  editRow(element: Employee) {
+    this.showEditForm = true;
+    this.selectedRow = { ...element };
+
+    // Patch form values with selected employee data
+    this.employeeForm.patchValue({
+      username: element.User.username,
+      email: element.User.email,
+      name: element.User.name,
+      firstName: element.User.firstName,
+      CIN: element.User.CIN,
+      dateOfIssue: element.User.dateOfIssue,
+      situation: element.User.situation,
+      balance: element.User.balance,
+      dateOfBirth: element.User.dateOfBirth,
+      nationality: element.User.nationality,
+      address: element.User.address,
+      telephone: element.User.telephone,
+      image: element.User.image
+    });
+  }
+
+  saveChanges() {
+    if (this.selectedRow) {
+      const updatedEmployee = {
+        ...this.selectedRow,
+        User: {
+          ...this.selectedRow.User,
+          ...this.employeeForm.value // Update the selectedRow with form values
+        }
+      };
+
+      this.EmployeeService.editEmployee(updatedEmployee.User).subscribe(() => {
+        this.showEditForm = false;
+        this.fetchData(); // Refresh data after saving changes
+      });
+    }
+  }
+  cancelForm() {
+    this.showEditForm = false; 
+    this.resetForm()// Optionally reset the form fields
+  
+  }
+  deleteRow(element: Employee) {
+    if (element.User.CIN) {
+      this.EmployeeService.deleteEmployee(element.User.CIN).subscribe(() => {
+        this.fetchData(); // Refresh data after deletion
+      });
+    }
+  }
+
+  submitEmployee() {
+    const newEmployee = {
+      User: { ...this.employeeForm.value }
+    };
+
+    this.authService.signup(newEmployee.User).subscribe(
+      response => {
+        this.resetForm();
+        this.fetchData();
+      },
+      error => {
+        console.error('Error adding employee', error);
+      }
+    );
+  }
+
+  resetForm() {
+    this.employeeForm.reset();
+    this.showForm = false;
+    this.showEditForm = false;
+  }
+
+  onPageChange(event: PageEvent) {
     this.dataSource.paginator!.pageIndex = event.pageIndex;
     this.dataSource.paginator!.pageSize = event.pageSize;
   }
 
-  toggleForm(): void {
-    this.showForm = !this.showForm;
-  }
-
-  editRow(element: Employee): void {
-    this.employeeForm.patchValue(element);
-    this.showEditForm = true;
-    this.selectedRow = { ...element };
-  }
-
-  saveChanges(): void {
-    this.EmployeeService.editEmployee(this.selectedRow.User).subscribe(() => {
-      console.log('Saved changes:', this.selectedRow);
-      this.showEditForm = false;
-      this.fetchData();
-    });
-  }
-
-  deleteRow(element: Employee): void {
-    this.EmployeeService.deleteEmployee(element.User.username).subscribe(() => {
-      console.log('Deleted row:', element.User);
-      this.fetchData();
-    });
-  }
-
-  submitEmployee(): void {
-    this.authService.signup(this.selectedRow.User).subscribe(response => {
-      console.log('New Employee added successfully', response);
-      this.resetForm();
-    }, error => {
-      console.error('Error adding Employee', error);
-    });
-  }
-  @ViewChild('printContent') printContent!: ElementRef;
-  
   printTable() {
-    console.log('Printing table...');
-  
-    if (this.printContent && this.printContent.nativeElement.User) {
+    if (this.printContent && this.printContent.nativeElement) {
       const printWindow = window.open('', '_blank');
-  
       if (printWindow) {
         let printContent = '<html><head><title>Print</title>';
         printContent += '<style>';
@@ -178,105 +227,15 @@ export class PersonnelEditionComponent implements OnInit {
         printContent += 'tr:nth-child(even) { background-color: #f2f2f2; }';
         printContent += '</style>';
         printContent += '</head><body>';
-  
-        printContent += '<table>';
-        printContent += '<tr>';
-        printContent += '<th>Username</th>';
-        printContent += '<th>Password</th>';
-        printContent += '<th>Email</th>';
-        //printContent += '<th>Role</th>';
-        printContent += '<th>Name</th>';
-        //printContent += '<th>Last Name</th>';
-        printContent += '<th>CIN</th>';
-        printContent += '<th>Date of Issue</th>';
-        printContent += '<th>Date of Birth</th>';
-        printContent += '<th>Nationality</th>';
-        printContent += '<th>Address</th>';
-        printContent += '<th>Telephone</th>';
-        //printContent += '<th>Balance</th>';
-        printContent +=   '<th>personalCode</th>';
-        printContent +=   '<th>personnelFunction</th>';
-        printContent +=    '<th>recruitmentDate</th>';
-        printContent +=   '<th> netSalary </th>';
-        printContent +=   '<th> qualification </th>' ;
-        printContent +=    '<th>  leaveDaysPerYear </th>' ;
-        printContent +=    '<th> cnssNumber </th>' ;
-       
-        printContent += '</tr>';
-  
+        printContent += '<table><tr><th>Username</th><th>Email</th><th>Name</th><th>First Name</th><th>CIN</th><th>Situation</th><th>Date of Issue</th><th>Date of Birth</th><th>Nationality</th><th>Address</th><th>Telephone</th><th>Image</th><th>Balance</th></tr>';
         this.dataSource.data.forEach(element => {
-          printContent += '<tr>';
-          printContent += '<td>' + element.User.username + '</td>';
-          printContent += '<td>' + element.User.password + '</td>';
-          printContent += '<td>' + element.User.email + '</td>';
-          //printContent += '<td>' + element.User.role + '</td>';
-          printContent += '<td>' + element.User.name + '</td>';
-          printContent += '<td>' + element.User.CIN + '</td>';
-          printContent += '<td>' + element.User.dateOfIssue + '</td>';
-          printContent += '<td>' + element.User.dateOfBirth + '</td>';
-          printContent += '<td>' + element.User.nationality + '</td>';
-          printContent += '<td>' + element.User.address + '</td>';
-          printContent += '<td>' + element.User.telephone + '</td>';
-          //printContent += '<td>' + element.User.balance + '</td>';
-          printContent += '<td>' + element.User.personalCode + '</td>';
-          printContent += '<td>' + element.User.personnelFunction + '</td>';
-          printContent += '<td>' + element.User.recruitmentDate + '</td>';
-          printContent += '<td>' + element.User.netSalary + '</td>';
-          printContent += '<td>' + element.User.qualification + '</td>';
-          printContent += '<td>' + element.User.leaveDaysPerYear + '</td>';
-          printContent += '<td>' + element.User.cnssNumber + '</td>';
-          printContent += '</tr>';
+          printContent += `<tr><td>${element.User.username}</td><td>${element.User.email}</td><td>${element.User.name}</td><td>${element.User.firstName}</td><td>${element.User.CIN}</td><td>${element.User.situation}</td><td>${element.User.dateOfIssue}</td><td>${element.User.dateOfBirth}</td><td>${element.User.nationality}</td><td>${element.User.address}</td><td>${element.User.telephone}</td><td>${element.User.image}</td><td>${element.User.balance}</td></tr>`;
         });
-  
-        printContent += '</table>';
-        printContent += '</body></html>';
-  
+        printContent += '</table></body></html>';
         printWindow.document.write(printContent);
         printWindow.document.close();
         printWindow.print();
-      } else {
-        console.error('Failed to open print window');
       }
-    } else {
-      console.error('Print content not found or not initialized');
     }
   }
-  resetForm(){
-    this.selectedRow = { 
-        User: {
-          username: 'default_user',
-          password: 'default_password',
-          email: 'defaultEmployee.com',
-          role: '',
-          name: 'DefaultEmployee',
-          firstName: 'Default',
-          CIN: '1234567890',
-          dateOfIssue: new Date(2000, 0, 1),
-          situation: 'N/A',
-          balance: 0,
-          dateOfBirth: new Date(1990, 0, 1),
-          nationality: 'N/A',
-          address: '123 Main Street',
-          telephone: '123-456-7890',
-          image: '_ _ _',
-          personalCode: '',
-          personnelFunction: '',
-          recruitmentDate: new Date(2000, 0, 1),
-          netSalary: 0,
-          grossSalary: 0,
-          qualification: '',
-          leaveDaysPerYear: 0,
-          cnssNumber: '',
-          CategoryCode: ''
-        }
-    };
-    this.fetchData();
-  }
-  cancelForm() {
-    this.showEditForm = false; 
-    this.showForm=false
-    this.resetForm()// Optionally reset the form fields
-  
-  }
-  
 }

@@ -24,15 +24,16 @@ router.post('/signup', [
   check('nationality').not().isEmpty(),
   check('address').not().isEmpty(),
   check('telephone').not().isEmpty(),
-  check('personalCode').optional().not().isEmpty(),
-  check('personnelFunction').optional().not().isEmpty(),
-  check('recruitmentDate').optional().not().isEmpty(),
-  check('netSalary').optional().not().isEmpty(),
-  check('grossSalary').optional().not().isEmpty(),
-  check('qualification').optional().not().isEmpty(),
-  check('leaveDaysPerYear').optional().not().isEmpty(),
-  check('cnssNumber').optional().not().isEmpty(),
-  check('CategoryCode').optional().not().isEmpty()
+
+  check('personalCode').optional({ nullable: true }),
+  check('personnelFunction').optional({ nullable: true }),
+  check('recruitmentDate').optional({ nullable: true }),
+  check('netSalary').optional({ nullable: true }),
+  check('grossSalary').optional({ nullable: true }),
+  check('qualification').optional({ nullable: true }),
+  check('leaveDaysPerYear').optional({ nullable: true }),
+  check('cnssNumber').optional({ nullable: true }),
+  check('CategoryCode').optional({ nullable: true })
 ], authController.signup);
 
 

@@ -50,9 +50,10 @@
           <br><br><br>
           <section id="service">
           <h2>Our Services</h2><p> Here the principal license catgories DriveCraft offers</p> <ul>
-            <li>Category A: Motorcycle License Course</li>
-            <li>Category B: Standard Driver's License Course</li>
-            <li>Category C: Commercial Driver's License (CDL) Course</li>
+            <li><mat-icon>directions_bike</mat-icon> Category A: Motorcycle License Course</li>
+<li><mat-icon>directions_car</mat-icon> Category B: Standard Driver's License Course</li>
+<li><mat-icon>local_shipping</mat-icon> Category C: Commercial Driver's License (CDL) Course</li>
+
             <li>Category A + B: Combined Course for Motorcycle License and Standard Driver's License</li>
             <li>Category A + C: Combined Course for Motorcycle License and Commercial Driver's License</li>
             <li>Category B + C: Combined Course for Standard Driver's License and Commercial Driver's License</li>
@@ -63,13 +64,15 @@
           </section>
           <br><br><br>
 
-          <h2>Login / Register</h2>
+          <section><h2>Login / Register</h2></section>
+          <section>
           <p>
               One of the most important things that we will teach you is traffic rules and road safety. Before you even think about going out onto the street, it is crucial to know the rules and you know how to stay safe out on the road. These rules are in place to keep you safe and to keep others on the road safe. For this reason, 
               we put a lot of emphasis on ensuring you can get these rules down and memorized.
                If you would like to learn more about traffic rules and road safety, just Join Us !
                <br> Login or register NOW to access member-only features!
           </p>
+        </section>
           <br><br><br>
 
           <button mat-raised-button color="primary" routerLink="/auth/login">Login</button>
@@ -79,8 +82,19 @@
   
         </div>
       </div>
+      <footer>
+        <div class="footer-content">
+          <p>© 2024 DriveCraft | All rights reserved.</p>
+          <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+      </footer>
   </mat-sidenav-container>
+ 
+  
+  
   </div>
+ 
+  
   <router-outlet></router-outlet>
   
   

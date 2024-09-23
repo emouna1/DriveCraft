@@ -7,7 +7,7 @@
   <table mat-table [dataSource]="dataSource">
   
     <!-- Displaying columns -->
-    <ng-container [matColumnDef]="column" *ngFor="let column of employeeColumns">
+    <ng-container [matColumnDef]="column" *ngFor="let column of studentColumns ">
       <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
 
       <td mat-cell *matCellDef="let element">
@@ -58,7 +58,7 @@
   <form [formGroup]="employeeForm" (submit)="submitEmployee()">
     <fieldset>
       <legend>{{ showEditForm ? 'Edit Instructor' : 'Add New Instructor' }}</legend>
-      <ng-container *ngFor="let control of employeeColumns">
+      <ng-container *ngFor="let control of studentColumns">
         <mat-form-field appearance="fill">
           <mat-label>{{ control }}</mat-label>
           <input matInput formControlName="{{ control }}" required>

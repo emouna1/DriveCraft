@@ -14,6 +14,7 @@ const sequelize = require('./util/database'); // Import Sequelize connection ins
 const userRoutes = require('./routes/userRoutes');
 const foldersRoutes = require('./routes/folders');
 const homeRouter = require('./routes/home');
+const routerCar = require('./routes/routeCar');
 
 
 const app = express();
@@ -89,6 +90,7 @@ app.use('/Car', CarRoutes);
 app.use('/User', userRoutes)
 app.use('/folders', foldersRoutes)
 app.use('/home', homeRouter)
+app.use('/CarInstructor', routerCar)
 app.use(errorController.get404);
 app.use(errorController.get500);
 

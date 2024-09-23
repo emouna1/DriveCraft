@@ -35,31 +35,32 @@ showForm: boolean = false;
 showEditForm: boolean = false;
 //selectedRow: Student | null = null;
 
-selectedRow: Student = { User :{
+selectedRow: Student = { User: {
   username: 'default_user',
   password: 'default_password',
-  email: 'default@student.com',
+  email: 'defaultEmployee.com',
   role: 'student',
-  name: 'Default Student',
+  name: 'DefaultEmployee',
   firstName: 'Default',
   CIN: '1234567890',
   dateOfIssue: new Date(2000, 0, 1),
+  licenseCategory: 'N/A',
   situation: 'N/A',
   balance: 0,
   dateOfBirth: new Date(1990, 0, 1),
   nationality: 'N/A',
   address: '123 Main Street',
   telephone: '123-456-7890',
-  image: null,
-  personalCode:null,
-  personnelFunction:null,
-  recruitmentDate:null,
-  netSalary:null,
-  grossSalary:null,
-  qualification:null,
-  leaveDaysPerYear:null,
-  cnssNumber:null,
-  CategoryCode:'A'
+  image: '_ _ _',
+  personalCode: null,
+  personnelFunction: null,
+  recruitmentDate: new Date(2000, 0, 1),
+  netSalary: null,
+  grossSalary: null,
+  qualification: null,
+  leaveDaysPerYear: null,
+  cnssNumber: null,
+  CategoryCode: null
 }};
 dataSource = new MatTableDataSource<Student>();
 
@@ -170,7 +171,7 @@ saveChanges() {
   if (this.selectedRow) {
     // Update selectedRow with the edited values before saving changes
     this.selectedRow = { ...this.selectedRow };
-
+    console.log(this.selectedRow)
     this.studentService.editStudent(this.selectedRow.User).subscribe(() => {
       console.log('Saved changes:', this.selectedRow);
       this.showEditForm = false;
@@ -195,7 +196,7 @@ submitStudent() {
   this.selectedRow = {
     User: { ...this.selectedRow.User }
   };
-
+  console.log(this.selectedRow)
   // Now selectedRow contains the updated values entered by the user
   if (this.selectedRow) {
     this.authService.signup(this.selectedRow.User).subscribe(response => {
@@ -293,28 +294,29 @@ resetForm(){
     User: {
       username: 'default_user',
       password: 'default_password',
-      email: 'default@student.com',
+      email: 'defaultEmployee.com',
       role: 'student',
-      name: 'Default Student',
+      name: 'DefaultEmployee',
       firstName: 'Default',
       CIN: '1234567890',
       dateOfIssue: new Date(2000, 0, 1),
+      licenseCategory: 'N/A',
       situation: 'N/A',
       balance: 0,
       dateOfBirth: new Date(1990, 0, 1),
       nationality: 'N/A',
       address: '123 Main Street',
       telephone: '123-456-7890',
-      image: null,
-      personalCode:null,
-      personnelFunction:null,
-      recruitmentDate:null,
-      netSalary:null,
-      grossSalary:null,
-      qualification:null,
-      leaveDaysPerYear:null,
-      cnssNumber:null,
-      CategoryCode:'A'
+      image: '_ _ _',
+      personalCode: null,
+      personnelFunction: null,
+      recruitmentDate: new Date(2000, 0, 1),
+      netSalary: null,
+      grossSalary: null,
+      qualification: null,
+      leaveDaysPerYear: null,
+      cnssNumber: null,
+      CategoryCode: null
     }
   };
   this.fetchData();
@@ -331,29 +333,29 @@ canceladdForm() {
 
 }
 interface Student {
-  User: {
-
-  username: string;
-  password: string; // Consider using a secure hashing mechanism for password storage
-  email: string;
-  role: string; // Assuming an enum for user roles (admin, instructor,Employee)
-  name: string;
-  firstName: string;
-  CIN: string; // Assuming CIN is a unique identifier
-  dateOfIssue: Date;
-  situation: string;
-  balance: number;
-  dateOfBirth: Date;
-  nationality: string;
-  address: string;
-  telephone: string;
-  image: string |null;
-  personalCode?:String|null
-  personnelFunction?:String|null
-  recruitmentDate?:Date|null
-  netSalary?:number|null
-  grossSalary?:number|null
-  qualification?:string|null
-  leaveDaysPerYear?:number|null
-  cnssNumber:string |null
- CategoryCode?:string}}
+  User :{
+    username: string;
+    password: string; // Consider using a secure hashing mechanism for password storage
+    email: string;
+    role: string; // Assuming an enum for user roles (admin, instructor,Employee)
+    name: string;
+    firstName: string;
+    CIN: string; // Assuming CIN is a unique identifier
+    dateOfIssue: Date;
+    licenseCategory: string;
+    situation: string;
+    balance: number;
+    dateOfBirth: Date;
+    nationality: string;
+    address: string;
+    telephone: string;
+    image?: string;
+    personalCode?:String|null,
+    personnelFunction?:String|null,
+    recruitmentDate?:Date,
+    netSalary?:number|null,
+    grossSalary?:number|null,
+    qualification?:string|null,
+    leaveDaysPerYear?:number|null,
+    cnssNumber?:string|null,
+    CategoryCode?:string|null }}

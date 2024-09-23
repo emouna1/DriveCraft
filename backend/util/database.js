@@ -1,6 +1,6 @@
 // db.js
 const {Sequelize} = require('sequelize');
-
+// Load environment variables
 // Initialize Sequelize with your MySQL credentials
 const sequelize = new Sequelize('drivecraft', 'root', '', {
   host: 'localhost',

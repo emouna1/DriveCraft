@@ -6,6 +6,8 @@ const  User  = require('../models/user'); // Import the User model
 exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(errors.array()); // Log the validation errors to see what's failing
+
     return res.status(422).json({ errors: errors.array() }); // Return validation errors
   }
 

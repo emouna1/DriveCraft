@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 export class FoldersService {
   
   
-  private apiUrl = 'http://localhost:3000/folders'; // API UR
+  private apiUrl = environment.foldersApi; // API UR
 
   constructor(private http: HttpClient) { }
 

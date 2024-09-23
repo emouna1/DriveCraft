@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'; // Import catchError and map operators
+import { ConfigService } from './services/config.service'; // Import the ConfigService
+import { environment } from 'src/environments/environment';
 
 
 
@@ -11,18 +13,22 @@ import { catchError, map } from 'rxjs/operators'; // Import catchError and map o
 })
 export class AuthService {
   
-  
-  constructor(private http: HttpClient) {}
-  private baseUrl = 'http://localhost:3000/auth'; // Replace with the base URL of your API
+  private baseUrl: string;
+
+  constructor(private http: HttpClient, private configService: ConfigService) {
+   // this.baseUrl = `${this.configService.apiUrl}/auth`;
+   this.baseUrl = environment.authApi
+
+  }
 
   private currentUser: any | null = null; // Initialize as null
   private isAuthenticatedFlag: boolean = false;
   redirectUrl: string | null = null; // Property to store the intended URL for redirection
   
   signup(userData: { username: string, email: string, password:string}):Observable<any> {
-    return this.http.post<any>('http://localhost:3000/auth/signup', userData);
+    console.log(userData)
+    return this.http.post<any>(`${this.baseUrl}/signup`, userData);
   }
-  
   async login(username: string, password: string): Promise<boolean> {
     const url = `${this.baseUrl}/login`; // Replace with your login API endpoint
     console.log("this username ",username);

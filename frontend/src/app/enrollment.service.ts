@@ -3,19 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Enrollment } from './management/enrollments/enrollments.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnrollmentService {
 
-  private apiUrl = 'http://localhost:3000/home'; // Adjust this to your API URL
+  private apiUrl = environment.enrollmentApi; // Adjust this to your API URL
 
   constructor(private http: HttpClient) { }
 
   getRegistrationFees(registrationType: string, categoryCode: string): Observable<number> {
     // Make an HTTP GET request to your backend endpoint with both registration type and category code
-    return this.http.get<number>(`http://localhost:3000/folders/registration-fees/${registrationType}/${categoryCode}`);
+    return this.http.get<number>(`${this.apiUrl}/registration-fees/${registrationType}/${categoryCode}`);
   }
   
   getAllEnrollments(): Observable<any[]> {

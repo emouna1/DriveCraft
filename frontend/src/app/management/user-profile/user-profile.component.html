@@ -1,14 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <!-- Include your CSS stylesheets here -->
-</head>
-<body>
 
-    <div class="container">
+    <div class="card">
         <h1 class="heading"> Welcome to Your Account </h1>
         <img *ngIf="imageUrl" [src]="imageUrl" alt="User Image" style="display: block; margin: 0 auto; width: 150px; height: 150px;">
 
@@ -40,14 +31,7 @@
    
         <br><br>
 
-        <!--<div *ngIf="editMode" class="edit-mode">
-            <div *ngFor="let key of getEditedUserKeys()">
-                <input type="text" [(ngModel)]="editedUser[key]" placeholder="{{ key | titlecase }}">
-            </div>
-            <button class="save-button" (click)="saveChanges()">Save Changes</button>
-        </div>
-        
-    </div>-->
+    
      <div *ngIf="showEditForm">
         <form [formGroup]="editUserForm" (submit)="saveChanges()">
                 
@@ -62,15 +46,7 @@
                         <mat-error *ngIf="field === 'email' && editUserForm.get(field)?.hasError('email')"> Invalid email format</mat-error>
                     </mat-form-field>
                 
-                   <!--<mat-form-field *ngIf=" field === 'dateOfBirth'">
-                        <mat-label>{{ field }}</mat-label>
-                        <input matInput [type]="getFieldType(field)" formControlName="{{ field }}" [matDatepicker]="picker">
-                        <!-- Add specific error messages for each field if needed -
-                        <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
-                        <!--<mat-error *ngIf="editUserForm.get(field)?.hasError('matDatepickerParse')"> Invalid date</mat-error>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>-->
+            
                     <mat-form-field *ngIf=" field === 'dateOfBirth'">
                         <mat-label>Choose the date of birth</mat-label>
                         <input matInput formControlName="{{ field }}" [matDatepicker]="picker" [matDatepicker]="picker">
@@ -88,10 +64,7 @@
                     <input id="image" type="file" (change)="onImageSelected($event)">
                     <mat-error *ngIf="!selectedFile">Image is required</mat-error>
                   </div>
-                   <!-- <div *ngIf="currentUser['imageUrl']">
-                        <img [src]="currentUser['imageUrl']" alt="User Image" style="width: 150px; height: 150px;">
-                    </div>
-                </mat-form-field>-->
+                 
 
                 <!-- Submit and Cancel Buttons -->
                 <button class="amouna-button" type="submit">Save changes</button>
@@ -105,30 +78,7 @@
 
 
 
-    <!-- <div *ngIf="showEditForm">
-                    <form [formGroup]="editUserForm" (submit)="saveChanges()">
-                        <fieldset>
-                            <legend>Edit User</legend>
-                            <ng-container *ngFor="let field of ['username', 'email', 'firstName', 'dateOfBirth', 'nationality', 'address', 'telephone']">
-                                <mat-form-field >
-                                    <mat-label>{{ field }}</mat-label>
-                                    <input matInput [type]="getFieldType(field)" formControlName="{{ field }}">
-                                    <mat-error *ngIf="editUserForm.get(field)?.hasError('required')"> {{ field }} is required</mat-error>
-                                    <mat-error *ngIf="field === 'email' && editUserForm.get(field)?.hasError('email')"> Invalid email format</mat-error>
-                                </mat-form-field>
-                            </ng-container>
-                         <mat-form-field >
-                                <mat-label>Image</mat-label>
-                                <input type="file" (change)="onImageSelected($event)" accept="image/*" formControlName="image">
-                                <mat-error *ngIf="editUserForm.get('image')?.hasError('required')">Image is required</mat-error>
-                                <img [src]="imageUrl" alt="User Image" style="width: 150px; height: 150px;">
-                            </mat-form-field>
-                            <button class="amouna-button" type="submit">Save changes</button>
-                            <button class="amouna-button" type="button" (click)="cancelForm()">Cancel</button>
-                        </fieldset>
-                    </form>
-                </div> -->
-
+   
 <!-- Password change form -->
 <div *ngIf="showPasswordChangeForm">
     <form [formGroup]="passwordChangeForm" (submit)="changePassword()">
@@ -146,5 +96,3 @@
 </div>
 </div>
 
-</body>
-</html>    
