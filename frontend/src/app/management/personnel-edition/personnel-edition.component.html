@@ -1,78 +1,236 @@
-
-
-<div class="instructor-container">
-
-<h2>Instructors Management</h2>
 <div class="container">
-  <table mat-table [dataSource]="dataSource">
+  <h2><strong>Instructors Management</strong></h2>
   
-    <!-- Displaying columns -->
-    <ng-container [matColumnDef]="column" *ngFor="let column of studentColumns ">
-      <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
-
-      <td mat-cell *matCellDef="let element">
-        <ng-container *ngIf="element.User">
-          <ng-container *ngIf =" column !== 'role'">
-        {{ element.User[column] }}
+  <div class="candidat-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource.data">
+    
+      <!-- Displaying columns -->
+      <ng-container [matColumnDef]="column" *ngFor="let column of instructorColumns">
+        <th mat-header-cell *matHeaderCellDef> {{ column }} </th>
+  
+        <td mat-cell *matCellDef="let element">
+  
+            
+              <ng-container *ngIf="column === 'image'">
+           
+            <img *ngIf="element.User.image" [src]="element.User.image" alt="Candidate Image" width="100" height="100">
+           <!-- Optionally display a placeholder if the URL is not available -->
+            <span *ngIf="!element.User.image">No Image</span>
           </ng-container>
-        </ng-container> </td>
-       
-    </ng-container>
-
-   
-  
-    <!-- Actions Column -->
-    <ng-container matColumnDef="actions" >
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="primary"  (click)="editRow(element)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="deleteRow(element)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-  
-    <!-- Header and Row definitions -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table> 
-  <mat-paginator [pageSize]="3"
-  [pageSizeOptions]="[2, 3, 4, 5]"
-  [length]="dataSource.data.length"
-  (page)="onPageChange($event)">
-</mat-paginator>
-
-  <button  class="amouna-button" (click)="printTable()">Print</button>
-</div>
-
-<br><br>
-
-<button class="amouna-button" (click)="toggleForm()">Add New Instructor</button>
-
-
-<!-- Form for adding or editing -->
-
-<div *ngIf="showForm || showEditForm">
-  <form [formGroup]="employeeForm" (submit)="submitEmployee()">
-    <fieldset>
-      <legend>{{ showEditForm ? 'Edit Instructor' : 'Add New Instructor' }}</legend>
-      <ng-container *ngFor="let control of studentColumns">
-        <mat-form-field appearance="fill">
-          <mat-label>{{ control }}</mat-label>
-          <input matInput formControlName="{{ control }}" required>
-        </mat-form-field>
+          <!-- Display other data normally -->
+          <ng-container *ngIf="element.User && column !== 'role' && column !== 'image'">
+            {{ element.User[column] }}
+          </ng-container> 
+        </td>
+         
       </ng-container>
-      <button mat-raised-button color="primary"type="submit" >{{ showEditForm ? 'Save Changes' : 'Add Instructor' }}</button>
-       <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
-    </fieldset>
-  </form>
-</div>
+  
+     
+    
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions" >
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary"  (click)="editRow(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteRow(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+    
+      <!-- Header and Row definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSize]="5"
+    [pageSizeOptions]="[3, 5, 8, 10]"
+    [length]="dataSource.data.length"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+  
+    <button  class="amouna-button" (click)="printTable()">Print</button>
+  </div>
+  <br><br>
+  
+  <button class="amouna-button" (click)="toggleForm()">Add New Instructor</button>
+  
+  <div *ngIf="showForm">
+    <form (submit)="submitEmployee()" class="example-form">
+      <!-- Username -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
+        <mat-error *ngIf="!selectedRow.User.username">Username is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Password -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" name="password" [(ngModel)]="selectedRow.User.password" required>
+        <mat-error *ngIf="!selectedRow.User.password">Password is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Email -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
+        <mat-error *ngIf="!selectedRow.User.email">Email is required</mat-error>
+        <mat-error *ngIf="!selectedRow.User.email">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Name -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
+        <mat-error *ngIf="!selectedRow.User.name">Name is required</mat-error>
+      </mat-form-field>
+  
+      <!-- First Name -->
+      <mat-form-field class="example-full-width">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
+        <mat-error *ngIf="!selectedRow.User.firstName">First Name is required</mat-error>
+      </mat-form-field>
+  
+      <!-- CIN -->
+      <mat-form-field class="example-full-width">
+        <mat-label>CIN</mat-label>
+        <input matInput type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
+        <mat-error *ngIf="!selectedRow.User.CIN">CIN is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Date of Birth -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
+        <mat-error *ngIf="!selectedRow.User.dateOfBirth">Date of Birth is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Nationality -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Nationality</mat-label>
+        <input matInput type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
+        <mat-error *ngIf="!selectedRow.User.nationality">Nationality is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Address -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Address</mat-label>
+        <input matInput type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
+        <mat-error *ngIf="!selectedRow.User.address">Address is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Telephone -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Telephone</mat-label>
+        <input matInput type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
+        <mat-error *ngIf="!selectedRow.User.telephone">Telephone is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Image 
+      <mat-form-field class="example-full-width">
+        <mat-label>Image</mat-label>
+        <input type="file" (change)="onFileSelected($event)">
+      </mat-form-field>-->
+  
+      <button mat-raised-button color="primary" type="submit">Add Admin</button>
+      <button mat-raised-button color="warn" type="button" (click)="canceladdForm()">Cancel</button>
+    </form>
+  </div>
+  
+  
+  <!-- Form for editing an existing candidate -->
+  <div *ngIf="showEditForm">
+    <h2>Edit Instructor</h2>
+    <form (submit)="saveChanges()">
+      <!-- Username -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" name="username" [(ngModel)]="selectedRow.User.username" required>
+        <mat-error *ngIf="!selectedRow.User.username">Username is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Password (optional) -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" name="password" [(ngModel)]="selectedRow.User.password">
+      </mat-form-field>
+  
+      <!-- Email -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" name="email" [(ngModel)]="selectedRow.User.email" required>
+        <mat-error *ngIf="!selectedRow.User.email">Email is required</mat-error>
+        <mat-error *ngIf="!selectedRow.User.email">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- Name -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" name="name" [(ngModel)]="selectedRow.User.name" required>
+        <mat-error *ngIf="!selectedRow.User.name">Name is required</mat-error>
+      </mat-form-field>
+  
+      <!-- First Name -->
+      <mat-form-field class="example-full-width">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" name="firstName" [(ngModel)]="selectedRow.User.firstName" required>
+        <mat-error *ngIf="!selectedRow.User.firstName">First Name is required</mat-error>
+      </mat-form-field>
+  
+      <!-- CIN -->
+      <mat-form-field class="example-full-width">
+        <mat-label>CIN</mat-label>
+        <input matInput type="text" name="CIN" [(ngModel)]="selectedRow.User.CIN" required>
+        <mat-error *ngIf="!selectedRow.User.CIN">CIN is required</mat-error>
+      </mat-form-field>
+  
+  
+      <!-- Date of Birth -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
+        <mat-error *ngIf="!selectedRow.User.dateOfBirth">Date of Birth is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Nationality -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Nationality</mat-label>
+        <input matInput type="text" name="nationality" [(ngModel)]="selectedRow.User.nationality" required>
+        <mat-error *ngIf="!selectedRow.User.nationality">Nationality is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Address -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Address</mat-label>
+        <input matInput type="text" name="address" [(ngModel)]="selectedRow.User.address" required>
+        <mat-error *ngIf="!selectedRow.User.address">Address is required</mat-error>
+      </mat-form-field>
+  
+      <!-- Telephone -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Telephone</mat-label>
+        <input matInput type="tel" name="telephone" [(ngModel)]="selectedRow.User.telephone" required>
+        <mat-error *ngIf="!selectedRow.User.telephone">Telephone is required</mat-error>
+      </mat-form-field>
 
-<div #printContent style="display:none">
+  
+      <button mat-raised-button color="primary" type="submit">Save Changes</button>
+      <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
+    </form>
+  </div>
+  
+  <div #printContent style="display:none">
   <table>
     <!-- Table headers and rows will be generated dynamically -->
   </table>
   </div>
-</div>
+  <br><br><br>
+  
+  </div>

@@ -13,12 +13,7 @@
           </span>
           <span class="welcome-text">Welcome {{ userName }}</span>
         </div>
-       <!-- <a mat-list-item routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        
-        <a mat-button [matMenuTriggerFor]="HomeMenu">Home</a>
-        <a mat-button [matMenuTriggerFor]="candidatesMenu">Folders</a>
-        <a mat-button [matMenuTriggerFor]="CondidatMenu">Condidat section</a>-->
-          <!-- Home Menu -->
+      
     <div class="menu-buttons">      
     <button mat-button [matMenuTriggerFor]="HomeMenu">
       <mat-icon> pending_actions </mat-icon> 
@@ -53,11 +48,6 @@
     </button>
     <br><br>
 
-    <!-- Condidat Menu
-    <button mat-button [matMenuTriggerFor]="CondidatMenu">
-      Condidat Section
-      <mat-icon>arrow_drop_down</mat-icon>
-    </button>-->
     <!-- Condidat Menu -->
     <button mat-button [matMenuTriggerFor]="UsersMenu">
       <mat-icon>group</mat-icon>
@@ -75,17 +65,7 @@
     </button>
     <br><br>
 
-    <!-- Condidat Menu 
-    <button mat-button [matMenuTriggerFor]="VehiclesMenu">
-      Vehicles Section
-      <mat-icon>arrow_drop_down</mat-icon>
-    </button>
-  
-  <a mat-list-item routerLink="instructor_candidate" routerLinkActive="active">
-    <mat-icon>groups_2</mat-icon><!-- Use the desired Material icon name here 
-    Attributions management
-</a>
--->
+
 <a mat-list-item routerLink="userProfile" routerLinkActive="active">
   <mat-icon>person_outline</mat-icon><!-- Use the desired Material icon name here -->
   PROFILE
@@ -152,6 +132,8 @@
       <!-- Add items for users Menu here -->
       <a mat-menu-item routerLink="Enrollments" routerLinkActive="active">Registration code</a>
       <a mat-menu-item routerLink="conductEnrollments" routerLinkActive="active">Registration conduct</a>
+      <a mat-menu-item routerLink="instructor_candidate" routerLinkActive="active"> Assign candidate to instructor</a>
+
       </mat-menu>
 
     <mat-sidenav-content class="content"> <!-- Content Area -->    

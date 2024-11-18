@@ -1,6 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FoldersService } from '../../folders.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-license-categories',
@@ -21,7 +22,7 @@ export class LicenseCategoriesComponent {
 
   @ViewChild('printContent') printContent!: ElementRef;
 
-  constructor(private licenseCategoryService: FoldersService) {
+  constructor(private licenseCategoryService: FoldersService, private snackBar: MatSnackBar) {
     this.form = new FormGroup({});
     this.formFields.forEach(field => {
       this.form.addControl(field, new FormControl('', Validators.required));
@@ -60,6 +61,8 @@ export class LicenseCategoriesComponent {
       this.licenseCategoryService.addLc(formData).subscribe(() => {
         this.fetchLicenseCategories();
         this.resetForm();
+        this.displayNotification('This category is added successfully!'); // Display success notification
+
       });
     }
   }
@@ -70,6 +73,8 @@ export class LicenseCategoriesComponent {
       this.licenseCategoryService.editLcategory(this.selectedCategory.CategoryCode, formData).subscribe(() => {
         this.fetchLicenseCategories();
         this.resetForm();
+        this.displayNotification('This category edited successfully.'); // Display success notification
+
       });
     }
   }
@@ -78,6 +83,8 @@ export class LicenseCategoriesComponent {
     if (confirm('Are you sure you want to delete this category?')) {
       this.licenseCategoryService.deleteLcategory(category.id).subscribe(() => {
         this.fetchLicenseCategories();
+        this.displayNotification('This category got deleted successfully.'); // Display success notification
+
       });
     }
   }
@@ -109,6 +116,7 @@ export class LicenseCategoriesComponent {
         printContent += 'tr:nth-child(even) { background-color: #f2f2f2; }';
         printContent += '</style>';
         printContent += '</head><body>';
+        printContent += '<h2>The available license categories : </h2>'
 
         // Generate table headers
         printContent += '<table>';
@@ -139,6 +147,11 @@ export class LicenseCategoriesComponent {
     } else {
       console.error('Print content not found or not initialized');
     }
+  }
+  displayNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+    });
   }
 }
 

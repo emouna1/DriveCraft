@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FoldersService } from '../../folders.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-payment-method',
   templateUrl: './payment-method.component.html',
@@ -19,7 +19,7 @@ export class PaymentMethodComponent {
     selectedRow: method = { id:0 ,designation: '' };
   
      
-    constructor(private foldersService: FoldersService) {}
+    constructor(private foldersService: FoldersService, private snackBar: MatSnackBar) {}
   
     ngOnInit() {
       this.fetchData();
@@ -47,6 +47,7 @@ export class PaymentMethodComponent {
       this.foldersService.editPaymentM(this.selectedRow.id, this.selectedRow).subscribe(() => {
         console.log('Saved changes:', this.selectedRow);
         this.showEditForm = false; // Hide the edit form after saving changes
+        this.displayNotification(' payment method updated successfully ! ');
       });
       this.fetchData();
       this.resetForm();
@@ -58,7 +59,8 @@ export class PaymentMethodComponent {
         console.log('Deleted row:', element);
         // After successful deletion, you might want to refresh the data
         this.fetchData();
-        this.resetForm();
+        this.resetForm(); 
+        this.displayNotification('Payment method deleted successfully !');
 
       });
     }
@@ -73,6 +75,7 @@ export class PaymentMethodComponent {
   
       if (this.printContent && this.printContent.nativeElement) {
         const printWindow = window.open('', '_blank');
+
   
         if (printWindow) {
           let printContent = '<html><head><title>Print</title>';
@@ -82,17 +85,19 @@ export class PaymentMethodComponent {
           printContent += 'tr:nth-child(even) { background-color: #f2f2f2; }';
           printContent += '</style>';
           printContent += '</head><body>';
-  
+          printContent +='<h2>The list of payment methods : </h2>';
           // Generate table headers
           printContent += '<table>';
           printContent += '<tr>';
-          printContent += '<th>Method</th>';
+          printContent += '<th>Id</th>';
           printContent += '<th>Designation</th>';
           printContent += '</tr>';
   
           // Generate table rows from dataSource
           this.dataSource.data.forEach(element => {
             printContent += '<tr>';
+            printContent += '<td>' + element.id+ '</td>';
+
             printContent += '<td>' + element.designation + '</td>';
             printContent += '</tr>';
           });
@@ -114,7 +119,10 @@ export class PaymentMethodComponent {
       this.foldersService.addPaymentM(this.selectedRow).subscribe(response => {
         console.log("adding ",this.selectedRow)
         console.log('New method maintenance added successfully', response);
+        this.displayNotification(' New payment method added ! ');
+
         this.resetForm();
+
       }, error => {
         console.error('Error !!!', error);
       });
@@ -137,11 +145,15 @@ export class PaymentMethodComponent {
       this.showForm = false; 
       this.resetForm();
     }
+  
+  
+  
+  displayNotification(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000, // Duration in milliseconds
+    });
   }
-  
-  
-  
-  
+}
   
   export interface method {
     id: number;

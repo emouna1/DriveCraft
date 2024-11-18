@@ -1,17 +1,20 @@
 // db.js
+// At the top of your file, ensure dotenv is loaded
+require('dotenv').config();
+
+// Log environment variables to ensure they are being loaded correctly
+console.log('MYSQL_URL:', process.env.MYSQL_URL);
+console.log('MYSQL_USER:', process.env.MYSQL_USER);
+console.log('RAILWAY_TCP_PROXY_DOMAIN:', process.env.RAILWAY_TCP_PROXY_DOMAIN);
+console.log('RAILWAY_TCP_PROXY_PORT:', process.env.RAILWAY_TCP_PROXY_PORT);
+
+
 const {Sequelize} = require('sequelize');
+
 // Initialize Sequelize with your MySQL credentials
-const sequelize = new Sequelize(
-  process.env.MYSQL_DATABASE,
-  process.env.MYSQL_USER,
-  process.env.MYSQL_ROOT_PASSWORD,
- 
-  {
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    dialect: 'mysql',
-  }
-);
+const sequelize = new Sequelize(process.env.MYSQL_URL, {
+  dialect: 'mysql',
+});
 // Test the connection
 sequelize
   .authenticate()

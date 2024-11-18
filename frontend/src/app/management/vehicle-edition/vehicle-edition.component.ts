@@ -100,45 +100,6 @@ export class VehicleEditionComponent implements OnInit {
     this.showForm = false; // Ensure add form is not shown when opening edit form
   }
 
-  /*saveChanges() {
-    if (this.editVehicleForm.valid) {
-      const formData = this.editVehicleForm.value;
-      this.vehiclesEditionService.updateCar(formData.LicensePlate, formData).subscribe(
-        response => {
-          console.log('Vehicle updated successfully', response);
-          this.editVehicleForm.reset();
-          this.fetchData();
-          this.showEditForm = false; // Hide edit form after saving changes
-        },
-        error => {
-          console.error('Error updating vehicle', error);
-        }
-      );
-    }
-  }
-
-  deleteRow(element: Vehicle) {
-    this.vehiclesEditionService.deleteCar(element.LicensePlate).subscribe(() => {
-      console.log('Deleted row:', element);
-      this.fetchData();
-    });
-  }
-
-  submitVehicle() {
-    if (this.addVehicleForm.valid) {
-      this.vehiclesEditionService.addCar(this.addVehicleForm.value).subscribe(
-        response => {
-          console.log('Vehicle added successfully', response);
-          this.addVehicleForm.reset();
-          this.fetchData();
-          this.showForm = false; // Hide add form after submitting
-        },
-        error => {
-          console.error('Error adding vehicle', error);
-        }
-      );
-    }
-  }*/
   onFileChange(event: any) {
     this.fileToUpload = event.target.files[0];
   }
@@ -242,6 +203,7 @@ printTable() {
       printContent += 'tr:nth-child(even) { background-color: #f2f2f2; }';
       printContent += '</style>';
       printContent += '</head><body>';
+      printContent += '<h2>The driving school cars : </h2>'
 
       // Generate table headers
       printContent += '<table>';

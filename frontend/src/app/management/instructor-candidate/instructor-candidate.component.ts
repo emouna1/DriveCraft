@@ -14,13 +14,23 @@ interface Instructor {
 
 interface Vehicle {
   id: number;
-  name: string;
+  LicensePlate: string;
+  Brand: string;
+  Type: string;
+  Power: string;
+  Fuel: string;
+  Odometer: number;
+  Color: string;
+  PurchasePrice: number;
+  Date: string; // Assuming date is represented as a string in ISO 8601 format
+  Observation: string;
+  Image: string;
 }
 
 interface Assignment {
-  candidate: Candidate ;
+  student: Candidate ;
   instructor: Instructor ;
-  vehicle: Vehicle ;
+  car: Vehicle ;
 }
 
 @Component({
@@ -45,7 +55,19 @@ export class InstructorCandidateComponent implements OnInit {
     this.loadCandidates();
     this.loadInstructors();
     this.loadVehicles();
+    this.loadAssignments();
   }
+  loadAssignments(): void {
+    this.instructorCandidateService.loadAssignments().subscribe(
+      (data: Assignment[]) => {
+        this.assignments = data; // Assign the fetched data to the assignments array
+      },
+      (error) => {
+        console.error('Error fetching assignments', error);
+      }
+    );
+  }
+  
 
   loadCandidates(): void {
     this.instructorCandidateService.getCandidates().subscribe(
@@ -117,9 +139,9 @@ export class InstructorCandidateComponent implements OnInit {
           this.instructorCandidateService.assignCandidate(assignmentData).subscribe(
             (response) => {
               this.assignments.push({
-                candidate: this.selectedCandidate!,
+                student: this.selectedCandidate!,
                 instructor: this.selectedInstructor!,
-                vehicle: this.selectedVehicle!,
+                car: this.selectedVehicle!,
               });
               // Clear selections after assignment
               this.selectedCandidate = null;
@@ -140,7 +162,7 @@ export class InstructorCandidateComponent implements OnInit {
   removeCandidate(instructor: Instructor, candidate: Candidate) {
     instructor.candidates = instructor.candidates.filter((c) => c.id !== candidate.id);
     this.assignments = this.assignments.filter(
-      (a) => a.candidate.id !== candidate.id || a.instructor.id !== instructor.id
+      (a) => a.student.id !== candidate.id || a.instructor.id !== instructor.id
     );
   }
 
@@ -148,7 +170,7 @@ export class InstructorCandidateComponent implements OnInit {
     this.assignments = this.assignments.filter((a) => a !== assignment);
     const instructor = this.instructors.find((i) => i.id === assignment.instructor.id);
     if (instructor) {
-      instructor.candidates = instructor.candidates.filter((c) => c.id !== assignment.candidate.id);
+      instructor.candidates = instructor.candidates.filter((c) => c.id !== assignment.student.id);
     }
   }
 

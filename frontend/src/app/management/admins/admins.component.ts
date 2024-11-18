@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth-service.service';
 import { CoondidateService } from 'src/app/coondidate.service';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admins',
@@ -14,7 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class AdminsComponent implements OnInit {
 
 
-  constructor(private formBuilder: FormBuilder, private dialog: MatDialog, private EmployeeService: CoondidateService,private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private dialog: MatDialog, private EmployeeService: CoondidateService,private authService: AuthService, private snackBar : MatSnackBar) { }
 
  
 ngOnInit(): void {
@@ -49,8 +50,8 @@ showEditForm: boolean = false;
 selectedRow: Student = { User: {
   username: 'default_user',
   password: 'default_password',
-  email: 'defaultEmployee.com',
-  role: 'student',
+  email: 'defaultEmployee@gmail.com',
+  role: 'admin',
   name: 'DefaultEmployee',
   firstName: 'Default',
   CIN: '1234567890',
@@ -82,50 +83,7 @@ dataSource = new MatTableDataSource<Student>();
 toggleForm() {
   this.showForm = !this.showForm;
 }
-/*fetchData() {
-  this.studentService.getAllStudents().subscribe((data: any) => {
-    // Assuming data is fetched and structured as in your example
-    this.dataSource.data= data.map((item: any) => {
-      console.log('Image URL:', item.Image ? item.Image.imageUrl : null); // Add this line to log the image URL
 
-      return {
-        User: {
-
-          username: item.username,
-          password: item.password,
-          email: item.email,
-          role: item.role,
-          name: item.name,
-          firstName: item.firstName,
-          CIN: item.CIN,
-          dateOfIssue: item.dateOfIssue,
-          situation: item.situation,
-          balance: item.balance,
-          dateOfBirth: item.dateOfBirth,
-          nationality: item.nationality,
-          address: item.address,
-          telephone: item.telephone,
-          //image: item.image,
-          personalCode: item.personalCode,
-          personnelFunction: item.personnelFunction,
-          recruitmentDate: item.recruitmentDate,
-          netSalary: item.netSalary,
-          grossSalary: item.grossSalary,
-          qualification: item.qualification,
-          leaveDaysPerYear: item.leaveDaysPerYear,
-          cnssNumber: item.cnssNumber,
-          CategoryCode: item.CategoryCode,
-          //image: item.image // Assign image property
-          //image: item.Image ? item.Image.imageUrl : null,
-          image: item.Image ? `http://localhost:3000/images/${item.Image.imageUrl}` : null,
-
-
-        }
-      };
-    });
-    this.dataSource.paginator = this.paginator;
-  });
-}*/
 fetchData() {
   this.EmployeeService.getAllُُُAdmins().subscribe((data: any) => {
     // Assuming data is fetched and structured as in your example
@@ -183,6 +141,7 @@ saveChanges() {
     this.EmployeeService.editEmployee(this.selectedRow.User).subscribe(() => {
       console.log('Saved changes:', this.selectedRow);
       this.showEditForm = false;
+      this.displayNotification('Administrator updated successfully !')
       this.fetchData(); // Refresh data after saving changes
     });
   }
@@ -193,7 +152,9 @@ deleteRow(element: Student) {
   if (element.User.CIN) {
     this.EmployeeService.deleteEmployee(element.User.CIN).subscribe(() => {
       console.log('Deleted row:', element.User);
+
       this.fetchData(); // Refresh data after deletion
+      this.displayNotification('Deleted administrator !')
     });
   }
 }
@@ -208,10 +169,14 @@ submitStudent() {
   // Now selectedRow contains the updated values entered by the user
   if (this.selectedRow) {
     this.authService.signup(this.selectedRow.User).subscribe(response => {
-      console.log('New student added successfully', response);
       this.resetForm();
+      this.showForm=false;
+      this.fetchData();
+      this.displayNotification('New Administrator added successfully')
     }, error => {
-      console.error('Error adding student', error);
+      console.error('Error adding administrator', error);
+      this.displayNotification('Error adding administrator')
+
     });
   }
 }
@@ -302,8 +267,8 @@ resetForm(){
     User: {
       username: 'default_user',
       password: 'default_password',
-      email: 'defaultEmployee.com',
-      role: 'student',
+      email: 'defaultEmployee@gmail.com',
+      role: 'admin',
       name: 'DefaultEmployee',
       firstName: 'Default',
       CIN: '1234567890',
@@ -338,6 +303,14 @@ canceladdForm() {
   this.showForm = false; 
   this.resetForm()// Optionally reset the form fields
 }
+
+displayNotification(message: string) {
+  this.snackBar.open(message, 'Close', {
+    duration: 3000, // Duration in milliseconds
+  });
+}
+
+
 
 }
 interface Student {

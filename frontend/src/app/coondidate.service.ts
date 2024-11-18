@@ -50,8 +50,9 @@ export class CoondidateService {
   }
 
   editEmployee(candidate: any): Observable<any[]> {
-    return this.http.put<any>(`${this.apiUrl}/updateEmployee/${candidate.id}`, candidate);
+    return this.http.put<any>(`${this.apiUrl}/updateEmployee/${candidate.CIN}`, candidate);
   }
+
 
   deleteEmployee(candidateId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/deleteEmployee/${candidateId}`);

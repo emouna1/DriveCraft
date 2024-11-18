@@ -44,3 +44,5 @@ Thumbs.db
 # Ignore specific Angular cache files
 /.angular/cache/
 /angular-webpack/
+.vercel
+.env

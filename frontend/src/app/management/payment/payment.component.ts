@@ -1,16 +1,15 @@
 
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { PaymentService } from '../../payment.service';
 import { FoldersService } from 'src/app/folders.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 interface Payment {
-  id: number;
   date: string;
   montant: string;
-  createdAt: string;
-  updatedAt: string;
+  
   candidatCIN: number | null;
   paymentDetails: PaymentDetail[];
   isSuccessful: boolean;
@@ -19,7 +18,6 @@ interface Payment {
 }
 
 interface PaymentDetail {
-  id: number;
   montant: number;
   dateEcheance: string;
   createdAt: string;
@@ -44,7 +42,7 @@ export class PaymentComponent  {
     showForm: boolean = false;
     showEditForm: boolean = false;
     selectedRow: Payment = {
-      id: 0,
+      //id: 0,
       date: '',
       montant: '',
       createdAt: '',
@@ -53,66 +51,47 @@ export class PaymentComponent  {
       paymentDetails: [],
       isSuccessful: true
     };
-    pageSize: number = 2; // or 4, or 5
+    pageSize: number = 2; 
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
   
-    paymentColumns = ['id', 'date', 'montant', 'createdAt', 'updatedAt','candidatCIN'];
+    paymentColumns = ['date', 'montant', 'createdAt', 'updatedAt','candidatCIN'];
     displayedColumns = [...this.paymentColumns, 'actions'];
     paymentMethods: any[]=[];
-     amountControl = new FormControl();
-    // pageSize: number = 3; // Number of payments per page
+    amountControl = new FormControl();
 
-    constructor(private formBuilder: FormBuilder, private paymentService: PaymentService,private foldersService: FoldersService) { }
+    constructor(private formBuilder: FormBuilder,
+      private paymentService: PaymentService,
+      private foldersService: FoldersService,
+      private snackBar: MatSnackBar) 
+      { }
    
     ngOnInit(): void {
       this.createForm();
       this.fetchData();
-      this.fetchPaymentMethods(); // Fetch payment methods when component initializes
-      //this.dataSource.paginator = this.paginator;
-
-
+      this.fetchPaymentMethods(); 
     }
-    fetchPaymentMethods(): void {
-      // Call payment service to fetch payment methods and assign them to paymentMethods array
-        this.foldersService.getAllPaymentMethods().subscribe((methods:any[]) => {
 
+    fetchPaymentMethods(): void {
+        this.foldersService.getAllPaymentMethods().subscribe((methods:any[]) => {
         this.paymentMethods = methods;
       });
     }
+
     createForm(): void {
       this.paymentForm = this.formBuilder.group({
-        id: [this.selectedRow.id, Validators.required],
         date: [this.selectedRow.date, Validators.required],
         montant: [this.selectedRow.montant, Validators.required],
-        createdAt: [this.selectedRow.createdAt, Validators.required],
-        updatedAt: [this.selectedRow.updatedAt, Validators.required],
+      
         candidatCIN: [this.selectedRow.candidatCIN],
-        /*paymentDetails: this.formBuilder.array(
-          this.selectedRow.paymentDetails.map(detail => this.addPaymentDetail(detail))
-        )*/
-        paymentDetails: this.formBuilder.array([]),
-
-        // Add existing payment details to the form
-            
+        paymentDetails: this.formBuilder.array([]),            
       });
       // Add existing payment details to the form
        this.selectedRow.paymentDetails.forEach(detail => {
        this.addPaymentDetail(detail);
        });
     }
-    
-    /*addPaymentDetail(detail: PaymentDetail): FormGroup {
-      return this.formBuilder.group({
-        id: [detail.id],
-        montant: [detail.montant],
-        dateEcheance: [detail.dateEcheance],
-        createdAt: [detail.createdAt],
-        updatedAt: [detail.updatedAt],
-        PaymentMethodId: [detail.PaymentMethodId],
-        paymentId: [detail.paymentId]
-      });
-    }*/
+ 
     addPaymentDetail(detail?: PaymentDetail): void {
       const paymentDetailForm = this.formBuilder.group({
         montant: [(detail ? detail.montant : ''), Validators.required],
@@ -121,8 +100,6 @@ export class PaymentComponent  {
       });
       (this.paymentForm.get('paymentDetails') as FormArray).push(paymentDetailForm);
     }
-    
-    
     
     fetchData(): void {
       this.paymentService.getAllPayments().subscribe((data: Payment[]) => {
@@ -164,38 +141,13 @@ export class PaymentComponent  {
       });
     }
     
-  
-  
-    saveChanges(): void {
-      this.paymentService.editPayment(this.selectedRow.id,this.selectedRow).subscribe(() => {
-        console.log('Saved changes:', this.selectedRow);
-        this.showEditForm = false;
-        this.fetchData();
-      });
-    }
-  
     deleteRow(element: Payment): void {
-      this.paymentService.deletePayment(element.id).subscribe(() => {
+      this.paymentService.deletePayment(element['id']).subscribe(() => {
         console.log('Deleted row:', element);
         this.fetchData();
       });
     }
   
-    submitPayment(): void {
-      this.paymentService.addPayment(this.selectedRow).subscribe(response => {
-        console.log('New Payment added successfully', response);
-        this.resetForm();
-      }, error => {
-        console.error('Error adding Payment', error);
-      });
-    }
-
-    /*getPaymentDetailsControls() {
-      const paymentDetailsArray = this.paymentForm.get('paymentDetails') as FormArray;
-      return paymentDetailsArray ? paymentDetailsArray.controls : [];
-    }*/
-    
-   
     getControls() {
       const controls = (this.paymentForm.get('paymentDetails') as FormArray).controls;
       console.log(controls);
@@ -224,19 +176,66 @@ export class PaymentComponent  {
     }
     
     markAsSuccessful(payment : Payment) {
-      this.paymentService.markPaymentAsSuccessful(payment.id).subscribe(() => {
+      this.paymentService.markPaymentAsSuccessful(payment['id']).subscribe(() => {
         this.fetchData();
       });
     }
     constructVerificationImg(url: string): string {
       const constructedUrl = 'http://localhost:3000/' + url.replace(/\\/g, '/');
-     console.log('Constructed URL:', constructedUrl);
+     //console.log('Constructed URL:', constructedUrl);
       return constructedUrl;
     }
     // Add this method in your component
    getPaymentClass(payment: Payment): string {
   return payment.isSuccessful ? 'payment-successful' : 'payment-unsuccessful';
    }
+
+   submitPayment(): void {
+    if (this.paymentForm.valid) {
+      const paymentData = this.paymentForm.value;
+       console.log("payment Data before stringify is ",paymentData)
+      // Stringify paymentDetails to ensure it's sent as JSON string
+      paymentData.paymentDetails = JSON.stringify(paymentData.paymentDetails);
+      console.log("payment data after stringify is ", paymentData)
+      this.paymentService.addPayment(paymentData).subscribe(
+        response => {
+          console.log('New Payment added successfully', response);
+          this.fetchData(); // Refresh the data after adding
+          this.resetForm(); // Reset the form
+        },
+        error => {
+          console.error('Error adding Payment', error);
+        }
+      );
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+  
+  get paymentDetails(): FormArray {
+  return this.paymentForm.get('paymentDetails') as FormArray;
+}
+
+  // For editing the payment, ensure you're updating the selectedRow from the form
+  saveChanges(): void {
+    if (this.paymentForm.valid) {
+      const updatedPayment = this.paymentForm.value; // Get updated form values
+      this.paymentService.editPayment(this.selectedRow['id'], updatedPayment).subscribe(() => {
+        console.log('Saved changes:', updatedPayment);
+        this.showEditForm = false;
+        this.fetchData(); // Refresh the data after editing
+      });
+    } else {
+      console.log('Form is invalid');
+    }
+  }
+  // Use this method to open a snack bar
+openSnackBar(message: string, action: string) {
+  this.snackBar.open(message, action, {
+    duration: 2000,
+  });
+}
+
 
   }
   

@@ -67,11 +67,11 @@
 
     <!-- Password -->
     <mat-form-field class="example-full-width">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" name="password" [(ngModel)]="selectedRow.User.password" required>
+      <input matInput [type]="hide ? 'password' : 'text'" name="password" [(ngModel)]="selectedRow.User.password" required>
       <mat-error *ngIf="!selectedRow.User.password">Password is required</mat-error>
-    </mat-form-field>
-
+      <button mat-icon-button (click)="hide = !hide" matSuffix>
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon></button>
+        </mat-form-field>
     <!-- Email -->
     <mat-form-field class="example-full-width">
       <mat-label>Email</mat-label>
@@ -113,7 +113,10 @@
     <!-- Situation -->
     <mat-form-field class="example-full-width">
       <mat-label>Situation</mat-label>
-      <input matInput type="text" name="situation" [(ngModel)]="selectedRow.User.situation" required>
+      <mat-select name="situation" [(ngModel)]="selectedRow.User.situation" required>
+        <mat-option *ngFor="let option of situations" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+    
       <mat-error *ngIf="!selectedRow.User.situation">Situation is required</mat-error>
     </mat-form-field>
 
@@ -127,10 +130,12 @@
     <!-- Date of Birth -->
     <mat-form-field class="example-full-width">
       <mat-label>Date of Birth</mat-label>
-      <input matInput type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
+      <input matInput [matDatepicker]="picker" type="date" name="dateOfBirth" [(ngModel)]="selectedRow.User.dateOfBirth" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="!selectedRow.User.dateOfBirth">Date of Birth is required</mat-error>
     </mat-form-field>
-
+   
     <!-- Nationality -->
     <mat-form-field class="example-full-width">
       <mat-label>Nationality</mat-label>

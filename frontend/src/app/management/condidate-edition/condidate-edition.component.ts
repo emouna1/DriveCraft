@@ -4,6 +4,10 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from 'src/app/auth-service.service';
 import { CoondidateService } from 'src/app/coondidate.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
+
 @Component({
   selector: 'app-condidate-edition',
   templateUrl: './condidate-edition.component.html',
@@ -12,7 +16,10 @@ import { CoondidateService } from 'src/app/coondidate.service';
 export class CondidateEditionComponent {
 
 
-  
+  situations = ['with code', 'without code'];
+  // In your component
+hide = true; // Initialize hide to true to hide the password by default
+
 studentColumns = [
   'username',
   'email',
@@ -38,7 +45,7 @@ showEditForm: boolean = false;
 selectedRow: Student = { User: {
   username: 'default_user',
   password: 'default_password',
-  email: 'defaultEmployee.com',
+  email: 'defaultEmployee@gmail.com',
   role: 'student',
   name: 'DefaultEmployee',
   firstName: 'Default',
@@ -51,20 +58,21 @@ selectedRow: Student = { User: {
   nationality: 'N/A',
   address: '123 Main Street',
   telephone: '123-456-7890',
-  image: '_ _ _',
+ /* image: '_ _ _',
   personalCode: null,
   personnelFunction: null,
   recruitmentDate: new Date(2000, 0, 1),
+
   netSalary: null,
   grossSalary: null,
   qualification: null,
   leaveDaysPerYear: null,
   cnssNumber: null,
-  CategoryCode: null
+  CategoryCode: null*/
 }};
 dataSource = new MatTableDataSource<Student>();
 
-constructor(private studentService: CoondidateService, private dialog: MatDialog, private authService: AuthService) { }
+constructor(private studentService: CoondidateService, private dialog: MatDialog, private authService: AuthService, private matSnackBar: MatSnackBar) { }
 
 ngOnInit(): void {
   this.fetchData();
@@ -74,50 +82,7 @@ ngOnInit(): void {
 toggleForm() {
   this.showForm = !this.showForm;
 }
-/*fetchData() {
-  this.studentService.getAllStudents().subscribe((data: any) => {
-    // Assuming data is fetched and structured as in your example
-    this.dataSource.data= data.map((item: any) => {
-      console.log('Image URL:', item.Image ? item.Image.imageUrl : null); // Add this line to log the image URL
 
-      return {
-        User: {
-
-          username: item.username,
-          password: item.password,
-          email: item.email,
-          role: item.role,
-          name: item.name,
-          firstName: item.firstName,
-          CIN: item.CIN,
-          dateOfIssue: item.dateOfIssue,
-          situation: item.situation,
-          balance: item.balance,
-          dateOfBirth: item.dateOfBirth,
-          nationality: item.nationality,
-          address: item.address,
-          telephone: item.telephone,
-          //image: item.image,
-          personalCode: item.personalCode,
-          personnelFunction: item.personnelFunction,
-          recruitmentDate: item.recruitmentDate,
-          netSalary: item.netSalary,
-          grossSalary: item.grossSalary,
-          qualification: item.qualification,
-          leaveDaysPerYear: item.leaveDaysPerYear,
-          cnssNumber: item.cnssNumber,
-          CategoryCode: item.CategoryCode,
-          //image: item.image // Assign image property
-          //image: item.Image ? item.Image.imageUrl : null,
-          image: item.Image ? `http://localhost:3000/images/${item.Image.imageUrl}` : null,
-
-
-        }
-      };
-    });
-    this.dataSource.paginator = this.paginator;
-  });
-}*/
 fetchData() {
   this.studentService.getAllStudents().subscribe((data: any) => {
     // Assuming data is fetched and structured as in your example
@@ -169,12 +134,15 @@ editRow(element: Student) {
 
 saveChanges() {
   if (this.selectedRow) {
+    console.log('the selected student is', this.selectedRow)
     // Update selectedRow with the edited values before saving changes
     this.selectedRow = { ...this.selectedRow };
     console.log(this.selectedRow)
     this.studentService.editStudent(this.selectedRow.User).subscribe(() => {
       console.log('Saved changes:', this.selectedRow);
       this.showEditForm = false;
+      this.displayNotification('Student successfully updated !')
+
       this.fetchData(); // Refresh data after saving changes
     });
   }
@@ -185,7 +153,9 @@ deleteRow(element: Student) {
   if (element.User.CIN) {
     this.studentService.deleteStudent(element.User.CIN).subscribe(() => {
       console.log('Deleted row:', element.User);
+      this.displayNotification('Student successfully deleted !');
       this.fetchData(); // Refresh data after deletion
+      
     });
   }
 }
@@ -196,12 +166,19 @@ submitStudent() {
   this.selectedRow = {
     User: { ...this.selectedRow.User }
   };
+  if (this.selectedRow.User.image && this.selectedRow.User.image.includes('http://localhost:3000/')) {
+    this.selectedRow.User.image = this.selectedRow.User.image.replace('http://localhost:3000/', '');
+  }
+
   console.log(this.selectedRow)
   // Now selectedRow contains the updated values entered by the user
   if (this.selectedRow) {
     this.authService.signup(this.selectedRow.User).subscribe(response => {
       console.log('New student added successfully', response);
-      this.resetForm();
+      this.showForm = false;
+      this.displayNotification('New Student successfully added!')
+
+      this.fetchData(); // Refresh data after saving changes
     }, error => {
       console.error('Error adding student', error);
     });
@@ -330,6 +307,12 @@ canceladdForm() {
   this.showForm = false; 
   this.resetForm()// Optionally reset the form fields
 }
+displayNotification(message: string) {
+  this.matSnackBar.open(message, 'Close', {
+    duration: 3000, // Duration in milliseconds
+  });
+}
+
 
 }
 interface Student {

@@ -51,21 +51,21 @@
  <form (submit)="submitCarMaintenance()">
   <mat-form-field appearance="fill">
     <mat-label>Code</mat-label>
-    <input matInput type="text" name="Mcode" [(ngModel)]="selectedRow.Mcode" required>
-    <mat-error *ngIf="!selectedRow.Mcode">Code is required</mat-error>
+    <input matInput type="text" name="Mcode" [(ngModel)]="selectedRow!.Mcode" required>
+    <mat-error *ngIf="!selectedRow!.Mcode">Code is required</mat-error>
 
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Designation</mat-label>
-    <input matInput type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
-    <mat-error *ngIf="!selectedRow.designation">Designation is required</mat-error>
+    <input matInput type="text" name="designation" [(ngModel)]="selectedRow!.designation" required>
+    <mat-error *ngIf="!selectedRow!.designation">Designation is required</mat-error>
 
   </mat-form-field>
   <!-- Add more form fields as needed -->
     <br>
   <!-- Submit button -->
   <button mat-raised-button color="primary" type="submit">Add Maintenance</button>
-  <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
+  <button mat-raised-button color="warn" type="button" (click)="canceladdForm()">Cancel</button>
 </form>
 </div>
 
@@ -73,21 +73,16 @@
 <div *ngIf="showEditForm" class="form-container">
 <h2>Edit Maintenance</h2>
 <form (submit)="saveChanges()">
-  <mat-form-field appearance="fill">
-    <mat-label>Code</mat-label>
-    <input matInput type="text" name="Mcode" [(ngModel)]="selectedRow.Mcode" required>
-    <mat-error *ngIf="!selectedRow.Mcode">Code is required</mat-error>
-
-  </mat-form-field>
+ 
   <mat-form-field appearance="fill">
     <mat-label>Designation</mat-label>
-    <input matInput type="text" name="designation" [(ngModel)]="selectedRow.designation" required>
-    <mat-error *ngIf="!selectedRow.designation">Designation is required</mat-error>
+    <input matInput type="text" name="designation" [(ngModel)]="selectedRow!.designation" required>
+    <mat-error *ngIf="!selectedRow!.designation">Designation is required</mat-error>
 
   </mat-form-field>
   <br>
   <button mat-raised-button color="primary" type="submit">Save Changes</button>
-  <button mat-raised-button color="warn" type="button" (click)="canceladdForm()">Cancel</button>
+  <button mat-raised-button color="warn" type="button" (click)="cancelForm()">Cancel</button>
 </form>
 </div>
 

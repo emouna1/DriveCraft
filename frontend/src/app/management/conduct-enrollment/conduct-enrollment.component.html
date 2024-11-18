@@ -47,21 +47,8 @@
     <button class="amouna-button" (click)="toggleForm()">Add Enrollment</button>
   
     
-   <!--<div *ngIf="showForm">
-      <form [formGroup]="enrollmentForm" (submit)="submitForm()">
-      <fieldset>
-        <legend>{{ formMode === 'edit' ? 'Edit Enrollment' : 'Add New Enrollment' }}</legend>
-        <ng-container *ngFor="let control of enrollmentControls">
-          <mat-form-field>
-            <mat-label>{{ control }}</mat-label>
-            <input matInput type="text" formControlName="{{ control }}" required>
-          </mat-form-field>
-        </ng-container>
-       
-        <button type="submit" class="amouna-button">{{ formMode === 'edit' ? 'Save Changes' : 'Add Enrollment' }}</button>
-      </fieldset>
-    </form>
-  </div>-->
+
+ 
   <div *ngIf="showForm">
     <form [formGroup]="enrollmentForm" (submit)="submitForm()">
       <fieldset>
@@ -155,11 +142,7 @@
           </mat-error>
         </mat-form-field>
         
-        <!-- Payment ID 
-        <mat-form-field>
-          <mat-label>Payment ID</mat-label>
-          <input matInput type="text" formControlName="paymentId">
-        </mat-form-field>-->
+      
         <mat-form-field>
           <mat-label>Payment ID</mat-label>
           <mat-select formControlName="paymentId">

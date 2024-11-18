@@ -12,19 +12,14 @@ export class MaintenanceEditionComponent {
 
   displayedColumns = ['Mcode', 'designation' , 'actions'];
   dataSource = new MatTableDataSource<Entretien>();
-
+  Entretien = { Mcode: 0, designation: '' } 
   showForm: boolean = false;
   showEditForm: boolean = false;
-  selectedRow: Entretien = { Mcode: 0, designation: '' };
+  selectedRow: Entretien | null = null;
 
    
   constructor(private foldersService: FoldersService,private snackBar: MatSnackBar) {}
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  //pagination 
-   onPageChange(event: PageEvent) {
-     this.dataSource.paginator!.pageIndex = event.pageIndex;
-     this.dataSource.paginator!.pageSize = event.pageSize;
-   }
+ 
   ngOnInit() {
     this.fetchData();
   }
@@ -34,6 +29,17 @@ export class MaintenanceEditionComponent {
       this.dataSource.data = data;
       this.dataSource.paginator = this.paginator;
 
+    });
+  }
+  submitCarMaintenance() {
+    this.foldersService.addCarM(this.selectedRow).subscribe(response => {
+      console.log('New Car maintenance added successfully', response);
+      this.showForm = false; 
+      this.fetchData();
+      this.displayNotification('New maintenance entry added successfully.'); // Display success notification
+    }, error => {
+      console.error('Error adding new maintenance entry:', error);
+      this.displayNotification('Error adding new maintenance entry. Please try again.'); // Display error notification
     });
   }
   toggleForm() {
@@ -46,7 +52,7 @@ export class MaintenanceEditionComponent {
   }
 
   saveChanges() {
-    this.foldersService.editCarM(this.selectedRow.Mcode, this.selectedRow).subscribe(() => {
+    this.foldersService.editCarM(this.selectedRow!.Mcode, this.selectedRow).subscribe(() => {
       this.showEditForm = false;
       this.fetchData();
       this.displayNotification('Maintenance entry edited successfully.'); // Display success notification
@@ -65,9 +71,6 @@ export class MaintenanceEditionComponent {
       this.displayNotification('Error deleting maintenance entry. Please try again.'); // Display error notification
     });
   }
-
-
-
   @ViewChild('printContent') printContent!: ElementRef; // Declare ViewChild here
 
   printTable() {
@@ -85,6 +88,7 @@ export class MaintenanceEditionComponent {
         printContent += 'tr:nth-child(even) { background-color: #f2f2f2; }';
         printContent += '</style>';
         printContent += '</head><body>';
+        printContent += '<h2>Car maintenance : </h2>'
 
         // Generate table headers
         printContent += '<table>';
@@ -115,22 +119,11 @@ export class MaintenanceEditionComponent {
     }
   }
   
-  submitCarMaintenance() {
-    this.foldersService.addCarM(this.selectedRow).subscribe(response => {
-      console.log('New Car maintenance added successfully', response);
-      this.showForm = false; 
-      this.fetchData();
-      this.displayNotification('New maintenance entry added successfully.'); // Display success notification
-    }, error => {
-      console.error('Error adding new maintenance entry:', error);
-      this.displayNotification('Error adding new maintenance entry. Please try again.'); // Display error notification
-    });
-  }
+
  
-  
-  cancelForm() {
-    this.showEditForm = false; 
-    this.fetchData()// Optionally reset the form fields
+  cancelForm(): void {
+    this.showEditForm = false;
+    this.fetchData();
   }
   canceladdForm() {
     this.showForm = false; 
@@ -141,6 +134,12 @@ export class MaintenanceEditionComponent {
       duration: 3000, // Duration in milliseconds
     });
   }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  //pagination 
+   onPageChange(event: PageEvent) {
+     this.dataSource.paginator!.pageIndex = event.pageIndex;
+     this.dataSource.paginator!.pageSize = event.pageSize;
+   }
 
 }
 

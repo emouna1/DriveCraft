@@ -36,9 +36,10 @@ export class EnrollmentService {
   }
 
   editEnrollment(data:Enrollment): Observable<Enrollment> {
-    return this.http.put<Enrollment>(`${this.apiUrl}/updateEnrollment/${data.id}`, data);
+    return this.http.put<Enrollment>(`${this.apiUrl}/updateEnrollment/${data.candidatCIN}`, data);
   }
 
+  
   deleteEnrollment(EnrollmentId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/deleteEnrollment/${EnrollmentId}`);
     
