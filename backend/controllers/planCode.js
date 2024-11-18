@@ -2,16 +2,13 @@
 const { Op } = require('sequelize');
 
 const CodeLessonExam = require('../models/planCode');
+const User = require('../models/user')
+const InstructorCandidateRelation = require('../models/InstructorStudent');
+
+
 
 exports.codeLessonExamController = {
-  /*async getAllCodeLessonExams(req, res) {
-    try {
-      const codeLessonExams = await CodeLessonExam.findAll();
-      res.json(codeLessonExams);
-    } catch (error) {
-      res.status(500).json({error: error.message});
-    }
-  },*/
+  
   async getAllLessons(req, res) {
     try {
       const lessons = await CodeLessonExam.findAll({
@@ -48,7 +45,7 @@ exports.codeLessonExamController = {
       res.status(400).json({error: error.message});
     }
   },*/
-  async createCodeLessonExam(req, res) {
+  /*async createCodeLessonExam(req, res) {
     try {
       const { date, startHour, endHour, candidatCIN, taskType } = req.body;
   
@@ -97,7 +94,7 @@ exports.codeLessonExamController = {
       res.status(400).json({ error: error.message });
     }
   },
-  
+  */
 
   async deleteCodeLessonExam(req, res) {
     try {
@@ -125,7 +122,7 @@ exports.codeLessonExamController = {
       res.status(400).json({error: error.message});
     }
   }*/
-  async updateCodeLessonExam(req, res) {
+  /*async updateCodeLessonExam(req, res) {
     try {
       const codeLessonExamId = req.params.id;
       const updatedData = req.body;
@@ -180,5 +177,326 @@ exports.codeLessonExamController = {
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
+  }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    async createCodeLessonExam(req, res) {
+      try {
+        const { date, startHour, endHour, candidatCIN, taskType, taskCategory, accomplished } = req.body;
+    
+        // Check for conflicts for the candidate
+        const candidate = await User.findOne({
+          where: { CIN : candidatCIN }
+
+        })
+        console.log('the candidate is', candidate)
+        console.log('the candidate id is', candidate.id)
+
+
+        const existingAssignment = await InstructorCandidateRelation.findOne({
+          where: { studentId : candidate.id }
+        });
+          
+        console.log('the existing assignment is ', existingAssignment)
+
+        const candidateConflict = await CodeLessonExam.findOne({
+          where: {
+            date: date,
+            candidatCIN: candidatCIN,
+            [Op.or]: [
+              {
+                startHour: {
+                  [Op.between]: [startHour, endHour]
+                }
+              },
+              {
+                endHour: {
+                  [Op.between]: [startHour, endHour]
+                }
+              },
+              {
+                [Op.and]: [
+                  {
+                    startHour: {
+                      [Op.lte]: startHour
+                    }
+                  },
+                  {
+                    endHour: {
+                      [Op.gte]: endHour
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        });
+    
+        if (candidateConflict) {
+          return res.status(400).json({ error: 'Candidate has a scheduling conflict.' });
+        }
+        console.log("instructor Id is", existingAssignment.instructorId );
+        console.log("vehicle Id is", existingAssignment.carId );
+        // Check for conflicts for the instructor and their vehicle
+        const instructorConflict = await CodeLessonExam.findOne({
+          where: {
+            date: date,
+            instructorId: existingAssignment.instructorId,
+            [Op.or]: [
+              {
+
+                startHour: {
+                  [Op.between]: [startHour, endHour]
+                }
+              },
+              {
+                endHour: {
+                  [Op.between]: [startHour, endHour]
+                }
+              },
+              {
+                [Op.and]: [
+                  {
+                    startHour: {
+                      [Op.lte]: startHour
+                    }
+                  },
+                  {
+                    endHour: {
+                      [Op.gte]: endHour
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        });
+    
+        if (instructorConflict) {
+          return res.status(400).json({ error: 'Instructor has a scheduling conflict.' });
+        }
+        const vehicleConflict = await CodeLessonExam.findOne({
+          where: {
+            date: date,
+            vehicleId: existingAssignment.carId,
+            [Op.or]: [
+              {
+
+                startHour: {
+                  [Op.between]: [startHour, endHour]
+                }
+              },
+              {
+                endHour: {
+                  [Op.between]: [startHour, endHour]
+                }
+              },
+              {
+                [Op.and]: [
+                  {
+                    startHour: {
+                      [Op.lte]: startHour
+                    }
+                  },
+                  {
+                    endHour: {
+                      [Op.gte]: endHour
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        });
+    
+        if (vehicleConflict) {
+          return res.status(400).json({ error: ' vehicle has a scheduling conflict.' });
+        }
+    
+        // No conflicts, create the lesson or exam
+        const codeLessonExam = await CodeLessonExam.create({
+          date,
+          startHour,
+          endHour,
+          candidatCIN,
+          taskType,
+          taskCategory,
+          accomplished,
+          instructorId : existingAssignment.instructorId,
+          vehicleId : existingAssignment.carId, // Ensure the same vehicle is checked 
+          
+      });
+        res.status(201).json(codeLessonExam);
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+      }
+    },
+    
+
+async updateCodeLessonExam(req, res) {
+  try {
+    const codeLessonExamId = req.params.id;
+    const updatedData = req.body;
+    const { date, startHour, endHour, candidatCIN, taskType, taskCategory, accomplished } = req.body;
+
+
+    const codeLessonExam = await CodeLessonExam.findByPk(codeLessonExamId);
+    if (!codeLessonExam) {
+      return res.status(404).json({ error: 'Lesson or Exam not found' });
+    }
+     
+    const existingAssignment = await InstructorCandidateRelation.findOne({
+      where: { studentId : candidate.id }
+    });
+      
+    console.log('the existing assignment is ', existingAssignment)
+
+    // Check for conflicts for the candidate
+    const candidateConflict = await CodeLessonExam.findOne({
+      where: {
+        date: date,
+        candidatCIN: candidatCIN,
+        id: { [Op.ne]: codeLessonExamId }, // Exclude the current entry
+        [Op.or]: [
+          {
+            startHour: {
+              [Op.between]: [startHour, endHour]
+            }
+          },
+          {
+            endHour: {
+              [Op.between]: [startHour, endHour]
+            }
+          },
+          {
+            [Op.and]: [
+              {
+                startHour: {
+                  [Op.lte]: startHour
+                }
+              },
+              {
+                endHour: {
+                  [Op.gte]: endHour
+                }
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    if (candidateConflict) {
+      return res.status(400).json({ error: 'Candidate has a scheduling conflict.' });
+    }
+
+    // Check for conflicts for the instructor and their vehicle
+    const vehicleConflict = await CodeLessonExam.findOne({
+      where: {
+        date: date,
+      
+        vehicleId: existingAssignment.carId, // Ensure the same vehicle is checked
+        id: { [Op.ne]: codeLessonExamId }, // Exclude the current entry
+        [Op.or]: [
+          {
+            startHour: {
+              [Op.between]: [startHour, endHour]
+            }
+          },
+          {
+            endHour: {
+              [Op.between]: [startHour, endHour]
+            }
+          },
+          {
+            [Op.and]: [
+              {
+                startHour: {
+                  [Op.lte]: startHour
+                }
+              },
+              {
+                endHour: {
+                  [Op.gte]: endHour
+                }
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    if (instructorConflict) {
+      return res.status(400).json({ error: ' vehicle has a scheduling conflict.' });
+    }
+    const instructorConflict = await CodeLessonExam.findOne({
+      where: {
+        date: date,
+        instructorId: existingAssignment.instructorId,
+        id: { [Op.ne]: codeLessonExamId }, // Exclude the current entry
+        [Op.or]: [
+          {
+            startHour: {
+              [Op.between]: [startHour, endHour]
+            }
+          },
+          {
+            endHour: {
+              [Op.between]: [startHour, endHour]
+            }
+          },
+          {
+            [Op.and]: [
+              {
+                startHour: {
+                  [Op.lte]: startHour
+                }
+              },
+              {
+                endHour: {
+                  [Op.gte]: endHour
+                }
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    if (vehicleConflict) {
+      return res.status(400).json({ error: 'Instructor  has a scheduling conflict.' });
+    }
+    // No conflicts, update the lesson or exam
+    await codeLessonExam.update(updatedData);
+    res.json(codeLessonExam);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
+}
 };

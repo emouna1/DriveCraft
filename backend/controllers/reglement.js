@@ -104,52 +104,59 @@ exports.getAllPaymentIn = async (req, res, next) => {
   }
 };*/
 exports.addPaymentS = async (req, res, next) => {
-  const { date, montant } = req.body;
+  const {  date, montant, candidatCIN } = req.body;
   let paymentDetails;
-
+  console.log('Raw paymentDetails:', req.body.paymentDetails);
   try {
     // Parse paymentDetails from JSON string
     paymentDetails = JSON.parse(req.body.paymentDetails);
   } catch (error) {
     return res.status(400).json({ message: 'Invalid paymentDetails format' });
   }
-
   console.log('Request body:', req.body);
   console.log('Uploaded file:', req.file);
-
   try {
     // Create the main payment entry
-    const payment = await Payment.create({ date, montant });
+    const payment = await Payment.create({ date, montant, candidatCIN });
     console.log('Payment created:', payment);
 
-    if (!req.file) {
-      throw new Error('No file uploaded');
-    }
+    //if (!req.file) {
+    //  throw new Error('No file uploaded');
+    //}
 
-    const verificationUrl = req.file.path; // Use `path` for the uploaded file's path
-    console.log('File path:', verificationUrl);
+    //const verificationUrl = req.file.path; // Use `path` for the uploaded file's path
+    //console.log('File path:', verificationUrl);
 
     // Check if paymentDetails is an array or object
     if (Array.isArray(paymentDetails)) {
       // If it's an array, loop over each detail
       await Promise.all(paymentDetails.map(async (detail) => {
+        const existingdetail = await PaymentMethod.findOne({ where: { designation: detail.paymentMethodId } });
+        if (!existingdetail) {
+          throw new Error(`Payment method ${paymentDetails.paymentMethodId} not found`);
+        }
         await PaymentDetails.create({
           montant: detail.montant,
           dateEcheance: detail.dateEcheance,
           paymentId: payment.id,
-          verificationUrl: verificationUrl,
-          PaymentMethodId: detail.paymentMethodId // Use the correct property from detail
+         // verificationUrl: verificationUrl,
+          PaymentMethodId: existingdetail.id // Use the correct property from detail
         });
         console.log('Payment detail added:', detail);
       }));
     } else {
+      const existingdetail = await PaymentMethod.findOne({ where: { designation: paymentDetails.paymentMethodId } });
+      if (!existingdetail) {
+        throw new Error(`Payment method ${paymentDetails.paymentMethodId} not found`);
+      }
       // If it's an object, create a single payment detail entry
       await PaymentDetails.create({
         montant: paymentDetails.montant,
         dateEcheance: paymentDetails.dateEcheance,
         paymentId: payment.id,
-        verificationUrl: verificationUrl,
-        PaymentMethodId: paymentDetails.paymentMethodId // Use the correct property from detail
+       // verificationUrl: verificationUrl,
+        PaymentMethodId: existingdetail.id // Use the correct property from detail
+
       });
       console.log('Payment detail added:', paymentDetails);
     }

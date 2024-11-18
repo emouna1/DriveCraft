@@ -1,5 +1,8 @@
 const express = require('express');
 
+// Load environment variables from .env file into process.env
+require('dotenv').config();
+
 const cors = require("cors");
 const db = require('./util/database');
 const multer = require('multer');

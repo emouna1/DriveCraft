@@ -5,6 +5,9 @@ const instructorCandidateController = require('../controllers/carInstructorCandi
 /*routerCar.get('/candidates', instructorCandidateController.getCandidates);*/
 routerCar.get('/list', instructorCandidateController.getInstructorCandidateCar);
 routerCar.get('/vehicles', instructorCandidateController.getVehicles);
+routerCar.get('/instructors', instructorCandidateController.getAllInstructors);
+routerCar.get('/candidates', instructorCandidateController.getAllStudents);
+
 
 routerCar.post('/assign-candidate', instructorCandidateController.assignCandidate);
 routerCar.delete('/remove-candidate/:candidateId/:instructorId', instructorCandidateController.removeCandidate);

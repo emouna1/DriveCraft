@@ -2,6 +2,8 @@
 const {DataTypes} = require('sequelize');
 const sequelize = require('../util/database');
 const User = require('../models/user')
+const Vehicle = require('../models/Vehicle');
+
 const LessonExam = sequelize.define('CodeLessonExam', {
 
   date: {
@@ -36,6 +38,14 @@ const LessonExam = sequelize.define('CodeLessonExam', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  instructorId: {
+    type: DataTypes.STRING, // or DataTypes.INTEGER, depending on your CIN or ID type
+    allowNull: true,
+  },
+  vehicleId: {
+    type: DataTypes.INTEGER, // Assuming vehicleId is an integer
+    allowNull: true,
+  },
 
 });
 LessonExam.beforeCreate((lessonExam, options) => {
@@ -48,6 +58,7 @@ LessonExam.beforeCreate((lessonExam, options) => {
   }
 });
 LessonExam.belongsTo(User, {foreignKey: 'candidatCIN', targetKey: 'CIN'});
-
+LessonExam.belongsTo(User) // Associate with instructor
+LessonExam.belongsTo(Vehicle, { foreignKey: 'vehicleId' }); // Associate with vehicle
 
 module.exports = LessonExam;

@@ -34,8 +34,29 @@ exports.getInstructorCandidateCar = async (req, res) => {
     res.status(500).send('Internal server error');
   }
 };
-
-
+exports.getAllInstructors = async (req, res, next) => {
+  try {
+    const employees = await User.findAll({
+      where: {role: [ 'instructor']}// Filter users by role 'student'
+    });
+    res.status(200).json(employees);
+  } catch (error) {
+    console.error('Error fetching employees:', error);
+    res.status(500).json({message: 'An error occurred while fetching employees.'});
+  }
+};
+exports.getAllStudents = async (req, res, next) => {
+  try {
+    const students = await User.findAll({
+      where: { role: 'student' }, // Filter users by role 'student'
+      //include: [{ model: Image, as: 'Image' }] // Include associated images with alias 'userImage'
+    });
+    res.status(200).json(students);
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    res.status(500).json({ message: 'An error occurred while fetching students.' });
+  }
+};
 
 // Get all vehicles
 exports.getVehicles = async (req, res) => {
@@ -58,6 +79,14 @@ exports.assignCandidate = async (req, res) => {
       console.log('Instructor ID:', instructorId);
       console.log('Car ID:', carId);
       
+      // Check if the student is already assigned to an instructor
+    const existingAssignment = await InstructorCandidateRelation.findOne({
+      where: { studentId }
+    });
+
+    if (existingAssignment) {
+      return res.status(400).send('This candidate is already assigned to an instructor');
+    }
       const student = await User.findByPk(studentId);
       const instructor = await User.findByPk(instructorId);
       const car = await Vehicle.findByPk(carId);

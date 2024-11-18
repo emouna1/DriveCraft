@@ -11,7 +11,7 @@ homeRouter.get('/getConductEnrollments', enrollmentsController.getConductEnrollm
 homeRouter.post('/addEnrollment', enrollmentsController.createEnrollment);
 
 // Route to update an enrollment
-homeRouter.put('/updateEnrollment/:id', enrollmentsController.updateEnrollment);
+homeRouter.put('/updateEnrollment/:candidatCIN', enrollmentsController.updateEnrollment);
 
 // Route to delete an enrollment
 homeRouter.delete('/deleteEnrollment/:id', enrollmentsController.deleteEnrollment);

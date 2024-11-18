@@ -93,10 +93,14 @@ exports.enrollmentsController = {
   },
   async updateEnrollment(req, res) {
     try {
-      const enrollmentId = req.params.id;
+      //const enrollmentId = req.params.id;
+      const candidatCIN = req.params.candidatCIN
       const updatedData = req.body;
 
-      const enrollment = await Enrollment.findByPk(enrollmentId);
+      //const enrollment = await Enrollment.findByPk(candidatCIN);
+      const enrollment = await Enrollment.findOne({
+        where: {candidatCIN: candidatCIN}
+      });
       if (!enrollment) {
         return res.status(404).json({error: 'Enrollment not found'});
       }
