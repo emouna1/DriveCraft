@@ -13,8 +13,17 @@ const {Sequelize} = require('sequelize');
 
 // Initialize Sequelize with your MySQL credentials
 const sequelize = new Sequelize(process.env.MYSQL_URL, {
-  dialect: 'mysql',
-});
+
+host: process.env.MYSQLHOST,
+port: process.env.MYSQLPORT || 3306,
+dialect: 'mysql',
+dialectOptions: {
+  connectTimeout: 10000, // Timeout in milliseconds
+},
+logging: console.log, // Optional: Helps debug SQL queries
+}
+);
+
 // Test the connection
 sequelize
   .authenticate()
