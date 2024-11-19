@@ -13,9 +13,6 @@ const {Sequelize} = require('sequelize');
 
 // Initialize Sequelize with your MySQL credentials
 const sequelize = new Sequelize(process.env.MYSQL_URL, {
-
-host: process.env.MYSQLHOST,
-port: process.env.MYSQLPORT || 3306,
 dialect: 'mysql',
 dialectOptions: {
   connectTimeout: 10000, // Timeout in milliseconds

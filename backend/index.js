@@ -59,7 +59,12 @@ app.get('/', (req, res) => {
 
 
 
-
+console.log('Database connection details:', {
+  host: process.env.MYSQLHOST,
+  port: process.env.MYSQLPORT,
+  user: process.env.MYSQLUSER,
+  database: process.env.MYSQLDATABASE,
+});
 
 
 
