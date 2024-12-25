@@ -8,11 +8,11 @@
 - **Backend**: Uses **Express.js** for handling server-side logic and **MariaDB** for database management.
 - **Authentication**: Secure login system with support for user roles (admin, instructor, student).
 - **Real-time Data**: Utilizes web sockets for real-time updates on schedules and student progress.
-- **Responsive Design**: Fully responsive layout using **Bootstrap** to ensure the app works seamlessly across devices.
+- **Responsive Design**: Fully responsive layout using **Angular Material** to ensure the app works seamlessly across devices.
 
 ## Technologies Used
 
-- **Frontend**: Angular 17, Bootstrap
+- **Frontend**: Angular 17, Angular material
 - **Backend**: Express.js, Node.js
 - **Database**: MariaDB (with **XAMPP** for local server management)
 - **Authentication**: Custom JWT-based authentication
