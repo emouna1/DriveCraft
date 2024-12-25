@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -31,5 +31,18 @@ export class AppComponent implements OnInit {
     const currentUrl = this.router.url;
     return currentUrl.includes('/auth/login') || currentUrl.includes('/auth/signup') || currentUrl.includes('/auth/Forgot') || currentUrl.includes('/manage/dash') || currentUrl.includes('/candidate/home') ||currentUrl.includes('/instructor/home') ||currentUrl.includes('/enroll')
   }
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const toolbar = document.querySelector('.mat-toolbar');
+    if (toolbar) {
+      if (window.scrollY > 50) {
+        toolbar.classList.add('scrolled');
+      } else {
+        toolbar.classList.remove('scrolled');
+      }
+    }
+  }
+  
+
   
 }

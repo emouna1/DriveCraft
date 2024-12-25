@@ -32,8 +32,9 @@
   z-index: 2; /* Ensure toolbar is on top of other content */
 }
 .logo {
-  height: 40px; /* Adjust the height as needed */
-  margin-right: 10px; /* Optional: Adjust the margin */
+  height: 100px; /* Adjust the height as needed */
+  width: 200px;
+  margin-right: 50px; /* Optional: Adjust the margin */
 }
 
 .mat-sidenav {
@@ -49,14 +50,14 @@ p,li {
   font-family: 'Roboto', sans-serif; /* A clean, modern font */
   font-size: 18px; /* Larger, more readable size */
   line-height: 1.6; /* Increases readability */
-  color: rgba(243, 63, 123, 0.815); /* Softer white */
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7); /* Adds shadow for readability on background */
+  color: rgb(255, 255, 255); /* Softer white */
+  text-shadow: 1px 1px 4px rgba(243, 241, 241, 0.7); /* Adds shadow for readability on background */
   max-width: 800px; /* Restrict the width for better readability */
   margin: 0 auto; /* Center the text */
 }
 
 h2 {
-  color: #ffcc00; /* Highlight headings with a bright color */
+  color: #f87ff8; /* Highlight headings with a bright color */
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* Add some shadow for effect */
 }
 
@@ -110,3 +111,17 @@ footer {
 
 
 
+button.mat-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #008cff; /* Matches the highlight color for consistency */
+}
+
+
+
+.moo-lah-lah-regular {
+  font-family: "Moo Lah Lah", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px; /* Larger, more readable size */
+
+}
