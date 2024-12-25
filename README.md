@@ -1,27 +1,95 @@
 # DriveCraft
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.2
+**DriveCraft** is a dynamic web application designed for managing a driving school office. This project is built with the latest technologies and follows modern software architecture. It provides an intuitive and user-friendly interface for managing driving school operations, including scheduling, student tracking, and staff management.
 
-## Development server
+## Key Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Frontend**: Built with **Angular 17** for a responsive and scalable user interface.
+- **Backend**: Uses **Express.js** for handling server-side logic and **MariaDB** for database management.
+- **Authentication**: Secure login system with support for user roles (admin, instructor, student).
+- **Real-time Data**: Utilizes web sockets for real-time updates on schedules and student progress.
+- **Responsive Design**: Fully responsive layout using **Bootstrap** to ensure the app works seamlessly across devices.
 
-## Code scaffolding
+## Technologies Used
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Frontend**: Angular 17, Bootstrap
+- **Backend**: Express.js, Node.js
+- **Database**: MariaDB (with **XAMPP** for local server management)
+- **Authentication**: Custom JWT-based authentication
 
-## Build
+## Project Setup
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+To get started with the project locally, follow these steps:
 
-## Running unit tests
+### Prerequisites
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- [Node.js](https://nodejs.org/) (version 16.x or later)
+- [MariaDB](https://mariadb.org/) (for the backend database)
+- [XAMPP](https://www.apachefriends.org/index.html) (for local server management)
 
-## Running end-to-end tests
+### Installation
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/emouna1/DriveCraft.git
+   cd DriveCraft
+   ```
 
-## Further help
+2. **Install dependencies**:
+   - For frontend (Angular):
+     ```bash
+     cd frontend
+     npm install
+     ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+   - For backend (Express.js):
+     ```bash
+     cd backend
+     npm install
+     ```
+
+3. **Set up the database**:
+   - Create a **MariaDB** database and configure the connection in the backend (`config/db.js`).
+   - Import the provided SQL schema (found in `backend/db_schema.sql`) to set up the database.
+
+4. **Run the app**:
+   - Start the backend server:
+     ```bash
+     npm run dev
+     ```
+
+   - Start the frontend application:
+     ```bash
+     cd frontend
+     ng serve
+     ```
+
+   Visit [http://localhost:4200](http://localhost:4200) in your browser.
+
+## Development
+
+- To generate a new component or service, use Angular CLI:
+  ```bash
+  ng generate component component-name
+  ng generate service service-name
+  ```
+
+- To build the project for production:
+  ```bash
+  ng build --prod
+  ```
+
+- To run unit tests (using Karma):
+  ```bash
+  ng test
+  ```
+
+## Additional Information
+
+- **DriveCraft** was developed as a part of a comprehensive web development project for a driving school system. The goal was to build an efficient, scalable solution to help schools manage their operations and provide a better experience for both instructors and students.
+
+- The project is continuously updated with new features and improvements. Contributions are welcome!
+
+## Live Demo
+
+You can explore the live demo of DriveCraft [here](https://drive-craft.vercel.app/).
