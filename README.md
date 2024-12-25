@@ -90,6 +90,3 @@ To get started with the project locally, follow these steps:
 
 - The project is continuously updated with new features and improvements. Contributions are welcome!
 
-## Live Demo
-
-You can explore the live demo of DriveCraft [here](https://drive-craft.vercel.app/).
